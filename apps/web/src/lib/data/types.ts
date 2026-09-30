@@ -276,6 +276,8 @@ export const newLinkSchema = knowledgeLinkSchema.pick({
   createdBy: true,
 });
 
+export const newItemSchema = knowledgeItemSchema;
+
 export const newReviewItemSchema = reviewItemSchema.pick({
   kind: true,
   itemIds: true,
@@ -309,6 +311,7 @@ export const itemUpdateSchema = knowledgeItemSchema
   .pick({
     title: true,
     body: true,
+    language: true,
     country: true,
     customerId: true,
     teamId: true,
@@ -355,6 +358,7 @@ export type NewKarmaEvent = z.infer<typeof newKarmaEventSchema>;
 export type AgentResult = z.infer<typeof agentResultSchema>;
 export type AgentQuery = z.infer<typeof agentQuerySchema>;
 export type NewLink = z.infer<typeof newLinkSchema>;
+export type NewItem = z.infer<typeof newItemSchema>;
 export type NewReviewItem = z.infer<typeof newReviewItemSchema>;
 export type ItemUpdate = z.infer<typeof itemUpdateSchema>;
 export type DocumentType = z.infer<typeof documentTypeSchema>;

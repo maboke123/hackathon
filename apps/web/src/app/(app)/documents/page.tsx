@@ -3,6 +3,7 @@ import Link from "next/link";
 import { PageHeader, PageSection } from "@/components/page-header";
 import { TeamSummaryTable } from "@/components/team-summary-table";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -44,7 +45,11 @@ export default async function DocumentsPage() {
         eyebrow="Trust graph"
         title="Documents"
         description="Every document with its owner and last check. Open one to see its links, who relies on it and what depends on it."
-      />
+      >
+        <Button asChild>
+          <Link href="/documents/new">Add a document</Link>
+        </Button>
+      </PageHeader>
 
       <PageSection
         title="Trust per team"
@@ -112,6 +117,8 @@ export default async function DocumentsPage() {
                     <div className="flex flex-wrap gap-1">
                       {item.status === "retired" ? (
                         <Badge variant="outline">Retired</Badge>
+                      ) : item.status === "draft" ? (
+                        <Badge variant="outline">Draft</Badge>
                       ) : reviews.length === 0 ? (
                         <Badge variant="secondary">Up to date</Badge>
                       ) : (

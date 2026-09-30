@@ -4,7 +4,9 @@ import { notFound } from "next/navigation";
 import { DocumentBody } from "@/components/document-body";
 import { EmptyState } from "@/components/empty-state";
 import { PageHeader, PageSection } from "@/components/page-header";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { getCurrentColleague, requireUser } from "@/lib/auth/session";
 import {
   getRepository,
@@ -18,6 +20,7 @@ import {
 } from "@/lib/data";
 import { formatDate } from "@/lib/format";
 import { coverage, listDownstream } from "@/lib/changes";
+import { canManageUpload } from "@/lib/upload";
 import { RecordChangeForm } from "./record-change-form";
 
 export async function generateMetadata({
@@ -107,12 +110,15 @@ function LinkRow({
 
 export default async function DocumentPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ published?: string }>;
 }) {
   const user = await requireUser();
   const colleague = await getCurrentColleague();
   const { id } = await params;
+  const { published } = await searchParams;
   const repository = getRepository();
   const item = await repository.getItem(id);
   if (!item) notFound();
@@ -149,6 +155,13 @@ export default async function DocumentPage({
   );
   const graphLinks = links.filter((link) => link.type !== "answered_with");
   const covered = coverage(item, downstream);
+  const canManage = canManageUpload(item, colleague, user.role);
+  const replacesOthers = links.some(
+    (link) =>
+      link.type === "supersedes" &&
+      link.status === "confirmed" &&
+      link.fromId === item.id,
+  );
   const canRecord =
     item.kind === "document" &&
     item.status !== "retired" &&
@@ -165,7 +178,40 @@ export default async function DocumentPage({
         }
         title={item.title}
         description={item.location}
-      />
+      >
+        {canManage && item.status === "draft" ? (
+          <Button asChild>
+            <Link href={`/documents/${item.id}/publish`}>
+              Check and publish
+            </Link>
+          </Button>
+        ) : canManage && replacesOthers ? (
+          <Button asChild variant="outline">
+            <Link href={`/documents/${item.id}/notify`}>
+              Tell customers and owners
+            </Link>
+          </Button>
+        ) : null}
+      </PageHeader>
+
+      {published && item.status === "active" ? (
+        <Alert className="mb-10">
+          <AlertTitle>Published</AlertTitle>
+          <AlertDescription>
+            {item.title} is checked today and used in answers from now on. Its
+            links are listed below.
+          </AlertDescription>
+        </Alert>
+      ) : null}
+      {item.status === "draft" && canManage ? (
+        <Alert className="mb-10">
+          <AlertTitle>Draft</AlertTitle>
+          <AlertDescription>
+            Not used in answers yet. Check the labels and conflicts, then
+            publish.
+          </AlertDescription>
+        </Alert>
+      ) : null}
 
       <div className="grid gap-10 lg:grid-cols-2">
         <section className="flex flex-col gap-4">

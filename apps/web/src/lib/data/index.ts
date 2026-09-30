@@ -14,5 +14,6 @@ export function getRepository(): DataRepository {
 
 export { monthsBefore, REFERENCE_DATE } from "./seed/dates";
 export * from "./labels";
+export { labelItem } from "./seed/labels";
 export type * from "./repository";
 export * from "./types";

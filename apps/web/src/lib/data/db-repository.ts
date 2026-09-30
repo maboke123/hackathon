@@ -34,6 +34,7 @@ import {
   itemUpdateSchema,
   type KnowledgeItem,
   type KnowledgeLink,
+  newItemSchema,
   newKarmaEventSchema,
   newLinkSchema,
   newReviewItemSchema,
@@ -201,6 +202,23 @@ export function createDbRepository(db: Database): DataRepository {
         .update(knowledgeItems)
         .set({ embedding })
         .where(eq(knowledgeItems.id, id));
+    },
+
+    async createItem(input) {
+      const [item] = await db
+        .insert(knowledgeItems)
+        .values(newItemSchema.parse(input))
+        .returning(itemColumns);
+      if (!item) {
+        throw new Error("Could not create the item.");
+      }
+      await syncItemGraph(db, item);
+      return item;
+    },
+
+    async deleteItem(id) {
+      await db.delete(graphNodes).where(eq(graphNodes.id, id));
+      await db.delete(knowledgeItems).where(eq(knowledgeItems.id, id));
     },
 
     async updateItem(id, update) {

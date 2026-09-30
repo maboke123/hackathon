@@ -14,6 +14,7 @@ import type {
   LinkStatus,
   LinkType,
   NewKarmaEvent,
+  NewItem,
   NewLink,
   NewReviewItem,
   ReviewItem,
@@ -67,7 +68,10 @@ export interface DataRepository {
   listItems(filter?: ItemFilter): Promise<KnowledgeItem[]>;
   getItem(id: string): Promise<KnowledgeItem | null>;
   searchItems(query: string, filter?: ItemFilter): Promise<SearchResult[]>;
+  createItem(input: NewItem): Promise<KnowledgeItem>;
   updateItem(id: string, update: ItemUpdate): Promise<KnowledgeItem | null>;
+  /** Deletes the item with its links. */
+  deleteItem(id: string): Promise<void>;
   listEmbeddings(): Promise<ItemEmbedding[]>;
   listItemsWithoutEmbedding(): Promise<KnowledgeItem[]>;
   setEmbedding(id: string, embedding: number[]): Promise<void>;

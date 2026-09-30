@@ -183,4 +183,16 @@ export const seedLinks: (Omit<NewLink, "toEvidence"> & {
     confidence: null,
     createdBy: "system",
   },
+  {
+    fromId: "doc-02",
+    toId: "doc-01",
+    type: "based_on",
+    reason:
+      "The quick guide sends colleagues to the work instruction for the registration steps.",
+    evidence: null,
+    status: "confirmed",
+    origin: "seed",
+    confidence: null,
+    createdBy: "system",
+  },
 ];
