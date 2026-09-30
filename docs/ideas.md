@@ -79,63 +79,7 @@ All six start from the challenge (see [challenge-briefing.md](challenge-briefing
 
 ### Our concept: trusted legal knowledge that maintains itself
 
-Written down by Roan on 30 September. It combines the legal rulebook, trust label, change-triggered re-verification and gamified ownership ideas below into one product. The demo script is in [demo.md](demo.md).
-
-**Design principle:** employees do as little work as possible to keep the knowledge graph correct and get as much out of it as possible. The system does the collecting, linking, summarising and flagging. People only answer a question, confirm or correct a proposal, or pick up an owner task.
-
-#### Find: a question, answered with document cards
-
-- A colleague types a question in a search bar, in their own words ("hoeveel dagen geboorteverlof voor een arbeider?").
-- The tool returns cards, one per relevant document. Each card shows the title, owner, date, scope (country, customer, product) and trust score.
-- On each card the passage that answers the question is highlighted. One click opens the document at exactly that passage.
-- Results that do not match the colleague's context (for example a Dutch document for a Belgian customer) are pushed down and labelled.
-
-Watch out: the brief says SD Worx does not want "a SharePoint with a search function". The search bar is only the way in. What we pitch is the trust score, the owner on every card and the fact that the knowledge keeps itself up to date.
-
-#### Trust: a score per document that explains itself
-
-Every card gets a trust score, and the score is always shown with its reasons. It is built from:
-
-- **Freshness:** when the document was last verified by its owner. Edited is not verified: a template migration or a typo fix does not count. Old and unverified means less trust.
-- **Owner:** does it have an active owner or owning team? No owner or an owner who left means less trust.
-- **Version:** does it state the current version of the legal rule, or a superseded one (for example 15 days of birth leave instead of 20)?
-- **Scope:** does it apply to this country, sector (joint committee), customer and product?
-- **Source:** official knowledge base, team site, personal copy or email attachment.
-- **Conflicts:** do other trusted documents say something different?
-- **Use:** how often it is opened and whether colleagues flagged it. Use counts raise a document's priority for review. On their own they do not make it trustworthy, because a popular document can be wrong.
-
-#### Maintain: new information updates the graph by itself
-
-- Every new email, call, chat or meeting is summarised and linked to the documents and rules it is about.
-- Attachments in emails are stored as documents in the graph with a link to the email they came from, so a document emailed around (the fourth document in the brief) gets a place, an owner and a trust score.
-- When new information contradicts a document, or a law changes, the document is flagged and goes to its owner.
-- Dates, access counts and verification history are kept up to date automatically, so trust drops by itself as a document ages.
-- Documents are linked to each other like folders and cross-references: which document replaces which, which ones cover the same rule, which ones belong to the same customer or product. That makes it easy to go from one document to the right related one.
-
-#### Own: every document has an owner, reachable in one click
-
-- Every document has an owner: a person or a team (for example the legal knowledge centre Belgium or the AI team).
-- A colleague with a question can contact the owner straight from the card.
-- Each person has a review inbox: documents that are old, superseded, in conflict with new information or without an owner, and questions nobody could answer yet. Each item comes with a proposal, so most take one click.
-- Gamification (see "Gamified ownership" below): owners earn points for answering questions, closing gaps, verifying on time and maintaining more documents.
-
-#### Why the jury should care: legal knowledge is where mistakes cost the most
-
-We focus on legal knowledge and show real examples, so the jury feels what is at stake and why this cannot wait:
-
-- **Birth leave:** a consultant tells a customer 15 days instead of 20, based on two outdated documents that were "modified last week" by a template migration. The employee plans five days too few. (Corpus: call-01, mail-12.)
-- **Meal vouchers:** an employee of a large customer is told EUR 8 instead of EUR 10. (Corpus: call-02, ticket SR-2026-047102.)
-- **Indexation cap:** a customer needs a budget for January 2027. The answer existed in a Teams chat for two months but not in any document, so the consultant had to promise a callback. (Corpus: call-03, chat-03.)
-- **Pay transparency:** a draft FAQ says the Belgian law has been in force since 7 June 2026. It is not. (Corpus: doc-15.)
-
-Figures for urgency (see [hr-research.md](hr-research.md)):
-
-- SD Worx produces 6 million payslips a month (challenge brief). One wrong rule repeats across thousands of them.
-- Belgium alone has 98 joint committees and 66 sub-committees, each with its own rules (R26).
-- 60% of payroll leaders say they cannot keep up with changing labour laws. Nearly one in three organisations report payroll calculation errors (R28).
-- 51% of organisations would switch payroll provider for stronger compliance support (R28). For SD Worx, trustworthy legal knowledge is a reason customers stay.
-
-**Team direction (Roan, 30 September):** a large part of SD Worx's work is keeping up with legal rules: labour law, tax, social security and sector agreements in more than 30 countries. Customers and their employees only get the right pay and the right answers if that legal knowledge is current. So legal knowledge is our preferred focus: it must be stored in one place, split into small parts, and every part must have a named person responsible for keeping it up to date. The first idea below works this out, with gamified ownership as a feature. The trust label and change-triggered re-verification fit inside it.
+Written down by Roan on 30 September. It combined the legal rulebook, trust label, change-triggered re-verification and gamified ownership ideas below. It is now merged with the trust graph into [plan.md](plan.md): the design principle and jury cases in section 2, the trust score in 3.3, the graph updating after every call in 3.8, recognition for owners in 3.11 and the demo in section 6.
 
 ### Legal rulebook with an owner for every rule
 
@@ -161,7 +105,7 @@ Figures for urgency (see [hr-research.md](hr-research.md)):
   - claiming an orphaned document or retiring an outdated one;
   - maintaining more rules and documents, weighted by how often colleagues use them.
   Points show on the owner's profile and on the coverage overview, with badges such as "all rules verified this quarter" or "closed 10 knowledge gaps". Teams can compare coverage, not people.
-- Demo scenario: in scene 2 and 3 of [demo.md](demo.md), Bram and Pieter get points when they retire the outdated document and approve the new indexation rule. The coverage overview shows the team's score going up.
+- Demo scenario: in demo steps 3 and 4 of [plan.md](plan.md#6-demo-script), Bram and Pieter get points when they retire the outdated document and approve the new indexation rule. The coverage overview shows the team's score going up.
 - Human review: points only come from actions a person confirmed in the review queue, so nobody scores by clicking "verified" without looking. Spot checks by the knowledge manager.
 - Fit with SD Worx: rewards the owners the whole idea depends on. Fits their people-first culture if it stays positive.
 - Feasibility tonight: a points counter per owner and a badge on the coverage overview are easy. A full leaderboard is a stretch.
