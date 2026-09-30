@@ -89,6 +89,9 @@ export function SwipeDeck({
   const [exit, setExit] = useState<Direction | null>(null);
   const [pops, setPops] = useState<Pop[]>([]);
   const start = useRef<{ x: number; id: number } | null>(null);
+  const deckRef = useRef<HTMLDivElement>(null);
+  const exiting = useRef(false);
+  const wheelLock = useRef(0);
   const popId = useRef(0);
   const shownKarma = useCountUp(earned);
 
@@ -105,7 +108,9 @@ export function SwipeDeck({
 
   const finish = useCallback((card: SwipeCard, direction: Direction) => {
     setExit(direction);
+    exiting.current = true;
     window.setTimeout(() => {
+      exiting.current = false;
       setExit(null);
       setDx(0);
       if (direction === "skip") {
@@ -150,6 +155,47 @@ export function SwipeDeck({
   }, []);
 
   useEffect(() => {
+    const area = deckRef.current;
+    if (!area || !current) return;
+    let offset = 0;
+    let settle = 0;
+
+    function onWheel(event: WheelEvent) {
+      if (!current || Math.abs(event.deltaX) <= Math.abs(event.deltaY)) {
+        return;
+      }
+      event.preventDefault();
+      if (exiting.current || event.timeStamp < wheelLock.current) {
+        wheelLock.current = event.timeStamp + 250;
+        return;
+      }
+      window.clearTimeout(settle);
+      settle = window.setTimeout(() => {
+        offset = 0;
+        setDragging(false);
+        setDx(0);
+      }, 160);
+      offset -= event.deltaX;
+      setDragging(true);
+      setDx(offset);
+      if (Math.abs(offset) > THRESHOLD) {
+        const direction = offset > 0 ? "yes" : "no";
+        wheelLock.current = event.timeStamp + 250;
+        window.clearTimeout(settle);
+        offset = 0;
+        setDragging(false);
+        finish(current, direction);
+      }
+    }
+
+    area.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      window.clearTimeout(settle);
+      area.removeEventListener("wheel", onWheel);
+    };
+  }, [current, finish]);
+
+  useEffect(() => {
     function onKey(event: KeyboardEvent) {
       if (!current || exit) return;
       const target = event.target;
@@ -178,7 +224,7 @@ export function SwipeDeck({
 
   function onPointerDown(event: React.PointerEvent<HTMLElement>) {
     if (exit || event.button !== 0) return;
-    if ((event.target as HTMLElement).closest("button, a, [data-no-drag]")) {
+    if ((event.target as HTMLElement).closest("button, a")) {
       return;
     }
     start.current = { x: event.clientX, id: event.pointerId };
@@ -206,7 +252,7 @@ export function SwipeDeck({
     : `translateX(${dx}px) rotate(${dx / 30}deg)`;
 
   return (
-    <div className="relative flex max-w-2xl flex-col gap-6 pb-10">
+    <div ref={deckRef} className="relative flex max-w-2xl flex-col gap-6 pb-10">
       {pops.map((pop) => (
         <span
           key={pop.id}
@@ -319,10 +365,7 @@ export function SwipeDeck({
                     }
                   />
                 </div>
-                <div
-                  data-no-drag
-                  className="max-h-64 overflow-y-auto px-4 pb-4 text-sm"
-                >
+                <div className="max-h-64 overflow-y-auto px-4 pb-4 text-sm">
                   <DocumentBody
                     body={current.document.body}
                     passage={null}

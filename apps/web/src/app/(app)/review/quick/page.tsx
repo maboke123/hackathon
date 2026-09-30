@@ -165,7 +165,7 @@ export default async function QuickReviewPage() {
       <PageHeader
         eyebrow="Review"
         title="Quick review"
-        description="The simple yes or no decisions from your queue, one at a time, starting with ownership. Swipe right or press the right arrow for yes, left for no, down to skip."
+        description="The simple yes or no decisions from your queue, one at a time, starting with ownership. Swipe the card right for yes and left for no, with a finger, the mouse or two fingers on a trackpad. The arrow keys work too, down skips."
       >
         {back}
       </PageHeader>
