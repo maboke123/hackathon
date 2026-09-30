@@ -155,3 +155,26 @@ All six start from the challenge (see [challenge-briefing.md](challenge-briefing
 - Fit with SD Worx: fits the service example. Close to their 2025 runner-up (emails to system actions).
 - Feasibility tonight: buildable with an LLM call and a review screen.
 - Risks and open questions: closest to "another AI agent" and to a past winner. Keep it as a feature of the first idea rather than the main idea.
+
+### Conflict detector
+
+- Proposed by: Yendric (not scored yet)
+- Problem: two documents on the same topic say different things.
+- Solution: detect contradictions, show them side by side, send them to the owners to settle one canonical version.
+
+### Save the colleague's answer
+
+- Problem: the best answers are in Teams chats, calls and emails, not in documents.
+- Solution: one click turns a reply into a checked snippet with owner and scope, reviewed by the owner.
+
+### Who knows this
+
+- Proposed by: Yendric (not scored yet)
+- Problem: people know who to call only through their network.
+- Solution: an opt-in expertise map per product and country from authorship and answered questions. No ranking of individuals.
+
+### Scope tagging
+
+- Proposed by: Yendric (not scored yet)
+- Problem: "right title, wrong country".
+- Solution: AI proposes country, customer and product tags on existing documents, a person confirms them in a fast review screen.
