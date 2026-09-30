@@ -32,8 +32,8 @@ async function linkEmployee(
 
 function createAuth() {
   return betterAuth({
-    baseURL: env.BETTER_AUTH_URL,
-    secret: env.BETTER_AUTH_SECRET,
+    baseURL: env.BETTER_AUTH_URL ?? "http://localhost:3000",
+    secret: env.BETTER_AUTH_SECRET ?? "dev-secret",
     database: drizzleAdapter(getDb(), {
       provider: "pg",
       schema,
