@@ -1,13 +1,12 @@
+import { sql } from "drizzle-orm";
 import {
-  type AnyPgColumn,
   boolean,
+  customType,
   date,
   index,
-  integer,
   jsonb,
-  numeric,
   pgTable,
-  primaryKey,
+  real,
   text,
   timestamp,
   unique,
@@ -15,17 +14,26 @@ import {
 // drizzle-kit loads this file outside Next.js, so imports are relative.
 import { roles } from "../auth/roles";
 import type {
-  Benefits,
-  ContractType,
-  EmploymentStatus,
+  AgentResult,
+  ColleagueStatus,
+  CustomerContact,
+  CustomerEntity,
+  ItemKind,
+  ItemStatus,
   Language,
-  LeaveStatus,
-  LeaveType,
-  Statute,
+  LinkOrigin,
+  LinkStatus,
+  LinkType,
+  ReviewKind,
+  ReviewPayload,
+  ReviewStatus,
+  SourceSystem,
 } from "../data/types";
 
-const money = () => numeric({ precision: 10, scale: 2, mode: "number" });
-const dayCount = () => numeric({ precision: 5, scale: 1, mode: "number" });
+const tsvector = customType<{ data: string }>({
+  dataType: () => "tsvector",
+});
+const instant = () => timestamp({ withTimezone: true, mode: "string" });
 
 export const users = pgTable("users", {
   id: text().primaryKey(),
@@ -38,9 +46,9 @@ export const users = pgTable("users", {
     .defaultNow()
     .$onUpdate(() => new Date())
     .notNull(),
-  role: text({ enum: roles }).default("employee").notNull(),
-  // No foreign key: reset() replaces employees but keeps their ids.
-  employeeId: text(),
+  role: text({ enum: roles }).default("colleague").notNull(),
+  // No foreign key: reset() replaces colleagues but keeps their ids.
+  colleagueId: text(),
 });
 
 export const sessions = pgTable(
@@ -102,111 +110,148 @@ export const verifications = pgTable(
   (table) => [index("verifications_identifier_idx").on(table.identifier)],
 );
 
-export const departments = pgTable("departments", {
+export const teams = pgTable("teams", {
   id: text().primaryKey(),
   name: text().notNull(),
-  costCenter: text().notNull(),
-  managerId: text(),
 });
 
-export const employees = pgTable(
-  "employees",
+export const colleagues = pgTable(
+  "colleagues",
   {
     id: text().primaryKey(),
-    employeeNumber: text().notNull().unique(),
-    firstName: text().notNull(),
-    lastName: text().notNull(),
+    name: text().notNull(),
     email: text().notNull().unique(),
-    language: text().$type<Language>().notNull(),
-    birthDate: date().notNull(),
-    city: text().notNull(),
-    departmentId: text()
-      .notNull()
-      .references(() => departments.id),
     jobTitle: text().notNull(),
-    managerId: text().references((): AnyPgColumn => employees.id),
-    statute: text().$type<Statute>().notNull(),
-    jointCommittee: text().notNull(),
-    contractType: text().$type<ContractType>().notNull(),
+    teamId: text()
+      .notNull()
+      .references(() => teams.id),
+    country: text(),
+    location: text(),
+    languages: text().array().notNull(),
+    status: text().$type<ColleagueStatus>().notNull(),
     startDate: date().notNull(),
     endDate: date(),
-    status: text().$type<EmploymentStatus>().notNull(),
-    ftePercentage: integer().notNull(),
-    grossMonthlySalary: money().notNull(),
-    benefits: jsonb().$type<Benefits>().notNull(),
+    successorId: text(),
   },
-  (table) => [
-    index("employees_department_id_idx").on(table.departmentId),
-    index("employees_manager_id_idx").on(table.managerId),
-  ],
+  (table) => [index("colleagues_team_id_idx").on(table.teamId)],
 );
 
-export const leaveRequests = pgTable(
-  "leave_requests",
+export const customers = pgTable("customers", {
+  id: text().primaryKey(),
+  name: text().notNull(),
+  segment: text().notNull(),
+  since: text(),
+  headquarters: text(),
+  countries: text().array().notNull(),
+  note: text(),
+  contacts: jsonb().$type<CustomerContact[]>().notNull(),
+  entities: jsonb().$type<CustomerEntity[]>().notNull(),
+});
+
+export const knowledgeItems = pgTable(
+  "knowledge_items",
   {
     id: text().primaryKey(),
-    employeeId: text()
+    kind: text().$type<ItemKind>().notNull(),
+    title: text().notNull(),
+    body: text().notNull(),
+    filePath: text().notNull(),
+    pdfPath: text(),
+    sourceSystem: text().$type<SourceSystem>().notNull(),
+    location: text().notNull(),
+    language: text().$type<Language>().notNull(),
+    country: text(),
+    customerId: text().references(() => customers.id),
+    teamId: text().references(() => teams.id),
+    product: text(),
+    jointCommittee: text(),
+    keywords: text().array().notNull(),
+    ownerId: text().references(() => colleagues.id),
+    authorId: text().references(() => colleagues.id),
+    createdAt: instant().notNull(),
+    modifiedAt: instant().notNull(),
+    modifiedById: text().references(() => colleagues.id),
+    lastCheckedAt: date(),
+    nextReviewAt: date(),
+    status: text().$type<ItemStatus>().notNull(),
+    usefulness: real(),
+    usefulnessScoredAt: instant(),
+    search: tsvector()
       .notNull()
-      .references(() => employees.id, { onDelete: "cascade" }),
-    type: text().$type<LeaveType>().notNull(),
-    startDate: date().notNull(),
-    endDate: date().notNull(),
-    days: dayCount().notNull(),
-    status: text().$type<LeaveStatus>().notNull(),
-    requestedAt: date().notNull(),
-    decidedBy: text().references(() => employees.id),
-    note: text(),
+      .generatedAlwaysAs(
+        sql`setweight(to_tsvector('simple', coalesce(title, '')), 'A') || setweight(to_tsvector('simple', coalesce(body, '')), 'B')`,
+      ),
   },
   (table) => [
-    index("leave_requests_employee_id_idx").on(table.employeeId),
-    index("leave_requests_status_idx").on(table.status),
+    index("knowledge_items_search_idx").using("gin", table.search),
+    index("knowledge_items_owner_id_idx").on(table.ownerId),
+    index("knowledge_items_customer_id_idx").on(table.customerId),
   ],
 );
 
-export const leaveBalances = pgTable(
-  "leave_balances",
-  {
-    employeeId: text()
-      .notNull()
-      .references(() => employees.id, { onDelete: "cascade" }),
-    year: integer().notNull(),
-    type: text().$type<LeaveType>().notNull(),
-    entitled: dayCount().notNull(),
-    taken: dayCount().notNull(),
-    planned: dayCount().notNull(),
-    remaining: dayCount().notNull(),
-  },
-  (table) => [
-    primaryKey({ columns: [table.employeeId, table.year, table.type] }),
-  ],
-);
-
-export const payslips = pgTable(
-  "payslips",
+export const knowledgeLinks = pgTable(
+  "knowledge_links",
   {
     id: text().primaryKey(),
-    employeeId: text()
+    fromId: text()
       .notNull()
-      .references(() => employees.id, { onDelete: "cascade" }),
-    period: text().notNull(),
-    paymentDate: date().notNull(),
-    workedDays: integer().notNull(),
-    grossSalary: money().notNull(),
-    socialSecurityEmployee: money().notNull(),
-    taxableSalary: money().notNull(),
-    withholdingTax: money().notNull(),
-    mealVoucherCount: integer().notNull(),
-    mealVoucherEmployeeContribution: money().notNull(),
-    homeWorkAllowance: money().notNull(),
-    netSalary: money().notNull(),
-    socialSecurityEmployer: money().notNull(),
-    totalEmployerCost: money().notNull(),
+      .references(() => knowledgeItems.id, { onDelete: "cascade" }),
+    toId: text()
+      .notNull()
+      .references(() => knowledgeItems.id, { onDelete: "cascade" }),
+    type: text().$type<LinkType>().notNull(),
+    reason: text().notNull(),
+    evidence: text(),
+    status: text().$type<LinkStatus>().notNull(),
+    origin: text().$type<LinkOrigin>().notNull(),
+    confidence: real(),
+    createdBy: text().notNull(),
+    createdAt: instant().notNull(),
+    resolvedBy: text(),
+    resolvedAt: instant(),
   },
   (table) => [
-    unique("payslips_employee_period_unique").on(
-      table.employeeId,
-      table.period,
+    unique("knowledge_links_from_to_type_unique").on(
+      table.fromId,
+      table.toId,
+      table.type,
     ),
-    index("payslips_period_idx").on(table.period),
+    index("knowledge_links_to_id_idx").on(table.toId),
   ],
 );
+
+export const reviewItems = pgTable(
+  "review_items",
+  {
+    id: text().primaryKey(),
+    kind: text().$type<ReviewKind>().notNull(),
+    itemIds: text().array().notNull(),
+    linkId: text().references(() => knowledgeLinks.id, {
+      onDelete: "set null",
+    }),
+    assigneeId: text().references(() => colleagues.id),
+    assigneeTeamId: text().references(() => teams.id),
+    trigger: text().notNull(),
+    payload: jsonb().$type<ReviewPayload>(),
+    status: text().$type<ReviewStatus>().notNull(),
+    outcome: text(),
+    createdAt: instant().notNull(),
+    resolvedBy: text(),
+    resolvedAt: instant(),
+  },
+  (table) => [
+    index("review_items_assignee_id_idx").on(table.assigneeId),
+    index("review_items_status_idx").on(table.status),
+  ],
+);
+
+export const agentQueries = pgTable("agent_queries", {
+  id: text().primaryKey(),
+  askedAt: instant().notNull(),
+  askedBy: text().notNull(),
+  askedById: text(),
+  question: text().notNull(),
+  results: jsonb().$type<AgentResult[]>().notNull(),
+  answer: text().notNull(),
+  feedback: text(),
+});

@@ -17,7 +17,7 @@ The team shares context through `docs/`. Start with [docs/plan.md](docs/plan.md)
 | `docs/sd-worx-briefing.md`   | SD Worx products, strategy, regulation and Belgian payroll vocabulary           |
 | `docs/spott-briefing.md`     | Spott, the prize partner: product, people and how it relates to SD Worx         |
 | `docs/hr-research.md`        | Independent HR and payroll research with checked figures for the pitch          |
-| `docs/sample-data.md`        | The synthetic dataset used by the app                                           |
+| `docs/sample-data.md`        | The knowledge corpus and how it becomes the database                            |
 
 - Update the docs at least every 3 to 5 prompts, so teammates who pull get the same context: the solution and team split in `plan.md`, decisions in `context.md`, ideas in `ideas.md`, dataset changes in `sample-data.md`.
 - Every new Markdown file gets a row in this table, or in the repository layout if it lives outside `docs/`.
@@ -68,23 +68,24 @@ Read `packages/design-system/DESIGN.md` before building any UI, slide or video s
 
 ## Data
 
-The app uses a synthetic dataset for a fictional Belgian company, documented in `docs/sample-data.md`.
+The app uses a synthetic knowledge corpus of SD Worx documents, emails, calls, meetings, chats and tickets, documented in `docs/sample-data.md`.
 
 - Read and write data only through `getRepository()` from `@/lib/data`. Do not import the seed files directly. `@/lib/data` is server only: client components import labels and types from `@/lib/data/labels` and `@/lib/data/types`.
 - Data lives in Postgres through Drizzle (`src/lib/db`). Without `DATABASE_URL` it runs in memory (PGlite) and resets on restart. Migrations and the seed run automatically on startup.
 - Schema changes: update `types.ts`, `src/lib/db/schema.ts`, the seed and `db-repository.ts`, then run `pnpm db:generate` and commit the new migration in `apps/web/drizzle`. Never edit a migration that is already on `main`.
+- The raw corpus is in `src/lib/data/seed/knowledge`. After changing it, run `pnpm --filter web knowledge:build` and commit `corpus.generated.json`. `ground-truth.json` is the answer key for tests, never app data.
 - Payroll figures are simplified. Label them as simulated in the UI and in slides.
 - Extend the dataset in `apps/web/src/lib/data` (types, seed, repository) instead of hard coding sample records in components.
 
 ## Auth and server code
 
-- Better Auth handles accounts and sessions (`src/lib/auth`). Users have a role (`employee`, `manager`, `hr`) and an `employeeId` linking them to the dataset.
+- Better Auth handles accounts and sessions (`src/lib/auth`). Users have a role (`colleague`, `knowledge_manager`) and a `colleagueId` linking them to the corpus. Only the assignee of a review item may resolve it.
 - Every page that shows user data calls `requireUser()` or `requireRole(...)` from `@/lib/auth/session`. `src/proxy.ts` only redirects visitors without a session cookie and is not a security check.
 - Every Server Action checks the user and validates its input with zod before touching data, even when the UI already hides the action. Return a `FormState` (`src/lib/form-state.ts`) and call `revalidatePath` for the pages that show the changed data.
 - Reads happen in Server Components. Writes go through Server Actions in an `actions.ts` next to the page. Use route handlers only for auth, webhooks or streaming.
-- `src/app/(app)/leave` is the reference feature: page, actions, form with `useActionState`, buttons with toasts and permission checks in `src/lib/leave.ts`.
+- `src/app/(app)/overview` shows the pattern: page, `actions.ts`, a button with a toast. Forms use `useActionState` with `FormState`.
 - Better Auth only rate limits requests to `/api/auth`. Calls from server actions skip that, so any new action that checks a password or creates accounts uses `createRateLimit` from `@/lib/rate-limit`.
-- The deployed site is public and anyone can log in as HR with the demo buttons. Never add real personal data (real CVs, payslips, contact details). If real data is ever needed, first remove the demo accounts and require a verified email or company login.
+- The deployed site is public and anyone can log in as a knowledge manager with the demo buttons. Never add real personal data (real CVs, payslips, contact details). If real data is ever needed, first remove the demo accounts and require a verified email or company login.
 
 ## No AI slop
 

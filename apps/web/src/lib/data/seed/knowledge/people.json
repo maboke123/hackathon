@@ -58,7 +58,8 @@
     "languages": ["nl", "fr", "en"],
     "status": "left",
     "startDate": "2009-05-01",
-    "endDate": "2024-04-30"
+    "endDate": "2024-04-30",
+    "successor": "p-claire"
   },
   {
     "id": "p-sanne",
@@ -144,7 +145,8 @@
     "languages": ["nl", "fr", "en"],
     "status": "left",
     "startDate": "2007-02-01",
-    "endDate": "2023-08-31"
+    "endDate": "2023-08-31",
+    "successor": "p-jonas"
   },
   {
     "id": "p-sofie",
@@ -267,6 +269,7 @@
     "status": "left",
     "startDate": "2026-03-01",
     "endDate": "2026-03-31",
+    "successor": "p-julie",
     "note": "Did not move to SD Worx France after the integration"
   }
 ]

@@ -120,18 +120,18 @@ export async function signUp(
   redirect("/overview");
 }
 
-export async function signInAsDemo(employeeId: unknown): Promise<void> {
-  const id = z.string().parse(employeeId);
+export async function signInAsDemo(colleagueId: unknown): Promise<void> {
+  const id = z.string().parse(colleagueId);
   const account = (await getDemoAccounts()).find(
-    (item) => item.employee.id === id,
+    (item) => item.colleague.id === id,
   );
   if (!account) {
     throw new Error("Unknown demo account.");
   }
 
-  await ensureDemoUser(account.employee);
+  await ensureDemoUser(account.colleague);
   await getAuth().api.signInEmail({
-    body: { email: account.employee.email, password: DEMO_PASSWORD },
+    body: { email: account.colleague.email, password: DEMO_PASSWORD },
     headers: await headers(),
   });
 

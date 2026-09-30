@@ -7,9 +7,6 @@ import { UserMenu } from "./user-menu";
 
 const navItems: (NavItem & { roles?: Role[] })[] = [
   { href: "/overview", label: "Overview" },
-  { href: "/leave", label: "Leave" },
-  { href: "/employees", label: "Employees", roles: ["manager", "hr"] },
-  { href: "/payslips", label: "Payslips" },
 ];
 
 export default async function AppLayout({

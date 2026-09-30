@@ -40,8 +40,8 @@ export function ResetDemoButton() {
         <DialogHeader>
           <DialogTitle>Reset demo data?</DialogTitle>
           <DialogDescription>
-            Employees, leave and payslips go back to the original dataset. Leave
-            requests made during the demo are removed. Accounts stay.
+            Documents, links and review queues go back to the original corpus.
+            Changes made during the demo are removed. Accounts stay.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>

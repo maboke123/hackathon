@@ -15,20 +15,17 @@ export default async function SignupPage() {
     redirect("/overview");
   }
 
-  const repository = getRepository();
-  const [company, employees, demoAccounts] = await Promise.all([
-    repository.getCompany(),
-    repository.listEmployees({ status: "active" }),
+  const [colleagues, demoAccounts] = await Promise.all([
+    getRepository().listColleagues(),
     getDemoAccounts(),
   ]);
   const demoEmails = new Set(
-    demoAccounts.map((account) => account.employee.email),
+    demoAccounts.map((account) => account.colleague.email),
   );
-  const examples = employees
+  const examples = colleagues
     .filter(
-      (employee) =>
-        employee.contractType === "onbepaalde_duur" &&
-        !demoEmails.has(employee.email),
+      (colleague) =>
+        colleague.status === "active" && !demoEmails.has(colleague.email),
     )
     .slice(0, 3);
 
@@ -38,8 +35,8 @@ export default async function SignupPage() {
         <div className="flex flex-col gap-3">
           <h1 className="text-4xl leading-[1.1]">Create account</h1>
           <p className="text-muted-foreground">
-            Your account is linked to your employee record at {company.name}{" "}
-            through your work email.
+            Your account is linked to your colleague record through your work
+            email.
           </p>
         </div>
         <SignupForm />
@@ -56,19 +53,18 @@ export default async function SignupPage() {
 
       <section className="flex flex-col gap-6">
         <div className="flex flex-col gap-3">
-          <h2 className="text-2xl">Try an employee email</h2>
+          <h2 className="text-2xl">Try a colleague email</h2>
           <p className="text-muted-foreground max-w-md">
-            Sign up with the email of anyone in the directory and you get their
-            role: HR staff see everyone, managers see their team. Any other
-            email gets an account without employee data.
+            Sign up with the email of any active colleague and you see their
+            review queue. Any other email gets an account without a queue.
           </p>
         </div>
         <ul className="divide-y rounded-lg border">
-          {examples.map((employee) => (
-            <li key={employee.id} className="flex flex-col gap-0.5 px-4 py-3">
-              <span className="font-mono text-sm">{employee.email}</span>
+          {examples.map((colleague) => (
+            <li key={colleague.id} className="flex flex-col gap-0.5 px-4 py-3">
+              <span className="font-mono text-sm">{colleague.email}</span>
               <span className="text-muted-foreground text-sm">
-                {employee.firstName} {employee.lastName}, {employee.jobTitle}
+                {colleague.name}, {colleague.jobTitle}
               </span>
             </li>
           ))}

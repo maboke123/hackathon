@@ -1,15 +1,13 @@
-export const roles = ["employee", "manager", "hr"] as const;
+export const roles = ["colleague", "knowledge_manager"] as const;
 
 export type Role = (typeof roles)[number];
 
 export const roleLabels: Record<Role, string> = {
-  employee: "Employee",
-  manager: "Manager",
-  hr: "HR",
+  colleague: "Colleague",
+  knowledge_manager: "Knowledge manager",
 };
 
 export const roleDescriptions: Record<Role, string> = {
-  employee: "Requests leave and sees their own payslips.",
-  manager: "Also approves leave for their team.",
-  hr: "Sees every employee and approves any request.",
+  colleague: "Asks questions and reviews the items assigned to them.",
+  knowledge_manager: "Also sees every review queue and can reset the demo.",
 };

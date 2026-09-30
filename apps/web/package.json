@@ -10,6 +10,7 @@
     "typecheck": "next typegen && tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:studio": "drizzle-kit studio",
+    "knowledge:build": "node scripts/build-knowledge-corpus.mts",
     "knowledge:pdf": "node scripts/render-knowledge-pdfs.mts"
   },
   "dependencies": {

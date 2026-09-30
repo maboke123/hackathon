@@ -2,32 +2,28 @@ import "server-only";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
-import { type Employee, getRepository } from "@/lib/data";
+import { type Colleague, getRepository } from "@/lib/data";
 import { getDb } from "@/lib/db";
 import * as schema from "@/lib/db/schema";
 import { env } from "@/lib/env";
 import { type Role, roles } from "./roles";
 
-const HR_DEPARTMENT_ID = "dep-hr";
+const KNOWLEDGE_TEAM_ID = "team-knowledge-and-content-operations";
 
-export async function roleForEmployee(employee: Employee): Promise<Role> {
-  if (employee.departmentId === HR_DEPARTMENT_ID) {
-    return "hr";
-  }
-  const reports = await getRepository().listEmployees({
-    managerId: employee.id,
-  });
-  return reports.length > 0 ? "manager" : "employee";
+export function roleForColleague(colleague: Colleague): Role {
+  return colleague.teamId === KNOWLEDGE_TEAM_ID
+    ? "knowledge_manager"
+    : "colleague";
 }
 
-async function linkEmployee(
+async function linkColleague(
   email: string,
-): Promise<{ employeeId: string | null; role: Role }> {
-  const employee = await getRepository().getEmployeeByEmail(email);
-  if (!employee || employee.status === "left") {
-    return { employeeId: null, role: "employee" };
+): Promise<{ colleagueId: string | null; role: Role }> {
+  const colleague = await getRepository().getColleagueByEmail(email);
+  if (!colleague || colleague.status !== "active") {
+    return { colleagueId: null, role: "colleague" };
   }
-  return { employeeId: employee.id, role: await roleForEmployee(employee) };
+  return { colleagueId: colleague.id, role: roleForColleague(colleague) };
 }
 
 function createAuth() {
@@ -47,10 +43,10 @@ function createAuth() {
         role: {
           type: [...roles],
           required: true,
-          defaultValue: "employee",
+          defaultValue: "colleague",
           input: false,
         },
-        employeeId: {
+        colleagueId: {
           type: "string",
           required: false,
           input: false,
@@ -61,7 +57,7 @@ function createAuth() {
       user: {
         create: {
           before: async (user) => ({
-            data: { ...user, ...(await linkEmployee(user.email)) },
+            data: { ...user, ...(await linkColleague(user.email)) },
           }),
         },
       },

@@ -54,3 +54,11 @@ Record important decisions here (scope, data sources, APIs, who owns what).
 
 - **Opening:** `slides/pitch.md` is now the real deck. It opens with the framing "not another agent, the layer it stands on": sources, then the trust graph, then the existing agent, then the service colleague.
 - **Graph slide:** an animated graph of the synthetic corpus (`slides/components/TrustGraph.vue`, data in `trust-graph-data.ts`) in three clicks: all items look alike, typed links and statuses appear, then the birth leave cluster with doc-05 as the answer. Layout uses d3-force, with the birth leave nodes pinned so the labels never overlap.
+
+### 30 September 2026: knowledge graph schema
+
+- **The Havenkaai HR app is removed.** Employees, departments, leave and payslips are dropped (migration `0001_remove_hr_data`). Havenkaai stays as a customer in the corpus.
+- **The database is the knowledge graph** (migration `0002_knowledge_graph`): `teams`, `colleagues`, `customers`, `knowledge_items`, `knowledge_links`, `review_items`, `agent_queries`. See `sample-data.md`.
+- **The corpus is converted, not read at runtime.** `pnpm --filter web knowledge:build` writes `corpus.generated.json`, which the seed loads. Labels are parsed from the files only. The answer key is never loaded.
+- **Accounts are SD Worx colleagues.** Roles `colleague` and `knowledge_manager`. Resolving a review item requires being its assignee.
+- **People who left have a successor** in `people.json` (Annick to Claire, Hilde to Jonas, Olivier to Julie). Their documents go to the successor's queue, documents without an owner go to the team.

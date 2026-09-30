@@ -32,7 +32,9 @@ export async function requireRole(...allowed: Role[]): Promise<CurrentUser> {
   return user;
 }
 
-export const getCurrentEmployee = cache(async () => {
+export const getCurrentColleague = cache(async () => {
   const user = await requireUser();
-  return user.employeeId ? getRepository().getEmployee(user.employeeId) : null;
+  return user.colleagueId
+    ? getRepository().getColleague(user.colleagueId)
+    : null;
 });

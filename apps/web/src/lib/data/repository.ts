@@ -1,50 +1,83 @@
 import type {
-  Company,
-  Department,
-  Employee,
-  EmploymentStatus,
-  LeaveBalance,
-  LeaveRequest,
-  LeaveStatus,
-  NewLeaveRequest,
-  Payslip,
+  AgentQuery,
+  Colleague,
+  Customer,
+  ItemKind,
+  ItemStatus,
+  ItemUpdate,
+  KnowledgeItem,
+  KnowledgeLink,
+  LinkStatus,
+  LinkType,
+  NewLink,
+  NewReviewItem,
+  ReviewItem,
+  ReviewKind,
+  ReviewStatus,
+  Team,
 } from "./types";
 
-export type EmployeeFilter = {
-  departmentId?: string;
-  status?: EmploymentStatus;
-  managerId?: string;
-  search?: string;
+export type ItemFilter = {
+  kind?: ItemKind;
+  status?: ItemStatus;
+  country?: string;
+  customerId?: string;
+  teamId?: string;
+  ownerId?: string;
 };
 
-export type LeaveRequestFilter = {
-  employeeId?: string;
-  managerId?: string;
-  status?: LeaveStatus;
-  from?: string;
-  to?: string;
+export type SearchResult = {
+  item: KnowledgeItem;
+  rank: number;
 };
 
-export type PayslipFilter = {
-  employeeId?: string;
-  period?: string;
+export type LinkFilter = {
+  itemId?: string;
+  type?: LinkType;
+  status?: LinkStatus;
+};
+
+export type ReviewFilter = {
+  assigneeId?: string;
+  assigneeTeamId?: string;
+  itemId?: string;
+  kind?: ReviewKind;
+  status?: ReviewStatus;
 };
 
 export interface DataRepository {
-  getCompany(): Promise<Company>;
-  listDepartments(): Promise<Department[]>;
-  listEmployees(filter?: EmployeeFilter): Promise<Employee[]>;
-  getEmployee(id: string): Promise<Employee | null>;
-  getEmployeeByEmail(email: string): Promise<Employee | null>;
-  listLeaveRequests(filter?: LeaveRequestFilter): Promise<LeaveRequest[]>;
-  getLeaveRequest(id: string): Promise<LeaveRequest | null>;
-  listLeaveBalances(employeeId: string): Promise<LeaveBalance[]>;
-  createLeaveRequest(input: NewLeaveRequest): Promise<LeaveRequest>;
-  decideLeaveRequest(
+  listTeams(): Promise<Team[]>;
+  listColleagues(): Promise<Colleague[]>;
+  getColleague(id: string): Promise<Colleague | null>;
+  getColleagueByEmail(email: string): Promise<Colleague | null>;
+  listCustomers(): Promise<Customer[]>;
+  getCustomer(id: string): Promise<Customer | null>;
+
+  listItems(filter?: ItemFilter): Promise<KnowledgeItem[]>;
+  getItem(id: string): Promise<KnowledgeItem | null>;
+  searchItems(query: string, filter?: ItemFilter): Promise<SearchResult[]>;
+  updateItem(id: string, update: ItemUpdate): Promise<KnowledgeItem | null>;
+
+  /** Links where the item is on either side. */
+  listLinks(filter?: LinkFilter): Promise<KnowledgeLink[]>;
+  createLink(input: NewLink): Promise<KnowledgeLink>;
+  resolveLink(
     id: string,
-    status: Extract<LeaveStatus, "approved" | "rejected" | "cancelled">,
-    decidedBy: string,
-  ): Promise<LeaveRequest | null>;
-  listPayslips(filter?: PayslipFilter): Promise<Payslip[]>;
+    status: Exclude<LinkStatus, "suggested">,
+    resolvedBy: string,
+  ): Promise<KnowledgeLink | null>;
+
+  listReviewItems(filter?: ReviewFilter): Promise<ReviewItem[]>;
+  getReviewItem(id: string): Promise<ReviewItem | null>;
+  createReviewItem(input: NewReviewItem): Promise<ReviewItem>;
+  resolveReviewItem(
+    id: string,
+    outcome: string,
+    resolvedBy: string,
+  ): Promise<ReviewItem | null>;
+
+  listAgentQueries(): Promise<AgentQuery[]>;
+
+  isSeeded(): Promise<boolean>;
   reset(): Promise<void>;
 }

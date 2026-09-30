@@ -26,22 +26,23 @@ Open http://localhost:3000 and log in with one of the demo accounts. No database
 
 ## Demo accounts
 
-The login page has a button per account. The password for all three is `havenkaai-demo`.
+The login page has a button per account. The password for all four is `havenkaai-demo`.
 
-| Role     | Email                            | Sees                                              |
-| -------- | -------------------------------- | ------------------------------------------------- |
-| HR       | inge.claes@havenkaai.example     | Every employee, every leave request, company cost |
-| Manager  | julien.lambert@havenkaai.example | Their team of 21 and their leave requests         |
-| Employee | youssef.benali@havenkaai.example | Their own leave and payslips                      |
+| Colleague       | Email                          | Role in the demo                                   |
+| --------------- | ------------------------------ | -------------------------------------------------- |
+| Lotte Verhaegen | lotte.verhaegen@sdworx.example | Payroll consultant who takes the customer call     |
+| Pieter De Smedt | pieter.desmedt@sdworx.example  | Legal expert, owns the birth leave and index rules |
+| Elif Aydin      | elif.aydin@sdworx.example      | Takes over the Veldra account                      |
+| Ellen Goossens  | ellen.goossens@sdworx.example  | Knowledge manager, can reset the demo data         |
 
-Signing up with the email of any other employee in the dataset links the account to that employee and gives it the matching role.
+Signing up with the email of any other active colleague in the corpus links the account to that colleague.
 
 ### Adding accounts
 
-- **Any account:** sign up on `/signup`. An employee email from the dataset gets that person's data and role. Any other email gets an account without data.
-- **Another one-click account:** add an employee id to `employeeIds` in `apps/web/src/lib/auth/demo-accounts.ts`. Employee number 1030 on the Employees page is id `emp-1030`. The button appears right away and the account is created on its first login.
-- **Roles** come from the data: HR department is `hr`, anyone with direct reports is `manager`, everyone else is `employee`. They are set when the account is created. To change the role of an existing account on a real Postgres, update `users.role` in the database, for example with `pnpm db:studio`.
-- **New people** go in the seed (`apps/web/src/lib/data/seed`). Restart, then sign up with their email or add them to `employeeIds`.
+- **Any account:** sign up on `/signup`. A colleague email from the corpus gets that person's review queue. Any other email gets an account without a queue.
+- **Another one-click account:** add a colleague id (for example `p-bram`) to `DEMO_COLLEAGUE_IDS` in `apps/web/src/lib/auth/demo-accounts.ts`. The button appears right away and the account is created on its first login.
+- **Roles:** colleagues in Knowledge and content operations get `knowledge_manager`, everyone else `colleague`. Who may resolve a review item depends on being its assignee, not on the role.
+- **New people** go in `apps/web/src/lib/data/seed/knowledge/people.json`. Run `pnpm --filter web knowledge:build`, restart, then sign up with their email.
 
 ## Security
 
@@ -49,7 +50,7 @@ Signing up with the email of any other employee in the dataset links the account
 - Sessions live in an `HttpOnly`, `SameSite=Lax` cookie that is signed with `BETTER_AUTH_SECRET`, and marked `Secure` when `BETTER_AUTH_URL` starts with `https://`.
 - Every page and Server Action checks the session and the role on the server. Hiding a button is never the only protection.
 - Login allows 5 wrong passwords per email and 20 per network address in 10 minutes. Sign-up allows 10 accounts per network address in 10 minutes.
-- The site is a public demo: anyone can log in as HR with the demo buttons, and sign-up does not verify email addresses. Only use the synthetic data.
+- The site is a public demo: anyone can log in as a knowledge manager with the demo buttons, and sign-up does not verify email addresses. Only use the synthetic data.
 
 ## Environment variables
 
@@ -71,19 +72,18 @@ DATABASE_URL=postgres://postgres:postgres@localhost:5432/postgres
 
 ## How the web app is built
 
-| Path (in `apps/web`)     | What                                                                                                |
-| ------------------------ | --------------------------------------------------------------------------------------------------- |
-| `src/app/(auth)`         | Login and sign-up pages with their Server Actions                                                   |
-| `src/app/(app)`          | Pages behind login: overview, leave, employees, payslips. The layout holds the header               |
-| `src/app/(app)/leave`    | Reference feature: reads in the page, writes in `actions.ts`, form and buttons as client components |
-| `src/lib/data`           | Types, seed and the repository. All data access goes through `getRepository()`                      |
-| `src/lib/db`             | Drizzle schema and connection (Postgres or PGlite)                                                  |
-| `drizzle`                | Generated SQL migrations, applied on startup                                                        |
-| `src/lib/auth`           | Better Auth config, roles, demo accounts and `requireUser` / `requireRole`                          |
-| `src/instrumentation.ts` | Runs migrations, loads the seed and creates demo accounts when the server starts                    |
-| `src/proxy.ts`           | Sends visitors without a session cookie to `/login`                                                 |
+| Path (in `apps/web`)     | What                                                                             |
+| ------------------------ | -------------------------------------------------------------------------------- |
+| `src/app/(auth)`         | Login and sign-up pages with their Server Actions                                |
+| `src/app/(app)`          | Pages behind login. The layout holds the header and the navigation               |
+| `src/lib/data`           | Types, seed and the repository. All data access goes through `getRepository()`   |
+| `src/lib/db`             | Drizzle schema and connection (Postgres or PGlite)                               |
+| `drizzle`                | Generated SQL migrations, applied on startup                                     |
+| `src/lib/auth`           | Better Auth config, roles, demo accounts and `requireUser` / `requireRole`       |
+| `src/instrumentation.ts` | Runs migrations, loads the seed and creates demo accounts when the server starts |
+| `src/proxy.ts`           | Sends visitors without a session cookie to `/login`                              |
 
-A new feature usually needs three files next to each other: a `page.tsx` that calls `requireUser()` and reads through the repository, an `actions.ts` with Server Actions that check the user and validate input with zod, and a client component for the form. Copy `src/app/(app)/leave` as a starting point.
+A new feature usually needs three files next to each other: a `page.tsx` that calls `requireUser()` and reads through the repository, an `actions.ts` with Server Actions that check the user and validate input with zod, and a client component for the form. `src/app/(app)/overview` shows the pattern (page, action, button with a toast).
 
 ## Deployment
 

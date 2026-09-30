@@ -16,7 +16,6 @@ import {
 import { getDemoAccounts } from "@/lib/auth/demo-accounts";
 import { roleDescriptions, roleLabels } from "@/lib/auth/roles";
 import { getSession } from "@/lib/auth/session";
-import { getRepository } from "@/lib/data";
 import { initials } from "@/lib/format";
 import { signInAsDemo } from "../actions";
 import { LoginForm } from "./login-form";
@@ -30,10 +29,7 @@ export default async function LoginPage() {
     redirect("/overview");
   }
 
-  const [company, demoAccounts] = await Promise.all([
-    getRepository().getCompany(),
-    getDemoAccounts(),
-  ]);
+  const demoAccounts = await getDemoAccounts();
 
   return (
     <>
@@ -41,8 +37,8 @@ export default async function LoginPage() {
         <div className="flex flex-col gap-3">
           <h1 className="text-4xl leading-[1.1]">Log in</h1>
           <p className="text-muted-foreground">
-            Use your work email at {company.name} to see your leave, payslips
-            and team.
+            Use your SD Worx work email to ask questions and review the
+            knowledge you own.
           </p>
         </div>
         <LoginForm />
@@ -61,15 +57,14 @@ export default async function LoginPage() {
         <div className="flex flex-col gap-3">
           <h2 className="text-2xl">Demo accounts</h2>
           <p className="text-muted-foreground max-w-md">
-            Each account belongs to an employee and sees the app with a
-            different role.
+            Each account belongs to a colleague from the synthetic dataset.
           </p>
         </div>
         <ItemGroup className="gap-3">
-          {demoAccounts.map(({ role, employee }) => {
-            const name = `${employee.firstName} ${employee.lastName}`;
+          {demoAccounts.map(({ role, colleague }) => {
+            const name = colleague.name;
             return (
-              <Item key={employee.id} variant="outline">
+              <Item key={colleague.id} variant="outline">
                 <ItemMedia>
                   <Avatar>
                     <AvatarFallback>{initials(name)}</AvatarFallback>
@@ -81,11 +76,11 @@ export default async function LoginPage() {
                     <Badge variant="secondary">{roleLabels[role]}</Badge>
                   </ItemTitle>
                   <ItemDescription>
-                    {employee.jobTitle}. {roleDescriptions[role]}
+                    {colleague.jobTitle}. {roleDescriptions[role]}
                   </ItemDescription>
                 </ItemContent>
                 <ItemActions>
-                  <form action={signInAsDemo.bind(null, employee.id)}>
+                  <form action={signInAsDemo.bind(null, colleague.id)}>
                     <SubmitButton variant="outline" pendingLabel="Logging in">
                       Log in
                     </SubmitButton>

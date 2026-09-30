@@ -12,7 +12,7 @@ export function getRepository(): DataRepository {
   return globalStore.__dataRepository;
 }
 
-export { REFERENCE_DATE, REFERENCE_YEAR, countWorkdays } from "./seed/dates";
+export { monthsBefore, REFERENCE_DATE } from "./seed/dates";
 export * from "./labels";
 export type * from "./repository";
 export * from "./types";

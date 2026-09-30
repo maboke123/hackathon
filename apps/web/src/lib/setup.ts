@@ -39,10 +39,10 @@ export async function setup(): Promise<void> {
   await migrateDb();
 
   const repository = getRepository();
-  if ((await repository.listDepartments()).length === 0) {
+  if (!(await repository.isSeeded())) {
     await repository.reset();
   }
-  for (const { employee } of await getDemoAccounts()) {
-    await ensureDemoUser(employee);
+  for (const { colleague } of await getDemoAccounts()) {
+    await ensureDemoUser(colleague);
   }
 }

@@ -1,20 +1,30 @@
 # Sample data
 
-The demo app ships with a synthetic dataset for a fictional Belgian company, Havenkaai Logistics NV in Antwerp. All people and figures are made up. The enterprise number and the `.example` email domain are deliberately invalid.
+The app runs on a synthetic knowledge corpus: internal SD Worx documents, emails, calls, meetings, chats and tickets, plus the colleagues and customers they mention. All people, customers and email domains are fictional. "Today" in the dataset is `REFERENCE_DATE` (2026-09-30).
 
-## Contents
+Havenkaai Logistics NV, the fictional Belgian company of the first version of the app, is now a customer in `customers.json`. Its HR dataset (employees, leave, payslips) was removed on 30 September 2026.
 
-| Entity         | Count | Notes                                                                   |
-| -------------- | ----- | ----------------------------------------------------------------------- |
-| Company        | 1     | 38 hour week                                                            |
-| Departments    | 8     | Directie, Magazijn, Transport, Customer service, Sales, Finance, HR, IT |
-| Employees      | 54    | 28 bedienden (PC 226), 26 arbeiders (PC 140.03), 4 have left            |
-| Contracts      |       | 40 onbepaalde duur, 9 bepaalde duur, 3 students, 2 flexi-jobs           |
-| Leave requests | 185   | Calendar year 2026, past and planned, with pending requests to approve  |
-| Leave balances | 80    | Wettelijke vakantie and ADV per employee                                |
-| Payslips       | 469   | January to September 2026                                               |
+## Database
 
-The data is generated from a fixed seed, so it is identical on every machine and after every restart. "Today" in the dataset is `REFERENCE_DATE` (2026-09-30).
+| Table             | From                                 | What                                                                                                                                                                                                              |
+| ----------------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `teams`           | `people.json`                        | SD Worx teams. Review items without an owner are routed to a team.                                                                                                                                                |
+| `colleagues`      | `people.json`                        | Name, email, job title, team, status (`active`, `left`, `service_account`) and `successorId` for people who left.                                                                                                 |
+| `customers`       | `customers.json`                     | Havenkaai, Veldra and two small customers from the tickets. Contacts and entities per country as JSON.                                                                                                            |
+| `knowledge_items` | All corpus files                     | One row per document, email, call, meeting, chat thread or ticket. File path in the corpus, source system and location, scope (country, customer, team, product, PC), owner, author, dates, status.               |
+| `knowledge_links` | Parsed from tickets, `seed/links.ts` | Typed links between items: `supersedes`, `contradicts`, `variant_of`, `duplicate_of`, `supports`, `cites`, `based_on`. Status `suggested`, `confirmed` or `rejected`, origin `parsed`, `seed`, `jev` or `person`. |
+| `review_items`    | Computed in `seed/corpus.ts`         | The review queue and its audit trail: conflicts and suggested links, documents without an active owner, documents not checked in 12 months.                                                                       |
+| `agent_queries`   | `agent-log.json`                     | What the existing internal assistant returned, for the "before" part of the demo.                                                                                                                                 |
+
+`knowledge_items.search` is a generated full text column (`simple` configuration, title weighted above body). `repository.searchItems(query)` uses it.
+
+## From corpus to database
+
+1. `pnpm --filter web knowledge:build` runs `apps/web/scripts/build-knowledge-corpus.mts`. It parses the raw files into `src/lib/data/seed/corpus.generated.json`. It reads only what the source systems carry: front matter, email and call headers, owner lines ("Eigenaar:", "Owner:", "Responsable :"), version tables and "Last reviewed" lines, and the SharePoint site in the path for scope. Commit the JSON after running it.
+2. `seed/links.ts` holds the hand-written links for the demo scenarios.
+3. `seed/corpus.ts` validates the JSON with zod, adds the links and computes the review items. `repository.reset()` loads it on startup when the database is empty.
+
+Parsed labels are deliberately incomplete: most documents in the corpus carry no owner or check date, and that is what the demo is about.
 
 ## Usage
 
@@ -22,33 +32,36 @@ The data is generated from a fixed seed, so it is identical on every machine and
 import { getRepository } from "@/lib/data";
 
 const repository = getRepository();
-const employees = await repository.listEmployees({ departmentId: "dep-hr" });
-const payslips = await repository.listPayslips({ period: "2026-09" });
+const results = await repository.searchItems("geboorteverlof vader", {
+  kind: "document",
+});
+const links = await repository.listLinks({ itemId: "doc-05" });
+const queue = await repository.listReviewItems({
+  assigneeId: "p-pieter",
+  status: "open",
+});
 ```
 
-Use the repository in Server Components, Route Handlers and Server Actions. `@/lib/data` is server only. Client components import labels from `@/lib/data/labels` and types from `@/lib/data/types`. Dutch display labels for enum values are in `labels.ts` (`leaveTypeLabels`, `contractTypeLabels`, `employmentStatusLabels` and so on). Every entity has a zod schema in `types.ts`.
+Use the repository in Server Components and Server Actions. `@/lib/data` is server only. Client components import labels from `@/lib/data/labels` and types from `@/lib/data/types`. Every entity has a zod schema in `types.ts`.
 
 ## Storage
 
-The data lives in Postgres, accessed through Drizzle. The tables are defined in `src/lib/db/schema.ts` and mirror the zod types. `db-repository.ts` implements the `DataRepository` interface, so pages and actions never touch SQL directly.
+- On startup the app runs the migrations and loads the corpus when the database is empty.
+- Without `DATABASE_URL` the app uses an in-memory database (PGlite) that starts from the corpus on every restart.
+- With `DATABASE_URL` the data persists. A knowledge manager can restore the original corpus with "Reset demo data" on the overview page. Accounts are kept.
 
-- On startup the app runs the migrations and loads this dataset when the database is empty.
-- Without `DATABASE_URL` the app uses an in-memory database (PGlite) that starts from this dataset on every restart.
-- With `DATABASE_URL` the data persists across restarts and deploys. HR can restore the original dataset with "Reset demo data" on the overview page, which calls `repository.reset()`. Accounts are kept.
-
-To add a field or table: change the zod type in `types.ts`, the table in `schema.ts` and the seed, run `pnpm db:generate` and commit the new file in `apps/web/drizzle` with your change.
+To add a field or table: change the zod type in `types.ts`, the table in `schema.ts`, the converter or seed, run `pnpm db:generate` and commit the new file in `apps/web/drizzle`.
 
 ## Demo accounts
 
-The app creates one account for three employees in the dataset. The password for all three is `havenkaai-demo`.
+The password for all four is `havenkaai-demo`. They are listed in `src/lib/auth/demo-accounts.ts`.
 
-| Role     | Name           | Email                            |
-| -------- | -------------- | -------------------------------- |
-| HR       | Inge Claes     | inge.claes@havenkaai.example     |
-| Manager  | Julien Lambert | julien.lambert@havenkaai.example |
-| Employee | Youssef Benali | youssef.benali@havenkaai.example |
-
-The accounts are chosen in `src/lib/auth/demo-accounts.ts`: the HR manager, the warehouse manager and a full-time member of the warehouse team. Add an employee id to `employeeIds` there to get another one-click account. Signing up with any other employee email links the new account to that employee.
+| Colleague       | Why                                                                                  |
+| --------------- | ------------------------------------------------------------------------------------ |
+| Lotte Verhaegen | Payroll consultant, customer service Belgium. Takes the Havenkaai calls.             |
+| Pieter De Smedt | Legal expert. Owns the birth leave and indexation documents, gets the conflict.      |
+| Elif Aydin      | Incoming account owner for Veldra (the Nike example).                                |
+| Ellen Goossens  | Knowledge manager. Receives items that no team can take and can reset the demo data. |
 
 ## Knowledge corpus
 
@@ -86,22 +99,3 @@ The answer key lists the planned contradictions only. The items were written in 
 pnpm knowledge:pdf            # all documents
 pnpm knowledge:pdf doc-05     # one document
 ```
-
-## Payroll figures are simplified
-
-Payslips are calculated in `payroll.ts` with a simplified model. They look realistic but are not legally correct, so present them as simulated.
-
-| Element             | Value used                     | Simplification                                                        |
-| ------------------- | ------------------------------ | --------------------------------------------------------------------- |
-| RSZ employee        | 13.07%                         | On 108% of gross for arbeiders                                        |
-| RSZ employer        | 25%                            | Sector and special contributions ignored                              |
-| Students            | 2.71% employee, 5.42% employer | Solidarity contribution, no withholding tax                           |
-| Flexi-jobs          | 0% employee, 28% employer      | Net equals gross                                                      |
-| Bedrijfsvoorheffing | Brackets 25, 40, 45, 50%       | Single person without children, approximate thresholds, no work bonus |
-| Maaltijdcheques     | EUR 10 per worked day          | Employee share EUR 1.09                                               |
-| Thuiswerkvergoeding | EUR 84 per month               | Office roles only                                                     |
-| Ecocheques          | EUR 250 per year               |                                                                       |
-
-Not modelled: 13th month, holiday pay, indexation, benefit in kind on company cars, public holidays and absences in worked days.
-
-Sources for these values are in `docs/sd-worx-briefing.md`, section 6.
