@@ -1,0 +1,127 @@
+[
+  {
+    "id": "cus-havenkaai",
+    "name": "Havenkaai Logistics NV",
+    "segment": "SME",
+    "since": "2018",
+    "countries": ["BE"],
+    "note": "Same fictional company as the app's main dataset. Payroll for kmo, served by Customer service Belgium (SME).",
+    "contacts": [
+      {
+        "name": "Inge Claes",
+        "role": "HR manager",
+        "email": "inge.claes@havenkaai.example"
+      },
+      {
+        "name": "Youssef Benali",
+        "role": "Warehouse employee (arbeider, PC 140.03)",
+        "email": "youssef.benali@havenkaai.example"
+      }
+    ]
+  },
+  {
+    "id": "cus-veldra",
+    "name": "Veldra Sportswear",
+    "segment": "Enterprise, multi-country",
+    "since": "2010",
+    "headquarters": "Veldra Europe B.V., Amsterdam",
+    "note": "Fictional stand-in for the Nike example in the brief. Started in 2010 as a Belgian-only customer with one Word document. Now six countries and many SD Worx teams.",
+    "entities": [
+      {
+        "country": "BE",
+        "entity": "Veldra Belgium NV",
+        "sites": "European distribution centre Laakdal, office Brussels",
+        "employees": 1650,
+        "payroll": "Innovapay (migrated from the legacy Belgian engine on 2025-01-01)",
+        "time": "Protime",
+        "other": "Flex Income Plan since 2024",
+        "sdworxContact": "p-sofie"
+      },
+      {
+        "country": "NL",
+        "entity": "Veldra Europe B.V.",
+        "sites": "European headquarters Amsterdam",
+        "employees": 900,
+        "payroll": "Innovapay (live since 2024-04-01)",
+        "time": "Protime (since 2025)",
+        "sdworxContact": "p-sofie"
+      },
+      {
+        "country": "DE",
+        "entity": "Veldra Deutschland GmbH",
+        "sites": "Office Düsseldorf and 22 stores",
+        "employees": 600,
+        "payroll": "Innovapay (live since 2026-07-01, planned for 2026-04-01)",
+        "time": "Protime rollout on hold until the Betriebsrat agrees",
+        "sdworxContact": "p-katrin"
+      },
+      {
+        "country": "FR",
+        "entity": "Veldra France SAS",
+        "sites": "Office Paris and 14 stores",
+        "employees": 450,
+        "payroll": "Managed payroll by SD Worx France (formerly Paie & RH Solutions, acquired 2026)",
+        "sdworxContact": "p-julie"
+      },
+      {
+        "country": "ES",
+        "entity": "Veldra Iberia SL",
+        "sites": "Office Barcelona and 9 stores",
+        "employees": 300,
+        "payroll": "Managed payroll by SD Worx Spain",
+        "sdworxContact": "p-marta"
+      },
+      {
+        "country": "PL",
+        "entity": "Veldra Polska sp. z o.o.",
+        "sites": "Shared service centre Wrocław",
+        "employees": 250,
+        "payroll": "Not yet with SD Worx. Scoping for a go-live on 2027-01-01",
+        "sdworxContact": "p-tomasz"
+      }
+    ],
+    "contacts": [
+      {
+        "name": "Charlotte Dubois",
+        "role": "Group HR director Europe",
+        "email": "charlotte.dubois@veldra.example",
+        "since": "2024-06"
+      },
+      {
+        "name": "Mark Janssen",
+        "role": "Payroll manager Benelux",
+        "email": "mark.janssen@veldra.example"
+      },
+      {
+        "name": "Anja Keller",
+        "role": "HR business partner Germany",
+        "email": "anja.keller@veldra.example"
+      },
+      {
+        "name": "Paul Verbeke",
+        "role": "HR director Benelux (left Veldra in 2024)",
+        "email": "paul.verbeke@veldra.example",
+        "status": "left"
+      },
+      {
+        "name": "Noor Bakker",
+        "role": "HR advisor, Veldra Europe B.V.",
+        "email": "noor.bakker@veldra.example"
+      }
+    ]
+  },
+  {
+    "id": "cus-verlinden",
+    "name": "Drukkerij Verlinden BV",
+    "segment": "SME",
+    "countries": ["BE"],
+    "note": "Only appears in one service desk ticket"
+  },
+  {
+    "id": "cus-vanhove",
+    "name": "Bakkerij Van Hove BV",
+    "segment": "SME",
+    "countries": ["BE"],
+    "note": "Only appears in one service desk ticket"
+  }
+]

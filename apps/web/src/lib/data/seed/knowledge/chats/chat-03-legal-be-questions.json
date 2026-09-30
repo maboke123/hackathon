@@ -1,0 +1,111 @@
+{
+  "team": "Legal Belgium",
+  "channel": "Questions",
+  "exportedAt": "2026-09-30T18:00:00+02:00",
+  "messages": [
+    {
+      "id": "1784017380000",
+      "replyToId": null,
+      "from": {
+        "name": "Stijn Mertens",
+        "email": "stijn.mertens@sdworx.example"
+      },
+      "createdAt": "2026-07-14T10:23:00+02:00",
+      "body": "Vraag van een klant (PC 200): ze lazen in de krant dat lonen boven 4.000 euro niet meer volledig geindexeerd worden. Hoe werkt dat precies en vanaf wanneer? Ik vind er niets over in de kennisbank, de fiche indexering gaat over januari 2026.",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1784017920000",
+      "replyToId": "1784017380000",
+      "from": {
+        "name": "Claire Lambotte",
+        "email": "claire.lambotte@sdworx.example"
+      },
+      "createdAt": "2026-07-14T10:32:00+02:00",
+      "body": "C'est la loi de juin, Pieter la suit de près. Pieter, tu peux répondre?",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1784019900000",
+      "replyToId": "1784017380000",
+      "from": {
+        "name": "Pieter De Smedt",
+        "email": "pieter.desmedt@sdworx.example"
+      },
+      "createdAt": "2026-07-14T11:05:00+02:00",
+      "body": "Klopt. Sinds de wet van juni 2026 wordt een brutoloon boven 4.000 euro enkel nog geindexeerd op de eerste 4.000 euro. Het deel erboven krijgt geen indexering. Lonen tot 4.000 euro worden gewoon volledig geindexeerd.",
+      "attachments": [],
+      "reactions": [
+        {
+          "type": "like",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "id": "1784020080000",
+      "replyToId": "1784017380000",
+      "from": {
+        "name": "Pieter De Smedt",
+        "email": "pieter.desmedt@sdworx.example"
+      },
+      "createdAt": "2026-07-14T11:08:00+02:00",
+      "body": "Rekenvoorbeeld met de huidige prognose voor PC 200 in januari 2027 (3,76%, nog niet definitief):\n- Bediende aan 3.500 euro: 3.500 x 3,76% = 131,60. Nieuw loon 3.631,60.\n- Bediende aan 5.200 euro: 4.000 x 3,76% = 150,40. Nieuw loon 5.350,40. Zonder plafond was dat 5.395,52 geweest, dus 45,12 per maand minder.\nHet plafond geldt per werknemer op het brutomaandloon, niet op de loonmassa.",
+      "attachments": [],
+      "reactions": [
+        {
+          "type": "like",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "id": "1784020260000",
+      "replyToId": "1784017380000",
+      "from": {
+        "name": "Pieter De Smedt",
+        "email": "pieter.desmedt@sdworx.example"
+      },
+      "createdAt": "2026-07-14T11:11:00+02:00",
+      "body": "Belangrijk voor de timing: PC 200 indexeert in januari. Voor bedienden in PC 200 zie je het effect dus pas voor het eerst in januari 2027. Klanten die nu hun budget 2027 maken, moeten er wel al rekening mee houden.",
+      "attachments": [],
+      "reactions": [
+        {
+          "type": "like",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "id": "1784020500000",
+      "replyToId": "1784017380000",
+      "from": {
+        "name": "Stijn Mertens",
+        "email": "stijn.mertens@sdworx.example"
+      },
+      "createdAt": "2026-07-14T11:15:00+02:00",
+      "body": "Super duidelijk, dank je. Komt dit nog in een fiche? Dan kan ik er klanten naar doorverwijzen.",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1784020740000",
+      "replyToId": "1784017380000",
+      "from": {
+        "name": "Pieter De Smedt",
+        "email": "pieter.desmedt@sdworx.example"
+      },
+      "createdAt": "2026-07-14T11:19:00+02:00",
+      "body": "Ik wacht nog op de definitieve indexcijfers in december. Het stond wel al in de nieuwsbrief van juni, die mag je doorsturen.",
+      "attachments": [],
+      "reactions": [
+        {
+          "type": "like",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

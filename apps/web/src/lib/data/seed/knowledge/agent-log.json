@@ -1,0 +1,254 @@
+{
+  "system": "Internal knowledge assistant",
+  "exportedAt": "2026-09-30T18:00:00+02:00",
+  "queries": [
+    {
+      "id": "q-2026-06-17-0412",
+      "askedAt": "2026-06-17T09:04:51+02:00",
+      "askedBy": "stijn.mertens@sdworx.example",
+      "question": "ecocheques deeltijdse bediende pc 200 in dienst sinds maart, hoeveel in juni?",
+      "results": [
+        {
+          "title": "Ecocheques FAQ",
+          "path": "/sites/CS-Belgium/Shared Documents/FAQ/Ecocheques FAQ.pdf",
+          "snippet": "Pro rata to the working time in the reference period. An employee working 4/5 for the whole period gets EUR 200.",
+          "score": 0.91,
+          "modified": "2025-11-20",
+          "modifiedBy": "bram.claessens@sdworx.example"
+        },
+        {
+          "title": "Ecocheques FAQ",
+          "path": "/sites/CS-Belgium/Shared Documents/FAQ/Ecocheques FAQ.pdf",
+          "snippet": "For white collar staff in joint committee 200 (PC 200), the employer grants EUR 250 per year for a full time employee, paid in June. The reference period runs from 1 June of the previous year to 31 May.",
+          "score": 0.88,
+          "modified": "2025-11-20",
+          "modifiedBy": "bram.claessens@sdworx.example"
+        }
+      ],
+      "answer": "In PC 200 krijgt een voltijdse bediende EUR 250 ecocheques per jaar, betaald in juni. De referteperiode loopt van 1 juni van het vorige jaar tot 31 mei [1]. Voor deeltijdsen en wie niet de hele periode in dienst was, wordt het bedrag pro rata berekend [1]. Een bediende die 4/5 werkt en sinds 1 maart in dienst is, heeft 3 van de 12 maanden gewerkt: 250 x 4/5 x 3/12 = EUR 50.\n\nBronnen: [1] Ecocheques FAQ",
+      "feedback": "thumbs-up"
+    },
+    {
+      "id": "q-2026-07-08-1187",
+      "askedAt": "2026-07-08T14:21:36+02:00",
+      "askedBy": "lotte.verhaegen@sdworx.example",
+      "question": "Dimona STU jobstudent einddatum aanpassen, nieuwe Dimona nodig?",
+      "results": [
+        {
+          "title": "Dimona indienen: procedure",
+          "path": "/sites/CS-Belgium/Shared Documents/Werkinstructies/Dimona procedure.pdf",
+          "snippet": "Dimona UPDATE: zodra een gegeven wijzigt (bijvoorbeeld de einddatum)",
+          "score": 0.87,
+          "modified": "2025-09-01",
+          "modifiedBy": "bram.claessens@sdworx.example"
+        },
+        {
+          "title": "Dimona indienen: procedure",
+          "path": "/sites/CS-Belgium/Shared Documents/Werkinstructies/Dimona procedure.pdf",
+          "snippet": "90017: Overlapping met een bestaande Dimona. Bestaande aangifte opzoeken, UPDATE in plaats van nieuwe IN",
+          "score": 0.72,
+          "modified": "2025-09-01",
+          "modifiedBy": "bram.claessens@sdworx.example"
+        }
+      ],
+      "answer": "Er is geen nieuwe Dimona nodig. Wijzigt een gegeven, zoals de einddatum, dan dien je een Dimona UPDATE in op de bestaande aangifte [1]. Een nieuwe Dimona IN voor dezelfde periode wordt geweigerd met foutcode 90017 (overlapping met een bestaande Dimona) [1].\n\nBronnen: [1] Dimona indienen: procedure",
+      "feedback": "thumbs-up"
+    },
+    {
+      "id": "q-2026-09-16-2290",
+      "askedAt": "2026-09-16T14:31:58+02:00",
+      "askedBy": "stijn.mertens@sdworx.example",
+      "question": "wat is de maximale waarde van een maaltijdcheque",
+      "results": [
+        {
+          "title": "Maaltijdcheques: bedragen en voorwaarden",
+          "path": "/sites/CS-Belgium/Shared Documents/Werkinstructies/Maaltijdcheques.pdf",
+          "snippet": "Maximale waarde maaltijdcheque EUR 8,00. Maximale werkgeversbijdrage EUR 6,91. Minimale werknemersbijdrage EUR 1,09.",
+          "score": 0.93,
+          "modified": "2023-02-01",
+          "modifiedBy": "annick.wouters@sdworx.example"
+        },
+        {
+          "title": "Maaltijdcheques: bedragen en voorwaarden",
+          "path": "/sites/CS-Belgium/Shared Documents/Werkinstructies/Maaltijdcheques.pdf",
+          "snippet": "Kent een klant meer toe dan EUR 8, dan is de cheque niet meer vrijgesteld en wordt het volledige bedrag als loon behandeld.",
+          "score": 0.84,
+          "modified": "2023-02-01",
+          "modifiedBy": "annick.wouters@sdworx.example"
+        },
+        {
+          "title": "Maaltijdcheques vanaf 1 januari 2026",
+          "path": "/sites/Legal-BE/Kennisbank/Loonvoordelen/Maaltijdcheques 2026.pdf",
+          "snippet": "EUR 10 is een maximum, geen verplicht bedrag.",
+          "score": 0.79,
+          "modified": "2026-01-05",
+          "modifiedBy": "pieter.desmedt@sdworx.example"
+        }
+      ],
+      "answer": "De maximale waarde van een maaltijdcheque is EUR 8,00 per gewerkte dag. De werkgever betaalt maximaal EUR 6,91 en de werknemer minstens EUR 1,09 [1]. Kent een werkgever meer toe dan EUR 8, dan verliest de cheque de vrijstelling en wordt het volledige bedrag als loon behandeld [1]. Een ander document vermeldt een maximum van EUR 10 dat geen verplicht bedrag is [2].\n\nBronnen: [1] Maaltijdcheques: bedragen en voorwaarden, [2] Maaltijdcheques vanaf 1 januari 2026",
+      "feedback": null
+    },
+    {
+      "id": "q-2026-09-22-2518",
+      "askedAt": "2026-09-22T13:26:14+02:00",
+      "askedBy": "bram.claessens@sdworx.example",
+      "question": "vertrekvakantiegeld bediende uit dienst eind september, hoe berekenen?",
+      "results": [
+        {
+          "title": "Dubbel vakantiegeld bedienden en arbeiders",
+          "path": "/sites/Legal-BE/Kennisbank/Vakantie/Dubbel vakantiegeld.pdf",
+          "snippet": "Bij het einde van de arbeidsovereenkomst van een bediende betaalt de werkgever vertrekvakantiegeld: 15,34% van de brutolonen van het lopende jaar, en ook van het vorige jaar als de vakantie van dat jaar nog niet opgenomen is.",
+          "score": 0.94,
+          "modified": "2026-04-02",
+          "modifiedBy": "pieter.desmedt@sdworx.example"
+        },
+        {
+          "title": "Dubbel vakantiegeld bedienden en arbeiders",
+          "path": "/sites/Legal-BE/Kennisbank/Vakantie/Dubbel vakantiegeld.pdf",
+          "snippet": "De volgende werkgever houdt daar rekening mee bij het dubbel vakantiegeld van het jaar nadien.",
+          "score": 0.71,
+          "modified": "2026-04-02",
+          "modifiedBy": "pieter.desmedt@sdworx.example"
+        }
+      ],
+      "answer": "Bij uitdiensttreding van een bediende betaalt de werkgever vertrekvakantiegeld: 15,34% van de brutolonen van het lopende jaar, en ook van het vorige jaar als de vakantie van dat jaar nog niet opgenomen is [1]. Voor een bediende die eind september vertrekt, gaat het dus om de brutolonen van januari tot september 2026. De volgende werkgever houdt hiermee rekening bij het dubbel vakantiegeld van 2027 [1].\n\nBronnen: [1] Dubbel vakantiegeld bedienden en arbeiders",
+      "feedback": "thumbs-up"
+    },
+    {
+      "id": "q-2026-09-25-2741",
+      "askedAt": "2026-09-25T10:06:22+02:00",
+      "askedBy": "lotte.verhaegen@sdworx.example",
+      "question": "indexering januari 2027 pc 200 lonen boven 4000 euro, wordt dat volledig geindexeerd?",
+      "results": [
+        {
+          "title": "Indexering PC 200, januari 2026",
+          "path": "/sites/Legal-BE/Kennisbank/Indexering/Indexering PC 200 januari 2026.pdf",
+          "snippet": "Het percentage wordt op het volledige brutoloon toegepast.",
+          "score": 0.86,
+          "modified": "2026-09-24",
+          "modifiedBy": "svc-template-migration@sdworx.example"
+        },
+        {
+          "title": "Indexering PC 200, januari 2026",
+          "path": "/sites/Legal-BE/Kennisbank/Indexering/Indexering PC 200 januari 2026.pdf",
+          "snippet": "De volgende indexering in PC 200 volgt op 1 januari 2027. Het percentage wordt begin januari 2027 bekend gemaakt.",
+          "score": 0.82,
+          "modified": "2026-09-24",
+          "modifiedBy": "svc-template-migration@sdworx.example"
+        },
+        {
+          "title": "Indexering PC 200, januari 2026",
+          "path": "/sites/Legal-BE/Kennisbank/Indexering/Indexering PC 200 januari 2026.pdf",
+          "snippet": "Klanten met reële lonen boven het barema krijgen ook de indexering op het reële loon.",
+          "score": 0.77,
+          "modified": "2026-09-24",
+          "modifiedBy": "svc-template-migration@sdworx.example"
+        }
+      ],
+      "answer": "Ik vind geen informatie over een grens van EUR 4.000. Volgens de fiche over januari 2026 werden de lonen in PC 200 met 2,21% geïndexeerd en wordt het percentage op het volledige brutoloon toegepast [1]. De volgende indexering volgt op 1 januari 2027, het percentage wordt begin januari 2027 bekendgemaakt [1].\n\nBronnen: [1] Indexering PC 200, januari 2026",
+      "feedback": "thumbs-down"
+    },
+    {
+      "id": "q-2026-09-28-2866",
+      "askedAt": "2026-09-28T11:02:47+02:00",
+      "askedBy": "stijn.mertens@sdworx.example",
+      "question": "verschil Dimona STU en FLX",
+      "results": [
+        {
+          "title": "Dimona indienen: procedure (Staffing)",
+          "path": "/sites/Staffing-BE/Documenten/Procedures/Dimona procedure.pdf",
+          "snippet": "De Dimona STU wordt per kwartaal ingediend, met het aantal geplande uren in dat kwartaal. Worden het meer uren, dien dan een UPDATE in voor de start van de extra prestaties.",
+          "score": 0.89,
+          "modified": "2026-09-26",
+          "modifiedBy": "svc-template-migration@sdworx.example"
+        },
+        {
+          "title": "Dimona indienen: procedure (Staffing)",
+          "path": "/sites/Staffing-BE/Documenten/Procedures/Dimona procedure.pdf",
+          "snippet": "Dien per prestatie een Dimona FLX in met het begin- en einduur, of per kwartaal als de uren vooraf vastliggen.",
+          "score": 0.86,
+          "modified": "2026-09-26",
+          "modifiedBy": "svc-template-migration@sdworx.example"
+        },
+        {
+          "title": "Dimona indienen: procedure",
+          "path": "/sites/CS-Belgium/Shared Documents/Werkinstructies/Dimona procedure.pdf",
+          "snippet": "Voor gewone bedienden en arbeiders gebruiken we het werknemerstype OTH.",
+          "score": 0.74,
+          "modified": "2026-09-23",
+          "modifiedBy": "svc-template-migration@sdworx.example"
+        }
+      ],
+      "answer": "STU gebruik je voor studenten met een studentenovereenkomst. De Dimona STU wordt per kwartaal ingediend met het aantal geplande uren, en de student heeft een contingent van 650 uren per kalenderjaar met verminderde solidariteitsbijdrage [1]. FLX gebruik je voor flexi-jobs: de werknemer was in het kwartaal T-3 minstens 4/5 tewerkgesteld bij een andere werkgever of is gepensioneerd, er is een raamovereenkomst, en je dient per prestatie een Dimona FLX in met begin- en einduur, of per kwartaal als de uren vooraf vastliggen [1]. Voor gewone bedienden en arbeiders is het werknemerstype OTH [2].\n\nBronnen: [1] Dimona indienen: procedure (Staffing), [2] Dimona indienen: procedure",
+      "feedback": "thumbs-up"
+    },
+    {
+      "id": "q-2026-09-29-2951",
+      "askedAt": "2026-09-29T14:52:09+02:00",
+      "askedBy": "elif.aydin@sdworx.example",
+      "question": "who is the escalation contact for Veldra Belgium",
+      "results": [
+        {
+          "title": "Veldra contacts and escalation",
+          "path": "/sites/Enterprise-Accounts/Shared Documents/Customers/Veldra/Veldra contacts and escalation.xlsx",
+          "snippet": "SD Worx | BE/NL | All Benelux | Wim Van den Broeck | Service delivery manager Benelux | wim.vandenbroeck@sdworx.example | Level 2 (escalation) | Late payslips, SLA breaches, incidents",
+          "score": 0.92,
+          "modified": "2024-02-12",
+          "modifiedBy": "jonas.peeters@sdworx.example"
+        },
+        {
+          "title": "Veldra account plan 2022",
+          "path": "/sites/Enterprise-Accounts/Shared Documents/Customers/Veldra/Veldra account plan 2022.pdf",
+          "snippet": "2. Wim Van den Broeck, service delivery manager Benelux.",
+          "score": 0.88,
+          "modified": "2022-11-04",
+          "modifiedBy": "hilde.maes@sdworx.example"
+        },
+        {
+          "title": "Veldra account plan 2022",
+          "path": "/sites/Enterprise-Accounts/Shared Documents/Customers/Veldra/Veldra account plan 2022.pdf",
+          "snippet": "Paul Verbeke has asked to be informed directly about any payroll incident that affects more than 20 employees.",
+          "score": 0.74,
+          "modified": "2022-11-04",
+          "modifiedBy": "hilde.maes@sdworx.example"
+        }
+      ],
+      "answer": "The escalation contact for Veldra Belgium is Wim Van den Broeck, service delivery manager Benelux (wim.vandenbroeck@sdworx.example). He is level 2 in the escalation path, after the Veldra payroll team, for late payslips, SLA breaches and incidents [1][2]. Level 3 is the global account owner [2]. Paul Verbeke at Veldra wants to be informed directly about incidents affecting more than 20 employees [2].\n\nSources: [1] Veldra contacts and escalation, [2] Veldra account plan 2022",
+      "feedback": null
+    },
+    {
+      "id": "q-2026-09-30-3104",
+      "askedAt": "2026-09-30T09:14:02+02:00",
+      "askedBy": "lotte.verhaegen@sdworx.example",
+      "question": "hoeveel dagen geboorteverlof voor een arbeider in België en wie betaalt wat",
+      "results": [
+        {
+          "title": "Birth leave quick guide",
+          "path": "/sites/CS-Belgium/Shared Documents/Quick guides/Birth leave quick guide.pdf",
+          "snippet": "A father or co-parent gets 15 days of birth leave. The employer pays the first 3 days at full salary. The health insurance fund (mutualiteit / mutualité) pays the other 12 days at 82% of the capped gross salary.",
+          "score": 0.91,
+          "modified": "2026-09-23",
+          "modifiedBy": "svc-template-migration@sdworx.example"
+        },
+        {
+          "title": "Geboorteverlof",
+          "path": "/sites/Legal-NL/Kennisbank/Verlof/Geboorteverlof.pdf",
+          "snippet": "Aanvullend geboorteverlof: maximaal vijf keer het aantal werkuren per week. De werknemer krijgt een uitkering van UWV van 70% van het dagloon, tot maximaal 70% van het maximumdagloon.",
+          "score": 0.87,
+          "modified": "2026-05-20",
+          "modifiedBy": "sanne.devries@sdworx.example"
+        },
+        {
+          "title": "Werkinstructie geboorteverlof",
+          "path": "/sites/CS-Belgium/Shared Documents/Werkinstructies/Werkinstructie geboorteverlof.pdf",
+          "snippet": "Sinds 1 januari 2021 heeft een werknemer recht op 15 dagen geboorteverlof. Voordien waren dat 10 dagen.",
+          "score": 0.85,
+          "modified": "2026-09-22",
+          "modifiedBy": "svc-template-migration@sdworx.example"
+        }
+      ],
+      "answer": "Een werknemer heeft recht op 15 dagen geboorteverlof [1][3]. De werkgever betaalt de eerste 3 dagen aan 100% van het normale loon, de mutualiteit betaalt de overige 12 dagen aan 82% van het begrensde brutoloon [1]. Het verlof geldt voor arbeiders en bedienden [3].\n\nEen ander document beschrijft een andere regeling: één keer het aantal werkuren per week geboorteverlof, doorbetaald door de werkgever, plus maximaal vijf keer het aantal werkuren per week aanvullend geboorteverlof met een uitkering van UWV aan 70% van het dagloon [2]. Controleer welke regeling op de werknemer van toepassing is.\n\nBronnen: [1] Birth leave quick guide, [2] Geboorteverlof, [3] Werkinstructie geboorteverlof",
+      "feedback": null
+    }
+  ]
+}

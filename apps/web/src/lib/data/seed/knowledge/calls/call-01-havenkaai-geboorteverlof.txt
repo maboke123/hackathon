@@ -1,0 +1,49 @@
+Call ID: 5b1e7c30-94d2-4f6a-8c1e-3a07d2e9b416
+Queue: Klantenservice Payroll voor kmo (NL)
+Direction: Inbound
+Started: 2026-09-30T09:12:07+02:00
+Duration: 00:05:46
+Agent: Lotte Verhaegen <lotte.verhaegen@sdworx.example>
+Caller: +32 3 *** ** 41 (Inge Claes)
+Recording: yes (consent message played)
+Transcript: automatic speech recognition, nl-BE
+
+[00:00] Agent: Goeiemorgen, SD Worx klantenservice, u spreekt met Lotte.
+[00:03] Caller: Ja, goeiemorgen Lotte, met Inge Claes van Havenkaai Logistics.
+[00:08] Agent: Dag Inge. Waarmee kan ik u helpen?
+[00:12] Caller: Ik heb een vraag en het is eigenlijk nogal dringend. Eén van onze magazijniers, Youssef Benali, is vrijdag papa geworden.
+[00:21] Agent: Oh, proficiat aan hem.
+[00:23] Caller: Ja, merci, ik zal het doorgeven. Maar hij staat hier nu aan mijn bureau en hij wil weten hoeveel dagen geboorteverlof hij heeft. En ik moet vandaag de planning van het magazijn voor oktober rond krijgen, dus ik moet het eigenlijk nu weten.
+[00:41] Agent: Ja, dat begrijp ik. Dus het aantal dagen, en...
+[00:45] Caller: En wie wat betaalt. Want de vorige keer, dat was nog met een andere collega van jullie, toen was er iets met de mutualiteit die een deel betaalt?
+[00:57] Agent: Ja, dat klopt, een deel gaat via het ziekenfonds. Maar ik wil u het juiste aantal geven. Mag ik u heel even in de wacht zetten, dan kijk ik het na in onze documentatie?
+[01:10] Caller: Ja, maar niet te lang hè, hij moet terug naar de [onverstaanbaar], naar de laadkaai.
+[01:16] Agent: Twee minuutjes, beloofd.
+[01:19] [wachtmuziek 01:22]
+[02:41] Agent: Inge, bent u daar nog?
+[02:43] Caller: Ja, ik ben hier.
+[02:45] Agent: Sorry dat het even duurde. Ik heb het aan onze interne assistent gevraagd en die geeft mij drie documenten, dus ik wil het even goed lezen.
+[02:56] Caller: Oké.
+[02:58] Agent: Ik heb hier eerst de werkinstructie geboorteverlof van ons team. Daar staat vijftien dagen. Er staat alleen geen eigenaar op, dus ik weet niet goed wie die bijhoudt.
+[03:09] Caller: Vijftien dagen.
+[03:10] Agent: Ja. Dan heb ik een quick guide, die is in het Engels, birth leave quick guide, en die is vorige week nog aangepast, op drieëntwintig september. Daar staat ook vijftien dagen.
+[03:23] Caller: Oké, dus dat is recent.
+[03:27] Agent: Ja, dat zou ik denken. En dan is er nog een derde document dat gewoon Geboorteverlof heet. Daar staat, ehm, één week, en dan nog tot vijf weken aanvullend geboorteverlof via het U W V aan zeventig procent.
+[03:42] Caller: Zes weken? Dat is wel iets anders.
+[03:45] Agent: Ja. Nee, wacht. Eh... U W V, dat is de Nederlandse uitkeringsinstantie. Dat document staat op de site van onze collega's in Nederland. Dat is niet voor België, dat mag u vergeten.
+[03:59] Caller: Dus wat is het nu voor Youssef?
+[04:03] Agent: Ehm. Twee van de drie zeggen vijftien dagen, en de quick guide is vorige week nog bijgewerkt, dus... ja. Ik ga uit van vijftien dagen.
+[04:13] Caller: Vijftien dagen. En wie betaalt dat?
+[04:17] Agent: De eerste drie dagen betaalt u als werkgever volledig door, aan honderd procent, gewoon via de loonverwerking. De andere twaalf dagen betaalt zijn mutualiteit, dus niet jullie.
+[04:28] Caller: Twaalf dagen via de mutualiteit. Moet hij die allemaal in één keer nemen?
+[04:35] Agent: Nee, hij mag ze spreiden, maar hij moet ze opnemen binnen de vier maanden na de geboorte. En hij moet u laten weten wanneer hij ze neemt.
+[04:46] Caller: Dat komt goed uit, hij wil er een deel nu nemen en een deel in november, als zijn vrouw terug moet gaan werken.
+[04:56] Agent: Dat kan dus. Voor het deel van de mutualiteit moet hij zelf een aanvraag doen bij zijn ziekenfonds, en wij zorgen voor de aangifte langs de payroll kant.
+[05:07] Caller: Oké. Kunt u dat op mail zetten? Want ik moet dat doorgeven aan onze directeur en ik wil het ook in zijn dossier steken.
+[05:17] Agent: Ja, natuurlijk. Ik stuur u vandaag nog een mail met de bevestiging.
+[05:23] Caller: Perfect. Dan zet ik in de planning vijftien dagen voor Youssef.
+[05:28] Agent: Ja. Ik... ja. Ik bevestig het nog per mail.
+[05:32] Caller: Super, bedankt Lotte, dat was snel.
+[05:35] Agent: Graag gedaan. Nog een fijne dag, en proficiat aan Youssef.
+[05:40] Caller: Ik zal het zeggen. Dag!
+[05:42] Agent: Dag Inge.

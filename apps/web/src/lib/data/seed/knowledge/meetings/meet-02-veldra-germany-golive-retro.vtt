@@ -1,0 +1,132 @@
+WEBVTT
+
+NOTE
+Meeting: Veldra Deutschland go-live retro
+Date: 2026-07-22 14:00 (Europe/Brussels)
+Organiser: Katrin Weber (katrin.weber@sdworx.example)
+Attendees: Katrin Weber, Jonas Peeters, Ruben Jacobs
+Transcript: generated automatically by Microsoft Teams
+Duration: 00:12:15
+
+00:00:04.120 --> 00:00:17.853
+<v Katrin Weber>Okay, let's start. Thanks both. I wanted to do this retro while it's fresh. We went live on the first of July, the July payroll is paid, so this is a good moment to look back.</v>
+
+00:00:18.825 --> 00:00:21.818
+<v Jonas Peeters>Congratulations first. That was a hard one.</v>
+
+00:00:22.049 --> 00:00:33.930
+<v Katrin Weber>Thank you. It was. So I have three topics. What went wrong with the April date, how the first run went, and Protime. Ruben, you're here mainly for the last one.</v>
+
+00:00:34.472 --> 00:00:36.723
+<v Ruben Jacobs>Yes, no problem, I'll listen.</v>
+
+00:00:37.129 --> 00:00:48.640
+<v Katrin Weber>So, April. For the record, the original go-live was the first of April. In January we did the first parallel run, and the differences were much bigger than we expected.</v>
+
+00:00:49.000 --> 00:00:51.622
+<v Jonas Peeters>That was the Steuer-ID problem, right?</v>
+
+00:00:51.900 --> 00:01:18.226
+<v Katrin Weber>That was part of it. About forty employees had a tax ID or tax class in the export from the old provider that did not match what the tax office sends us. And the year-to-date values were incomplete. Because we went live in the middle of a tax year, we need the cumulative wages from January, and the file only had them for the months they had in their system.</v>
+
+00:01:18.941 --> 00:01:21.564
+<v Ruben Jacobs>The old provider did the export?</v>
+
+00:01:22.149 --> 00:01:26.623
+<v Katrin Weber>Yes, and they were not very motivated to help, let's say.</v>
+
+00:01:27.067 --> 00:01:30.430
+<v Jonas Peeters>Which is normal when you lose a customer.</v>
+
+00:01:31.361 --> 00:01:46.205
+<v Katrin Weber>Sure. So the second parallel run in February was still not good enough. On the twenty-fourth of February we decided with Anja to move to the first of July. I sent the email that day to Jonas and Anja.</v>
+
+00:01:46.762 --> 00:01:51.607
+<v Jonas Peeters>And I think moving was right. Charlotte agreed immediately, which surprised me.</v>
+
+00:01:52.232 --> 00:01:55.224
+<v Katrin Weber>She said she preferred late over wrong.</v>
+
+00:04:56.171 --> 00:05:09.904
+<v Katrin Weber>Then the first run. July. Eleven corrections on about six hundred payslips. Most of them tax data again, people who had changed tax class during the spring and the old provider had not passed it on.</v>
+
+00:05:10.199 --> 00:05:15.044
+<v Jonas Peeters>Eleven out of six hundred is not bad for a first run.</v>
+
+00:05:16.030 --> 00:05:26.060
+<v Katrin Weber>No, but for Anja's team it felt like a lot, because store managers called her directly. We had not told the stores clearly who to call.</v>
+
+00:05:26.450 --> 00:05:30.924
+<v Jonas Peeters>That's a lesson. A contact sheet for store managers before go-live.</v>
+
+00:05:31.780 --> 00:05:51.809
+<v Katrin Weber>Yes, I'm writing that down. Lesson one, the data migration needs its own owner at the customer, not the HR business partner on top of her normal work. Lesson two, the first parallel run has to start at least four months before go-live, not three. Lesson three, a communication plan for the stores.</v>
+
+00:05:52.446 --> 00:06:04.327
+<v Ruben Jacobs>Can I add one? We should get the historic data out of the old provider contractually. If the customer's contract with them says nothing about an export, you depend on goodwill.</v>
+
+00:06:04.733 --> 00:06:09.578
+<v Katrin Weber>Good point. Lesson four. Jonas, is that something for the account side?</v>
+
+00:06:09.801 --> 00:06:17.979
+<v Jonas Peeters>Yes, for the next countries we should ask the customer to check their exit clause early. Poland, if that ever comes.</v>
+
+00:08:48.335 --> 00:08:49.846
+<v Katrin Weber>Then Protime. Ruben.</v>
+
+00:08:50.301 --> 00:09:00.330
+<v Ruben Jacobs>Yes. So as you know Protime was supposed to go live on the same date as payroll. We separated the two in February, when payroll moved.</v>
+
+00:09:00.904 --> 00:09:02.045
+<v Katrin Weber>And now?</v>
+
+00:09:02.763 --> 00:09:21.311
+<v Ruben Jacobs>Now it's on hold. Technically we're ready, the configuration for the stores and the office is done. But in Germany the works council has a say on any system that records working time. That's the Betriebsverfassungsgesetz, paragraph eighty-seven. Without an agreement with the Betriebsrat we can't switch it on.</v>
+
+00:09:22.329 --> 00:09:24.211
+<v Jonas Peeters>And where are they?</v>
+
+00:09:24.926 --> 00:09:36.438
+<v Ruben Jacobs>They had a first presentation in June. Their main question is what managers can see, and whether it can be used for performance monitoring. Anja is preparing answers with us.</v>
+
+00:09:37.071 --> 00:09:38.582
+<v Katrin Weber>So no date.</v>
+
+00:09:39.442 --> 00:09:46.509
+<v Ruben Jacobs>No date. On hold until the Betriebsrat agrees. I wouldn't promise anything before the end of the year.</v>
+
+00:09:46.786 --> 00:09:51.631
+<v Jonas Peeters>Okay. I'll tell Charlotte, so she doesn't hear it from Anja first.</v>
+
+00:09:52.574 --> 00:09:53.344
+<v Katrin Weber>Good.</v>
+
+00:11:24.235 --> 00:11:29.450
+<v Katrin Weber>Okay, actions. I'll write the lessons learned in the implementation playbook for Germany.</v>
+
+00:11:30.028 --> 00:11:37.465
+<v Jonas Peeters>And the status page on the wiki? I looked last week, it still says April for payroll and Protime.</v>
+
+00:11:37.895 --> 00:11:45.332
+<v Katrin Weber>Yes, sorry, I know. I'll update the status page this week. It still has the old plan from February.</v>
+
+00:11:46.400 --> 00:11:50.874
+<v Jonas Peeters>Because people outside the project read it. The service desk, finance.</v>
+
+00:11:51.220 --> 00:11:53.842
+<v Katrin Weber>I know, I know. This week.</v>
+
+00:11:54.518 --> 00:11:59.733
+<v Ruben Jacobs>I'll send a Protime status to both of you after every Betriebsrat meeting.</v>
+
+00:11:59.979 --> 00:12:06.675
+<v Jonas Peeters>And I update Charlotte on Protime and put the exit clause point on my list for Poland.</v>
+
+00:12:07.501 --> 00:12:11.604
+<v Katrin Weber>Perfect. Anything else? No? Then thanks both. Good work, everyone.</v>
+
+00:12:12.403 --> 00:12:13.914
+<v Jonas Peeters>Thanks Katrin. Bye.</v>
+
+00:12:14.646 --> 00:12:15.416
+<v Ruben Jacobs>Bye.</v>

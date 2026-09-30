@@ -1,0 +1,14 @@
+Company,Country,Entity,Name,Role,Email,Phone,Escalation level,Topics,Notes
+Veldra,BE/NL,Veldra Belgium NV / Veldra Europe B.V.,Paul Verbeke,HR director Benelux,paul.verbeke@veldra.example,+32 2 *** ** 18,Decision maker,"Contract, budget, HR policy",Wants a call for any incident affecting more than 20 employees
+Veldra,BE/NL,Veldra Belgium NV / Veldra Europe B.V.,Mark Janssen,Payroll manager Benelux,mark.janssen@veldra.example,+32 14 *** ** 62,Day to day,"Payroll input, calendar, corrections",Based in Laakdal on Tuesdays and Thursdays
+Veldra,BE,Veldra Belgium NV,Payroll input mailbox,Shared mailbox,payroll.be@veldra.example,,Day to day,Monthly variable data,Send files here not to Mark
+Veldra,DE,Veldra Deutschland GmbH,Anja Keller,HR business partner Germany,anja.keller@veldra.example,+49 211 *** ** 07,Contact,HR Germany,Not an SD Worx payroll entity (prospect)
+Veldra,FR,Veldra France SAS,Payroll team Paris,Via provider,,,Contact,Payroll France,Payroll run by Paie & RH Solutions. Go through their contact below
+Paie & RH Solutions,FR,Veldra France SAS,Olivier Garnier,Chargé de clientèle,o.garnier@paie-rh-solutions.example,+33 1 *** ** 55,Contact,Payroll France,Partner contact for Veldra France
+SD Worx,ES,Veldra Iberia SL,Marta Llorens,Payroll service manager,marta.llorens@sdworx.example,+34 93 *** ** 20,Level 1,Managed payroll Spain,Live since 2023
+SD Worx,BE,Veldra Belgium NV,Veldra payroll team BE,Enterprise payroll Antwerp,veldra.payroll.be@sdworx.example,+32 3 *** ** 41,Level 1,"Payslips, input, corrections",Reply within 1 working day
+SD Worx,NL,Veldra Europe B.V.,Veldra payroll team NL,Enterprise payroll Utrecht,veldra.payroll.nl@sdworx.example,+31 30 *** ** 93,Level 1,"Payslips, input, corrections",
+SD Worx,BE/NL,All Benelux,Wim Van den Broeck,Service delivery manager Benelux,wim.vandenbroeck@sdworx.example,+32 3 *** ** 76,Level 2 (escalation),"Late payslips, SLA breaches, incidents",
+SD Worx,All,All,Hilde Maes,Global account owner,hilde.maes@sdworx.example,+32 3 *** ** 12,Level 3,"Contract, commercial, relationship",
+SD Worx,All,All,Jonas Peeters,Account manager,jonas.peeters@sdworx.example,+32 3 *** ** 58,Level 3 (backup),"Contract, commercial",
+SD Worx,BE,Veldra Belgium NV,Nadia Bouchama,"Product specialist, Flex Income Plan",nadia.bouchama@sdworx.example,+32 2 *** ** 34,Contact,Flex Income Plan configuration and choice window,Added 02/2024 for FIP go-live

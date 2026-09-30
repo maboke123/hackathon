@@ -1,0 +1,1088 @@
+{
+  "about": "Answer key for the knowledge corpus. The raw files only carry what their source system would carry (email headers, file paths, modified dates). Everything below is the truth a labeller should arrive at. Do not show this file in the app as if it were source data. Today is 2026-09-30.",
+  "statusValues": {
+    "current": "Correct today and owned by an active colleague",
+    "outdated": "Was correct once, wrong today",
+    "partly-outdated": "Mostly correct but misses a later change",
+    "wrong-scope": "Correct, but for another country, customer or team than the question",
+    "uncontrolled-copy": "Correct content but a personal copy outside the official source",
+    "duplicate": "Near copy of another item with the same scope",
+    "draft": "Not approved, contains claims that are not settled",
+    "unverified": "Contains a claim nobody has confirmed",
+    "record": "An event (call, meeting, chat, ticket). Not a reference document, but may hold knowledge"
+  },
+  "facts": [
+    {
+      "id": "f-birth-leave-be",
+      "topic": "Birth leave Belgium (geboorteverlof / congé de naissance)",
+      "truth": "20 days since 2023-01-01. First 3 days paid 100% by the employer, remaining 17 days paid by the health insurance fund (mutualiteit) at 82% of capped gross. To be taken within 4 months of the birth. Employee informs the employer.",
+      "source": "doc-05",
+      "agree": ["doc-05", "doc-04", "mail-01", "chat-01"],
+      "disagree": [
+        {
+          "item": "doc-01",
+          "claim": "15 days"
+        },
+        {
+          "item": "doc-02",
+          "claim": "15 days"
+        },
+        {
+          "item": "doc-03",
+          "claim": "Dutch rules: 1 week plus up to 5 weeks aanvullend geboorteverlof"
+        },
+        {
+          "item": "ticket-02",
+          "claim": "Consultant told the customer 15 days"
+        }
+      ]
+    },
+    {
+      "id": "f-birth-leave-nl",
+      "topic": "Geboorteverlof Netherlands",
+      "truth": "One working week paid 100% by the employer within 4 weeks of the birth, plus up to 5 weeks aanvullend geboorteverlof within 6 months, paid by UWV at 70% of daily wage (capped).",
+      "source": "doc-03",
+      "agree": ["doc-03", "call-04"],
+      "disagree": []
+    },
+    {
+      "id": "f-meal-vouchers",
+      "topic": "Maximum meal voucher value Belgium",
+      "truth": "EUR 10 per worked day since 2026-01-01. Employer share max EUR 8.91, employee share min EUR 1.09.",
+      "source": "doc-07",
+      "agree": ["doc-07", "mail-04"],
+      "disagree": [
+        {
+          "item": "doc-06",
+          "claim": "EUR 8 (6.91 + 1.09)"
+        },
+        {
+          "item": "call-02",
+          "claim": "Consultant tells a Veldra employee EUR 8"
+        }
+      ]
+    },
+    {
+      "id": "f-centenindex",
+      "topic": "Indexation cap for wages above EUR 4,000",
+      "truth": "Since the law of June 2026 wages above EUR 4,000 gross are only indexed on the first EUR 4,000. PC 200 indexes in January, so the first private sector effect is January 2027 (forecast 3.76%).",
+      "source": "chat-03",
+      "agree": ["chat-03", "mail-05"],
+      "disagree": [
+        {
+          "item": "doc-08",
+          "claim": "Full salary indexed, no cap mentioned (written January 2026)"
+        },
+        {
+          "item": "call-03",
+          "claim": "Consultant unsure, promises a callback"
+        }
+      ],
+      "note": "No reference document exists yet. The knowledge lives in a Teams answer by Pieter and a newsletter email."
+    },
+    {
+      "id": "f-pay-transparency-be",
+      "topic": "Belgian transposition of the EU Pay Transparency Directive",
+      "truth": "Belgium missed the 2026-06-07 deadline and asked for six more months. No private sector law yet. Expected late 2026 or early 2027. First reports for 250+ employees due June 2027.",
+      "source": "mail-05",
+      "agree": ["mail-05", "meet-01"],
+      "disagree": [
+        {
+          "item": "doc-15",
+          "claim": "Belgian law in force since 7 June 2026"
+        }
+      ]
+    },
+    {
+      "id": "f-veldra-cutoff-be",
+      "topic": "Monthly payroll input cut-off Veldra Belgium",
+      "truth": "The 18th of the month (service agreement annex 2025). Veldra asked in September 2026 to move it to the 17th from Q4. Not agreed yet.",
+      "source": "doc-18",
+      "agree": ["doc-18", "meet-01", "doc-21"],
+      "disagree": [
+        {
+          "item": "doc-16",
+          "claim": "20th of the month"
+        },
+        {
+          "item": "mail-06",
+          "claim": "Customer asks for the 17th (request, not agreed)"
+        }
+      ]
+    },
+    {
+      "id": "f-veldra-escalation",
+      "topic": "Escalation contact at SD Worx for Veldra Benelux",
+      "truth": "Sofie Hermans, service delivery manager Benelux, since March 2025.",
+      "source": "doc-18",
+      "agree": ["doc-18", "meet-03", "mail-09", "doc-21"],
+      "disagree": [
+        {
+          "item": "doc-17",
+          "claim": "Wim Van den Broeck"
+        },
+        {
+          "item": "doc-16",
+          "claim": "Wim Van den Broeck"
+        }
+      ]
+    },
+    {
+      "id": "f-veldra-hr-contact",
+      "topic": "Veldra decision maker for HR and payroll",
+      "truth": "Charlotte Dubois, group HR director Europe, since June 2024. Paul Verbeke left Veldra in 2024.",
+      "source": "meet-03",
+      "agree": ["meet-03", "meet-01", "mail-07", "doc-21", "doc-18"],
+      "disagree": [
+        {
+          "item": "doc-16",
+          "claim": "Paul Verbeke, HR director Benelux"
+        },
+        {
+          "item": "doc-17",
+          "claim": "Paul Verbeke"
+        }
+      ]
+    },
+    {
+      "id": "f-veldra-de-golive",
+      "topic": "Innovapay go-live Veldra Germany",
+      "truth": "Live since 2026-07-01. Originally planned for 2026-04-01, moved because of data migration issues. Protime rollout on hold until the Betriebsrat agrees.",
+      "source": "mail-02",
+      "agree": ["mail-02", "meet-02", "mail-08", "doc-21"],
+      "disagree": [
+        {
+          "item": "doc-19",
+          "claim": "Go-live 1 April 2026, Protime in scope for the same date"
+        }
+      ]
+    },
+    {
+      "id": "f-veldra-nl-payroll",
+      "topic": "Payroll engine Veldra Netherlands",
+      "truth": "Innovapay since 2024-04-01.",
+      "source": "doc-18",
+      "agree": ["doc-18", "meet-03"],
+      "disagree": [
+        {
+          "item": "doc-16",
+          "claim": "Legacy Dutch engine, migration planned for 2023"
+        }
+      ]
+    },
+    {
+      "id": "f-veldra-es-extra-pay",
+      "topic": "Extra payments (pagas extra) Veldra Spain",
+      "truth": "Veldra Iberia pays 14 salaries. Store staff get the two extra payments prorated monthly (prorrateo). Office staff get them in full in June and December. The Spanish working instruction only describes the June and December payment.",
+      "source": "chat-02",
+      "agree": ["chat-02", "meet-03"],
+      "disagree": [
+        {
+          "item": "doc-20",
+          "claim": "All staff paid in June and December"
+        }
+      ],
+      "note": "Knowledge in Marta's head. Only written down in a Teams chat."
+    },
+    {
+      "id": "f-veldra-fr-contact",
+      "topic": "SD Worx contact for Veldra France",
+      "truth": "Julie Martin, SD Worx France, since the Paie & RH Solutions integration in 2026.",
+      "source": "mail-07",
+      "agree": ["mail-07", "meet-03", "doc-21"],
+      "disagree": [
+        {
+          "item": "doc-17",
+          "claim": "Olivier Garnier at Paie & RH Solutions, old paie-rh-solutions.example address"
+        }
+      ]
+    },
+    {
+      "id": "f-veldra-pl-scope",
+      "topic": "Veldra Poland",
+      "truth": "Not a payroll customer yet. Scoping for 2027-01-01, owner Tomasz Nowak. No contract signed.",
+      "source": "chat-04",
+      "agree": ["chat-04", "meet-03"],
+      "disagree": [
+        {
+          "item": "doc-21",
+          "claim": "Handover notes draft lists Poland as live"
+        }
+      ]
+    }
+  ],
+  "items": [
+    {
+      "id": "doc-01",
+      "file": "documents/doc-01-geboorteverlof-werkinstructie.md",
+      "type": "document",
+      "title": "Werkinstructie geboorteverlof",
+      "language": "nl",
+      "scope": {
+        "country": "BE",
+        "customer": null,
+        "product": "Payroll for kmo",
+        "team": "Customer service Belgium (SME)"
+      },
+      "owner": null,
+      "author": "p-annick",
+      "writtenAt": "2021-02-15",
+      "lastVerifiedAt": null,
+      "status": "outdated",
+      "facts": ["f-birth-leave-be"],
+      "supersededBy": "doc-05",
+      "notes": "No owner in the file. Author left in 2024. One of the three documents the agent returns."
+    },
+    {
+      "id": "doc-02",
+      "file": "documents/doc-02-birth-leave-quick-guide.md",
+      "type": "document",
+      "title": "Birth leave quick guide",
+      "language": "en",
+      "scope": {
+        "country": "BE",
+        "customer": null,
+        "product": null,
+        "team": "Customer service Belgium (SME)"
+      },
+      "owner": "p-annick",
+      "author": "p-annick",
+      "writtenAt": "2022-03-10",
+      "lastVerifiedAt": null,
+      "status": "outdated",
+      "facts": ["f-birth-leave-be"],
+      "supersededBy": "doc-05",
+      "notes": "Modified on 2026-09-23 by svc-template-migration (brand template swap). Content not touched since 2022. The 'edited last week' trap from the brief."
+    },
+    {
+      "id": "doc-03",
+      "file": "documents/doc-03-geboorteverlof-nederland.md",
+      "type": "document",
+      "title": "Geboorteverlof",
+      "language": "nl",
+      "scope": {
+        "country": "NL",
+        "customer": null,
+        "product": null,
+        "team": "Legal knowledge centre Netherlands"
+      },
+      "owner": "p-sanne",
+      "author": "p-sanne",
+      "writtenAt": "2024-01-08",
+      "lastVerifiedAt": "2026-05-20",
+      "status": "wrong-scope",
+      "facts": ["f-birth-leave-nl"],
+      "notes": "Correct and current for the Netherlands. Same title and language as the Belgian topic. The 'right title, other country' trap from the brief."
+    },
+    {
+      "id": "doc-04",
+      "file": "documents/doc-04-geboorteverlof-be-2023-kopie.md",
+      "type": "document",
+      "title": "Geboorteverlof BE update 2023 (kopie)",
+      "language": "nl",
+      "scope": {
+        "country": "BE",
+        "customer": null,
+        "product": null,
+        "team": null
+      },
+      "owner": null,
+      "author": "p-annick",
+      "writtenAt": "2023-01-05",
+      "lastVerifiedAt": null,
+      "status": "uncontrolled-copy",
+      "facts": ["f-birth-leave-be"],
+      "notes": "The fourth document that Bram emails (mail-01). Content correct on the number of days but a personal OneDrive copy, misses the 4 month rule."
+    },
+    {
+      "id": "doc-05",
+      "file": "documents/doc-05-geboorteverlof-belgie.md",
+      "type": "document",
+      "title": "Geboorteverlof (vroeger vaderschapsverlof), België",
+      "language": "nl",
+      "scope": {
+        "country": "BE",
+        "customer": null,
+        "product": null,
+        "team": "Legal knowledge centre Belgium"
+      },
+      "owner": "p-pieter",
+      "author": "p-pieter",
+      "writtenAt": "2023-01-02",
+      "lastVerifiedAt": "2026-06-12",
+      "status": "current",
+      "facts": ["f-birth-leave-be"],
+      "notes": "The right answer. The agent did not return it: it lives on the legal site, not the customer service site."
+    },
+    {
+      "id": "doc-06",
+      "file": "documents/doc-06-maaltijdcheques-2023.md",
+      "type": "document",
+      "title": "Maaltijdcheques: bedragen en voorwaarden",
+      "language": "nl",
+      "scope": {
+        "country": "BE",
+        "customer": null,
+        "product": null,
+        "team": "Customer service Belgium (SME)"
+      },
+      "owner": null,
+      "author": "p-annick",
+      "writtenAt": "2023-02-01",
+      "lastVerifiedAt": null,
+      "status": "outdated",
+      "facts": ["f-meal-vouchers"],
+      "supersededBy": "doc-07"
+    },
+    {
+      "id": "doc-07",
+      "file": "documents/doc-07-maaltijdcheques-2026.md",
+      "type": "document",
+      "title": "Maaltijdcheques vanaf 1 januari 2026",
+      "language": "nl",
+      "scope": {
+        "country": "BE",
+        "customer": null,
+        "product": null,
+        "team": "Legal knowledge centre Belgium"
+      },
+      "owner": "p-pieter",
+      "author": "p-pieter",
+      "writtenAt": "2025-12-18",
+      "lastVerifiedAt": "2026-01-05",
+      "status": "current",
+      "facts": ["f-meal-vouchers"]
+    },
+    {
+      "id": "doc-08",
+      "file": "documents/doc-08-indexering-pc200-januari-2026.md",
+      "type": "document",
+      "title": "Indexering PC 200, januari 2026",
+      "language": "nl",
+      "scope": {
+        "country": "BE",
+        "customer": null,
+        "product": null,
+        "team": "Legal knowledge centre Belgium"
+      },
+      "owner": "p-pieter",
+      "author": "p-pieter",
+      "writtenAt": "2026-01-06",
+      "lastVerifiedAt": "2026-01-06",
+      "status": "partly-outdated",
+      "facts": ["f-centenindex"],
+      "notes": "Correct for January 2026 (2.21%). Does not mention the EUR 4,000 cap from June 2026, which matters for the January 2027 indexation."
+    },
+    {
+      "id": "doc-09",
+      "file": "documents/doc-09-dubbel-vakantiegeld.md",
+      "type": "document",
+      "title": "Dubbel vakantiegeld bedienden en arbeiders",
+      "language": "nl",
+      "scope": {
+        "country": "BE",
+        "customer": null,
+        "product": null,
+        "team": "Legal knowledge centre Belgium"
+      },
+      "owner": "p-pieter",
+      "author": "p-pieter",
+      "writtenAt": "2022-04-11",
+      "lastVerifiedAt": "2026-04-02",
+      "status": "current",
+      "facts": [],
+      "notes": "Control item. Old but reviewed this year and still correct."
+    },
+    {
+      "id": "doc-10",
+      "file": "documents/doc-10-ecocheques-faq.md",
+      "type": "document",
+      "title": "Ecocheques FAQ",
+      "language": "en",
+      "scope": {
+        "country": "BE",
+        "customer": null,
+        "product": null,
+        "team": "Customer service Belgium (SME)"
+      },
+      "owner": "p-bram",
+      "author": "p-bram",
+      "writtenAt": "2024-11-04",
+      "lastVerifiedAt": "2025-11-20",
+      "status": "current",
+      "facts": [],
+      "notes": "Control item."
+    },
+    {
+      "id": "doc-11",
+      "file": "documents/doc-11-dimona-procedure-klantenservice.md",
+      "type": "document",
+      "title": "Dimona indienen: procedure",
+      "language": "nl",
+      "scope": {
+        "country": "BE",
+        "customer": null,
+        "product": "Payroll for kmo",
+        "team": "Customer service Belgium (SME)"
+      },
+      "owner": "p-bram",
+      "author": "p-bram",
+      "writtenAt": "2024-05-13",
+      "lastVerifiedAt": "2025-09-01",
+      "status": "current",
+      "facts": [],
+      "notes": "Near duplicate of doc-12, different team scope."
+    },
+    {
+      "id": "doc-12",
+      "file": "documents/doc-12-dimona-procedure-staffing.md",
+      "type": "document",
+      "title": "Dimona indienen: procedure (Staffing)",
+      "language": "nl",
+      "scope": {
+        "country": "BE",
+        "customer": null,
+        "product": "Staffing and Career Solutions",
+        "team": "Staffing Belgium"
+      },
+      "owner": null,
+      "author": null,
+      "writtenAt": "2024-08-20",
+      "lastVerifiedAt": null,
+      "status": "duplicate",
+      "duplicateOf": "doc-11",
+      "facts": [],
+      "notes": "80% copied from doc-11. Adds student and flexi Dimona types, which are relevant to Staffing. Not wrong, but two copies will drift."
+    },
+    {
+      "id": "doc-13",
+      "file": "documents/doc-13-flexi-jobs-2026.md",
+      "type": "document",
+      "title": "Flexi-jobs : ce qui change en 2026",
+      "language": "fr",
+      "scope": {
+        "country": "BE",
+        "customer": null,
+        "product": null,
+        "team": "Legal knowledge centre Belgium"
+      },
+      "owner": "p-claire",
+      "author": "p-claire",
+      "writtenAt": "2026-07-08",
+      "lastVerifiedAt": "2026-09-02",
+      "status": "unverified",
+      "facts": [],
+      "notes": "Mostly current. The claim that flexi-jobs open to all sectors from 1 July 2026 is flagged in the text itself as not yet confirmed in the Belgian Official Gazette."
+    },
+    {
+      "id": "doc-14",
+      "file": "documents/doc-14-onboarding-checklist-account-owners.md",
+      "type": "document",
+      "title": "Checklist: onboarding as a new account owner",
+      "language": "en",
+      "scope": {
+        "country": null,
+        "customer": null,
+        "product": null,
+        "team": "Enterprise accounts"
+      },
+      "owner": null,
+      "author": null,
+      "writtenAt": "2019-06-03",
+      "lastVerifiedAt": null,
+      "status": "outdated",
+      "facts": [],
+      "notes": "Refers to tools and teams that no longer exist (Worxnet intranet, the legacy Belgian engine as default, the old CRM). The generic starting point Elif gets."
+    },
+    {
+      "id": "doc-15",
+      "file": "documents/doc-15-pay-transparency-faq-draft.md",
+      "type": "document",
+      "title": "Pay transparency: customer FAQ (DRAFT)",
+      "language": "en",
+      "scope": {
+        "country": "BE",
+        "customer": null,
+        "product": null,
+        "team": "Legal knowledge centre Belgium"
+      },
+      "owner": "p-claire",
+      "author": "p-claire",
+      "writtenAt": "2026-03-16",
+      "lastVerifiedAt": null,
+      "status": "draft",
+      "facts": ["f-pay-transparency-be"],
+      "notes": "Written in March assuming Belgium would transpose on time. Claims the law is in force. Never published but findable."
+    },
+    {
+      "id": "doc-16",
+      "file": "documents/doc-16-veldra-account-plan-2022.md",
+      "type": "document",
+      "title": "Veldra Sportswear account plan 2022",
+      "language": "en",
+      "scope": {
+        "country": null,
+        "customer": "cus-veldra",
+        "product": null,
+        "team": "Enterprise accounts"
+      },
+      "owner": "p-hilde",
+      "author": "p-hilde",
+      "writtenAt": "2022-01-20",
+      "lastVerifiedAt": null,
+      "status": "outdated",
+      "facts": [
+        "f-veldra-cutoff-be",
+        "f-veldra-escalation",
+        "f-veldra-hr-contact",
+        "f-veldra-nl-payroll"
+      ],
+      "supersededBy": "doc-18",
+      "notes": "Owner left in 2023. Most complete overview of the account, so people still use it."
+    },
+    {
+      "id": "doc-17",
+      "file": "documents/doc-17-veldra-contacts-escalation.csv",
+      "type": "document",
+      "title": "Veldra contact and escalation list",
+      "language": "en",
+      "scope": {
+        "country": null,
+        "customer": "cus-veldra",
+        "product": null,
+        "team": "Enterprise accounts"
+      },
+      "owner": null,
+      "author": "p-hilde",
+      "writtenAt": "2023-03-01",
+      "lastVerifiedAt": null,
+      "status": "outdated",
+      "facts": [
+        "f-veldra-escalation",
+        "f-veldra-hr-contact",
+        "f-veldra-fr-contact"
+      ],
+      "notes": "Spreadsheet export. Last modified 2024-02 by Jonas, who only added one row."
+    },
+    {
+      "id": "doc-18",
+      "file": "documents/doc-18-veldra-service-agreement-annex-2025.md",
+      "type": "document",
+      "title": "Veldra Sportswear, service agreement annex B (2025)",
+      "language": "en",
+      "scope": {
+        "country": null,
+        "customer": "cus-veldra",
+        "product": null,
+        "team": "Enterprise accounts"
+      },
+      "owner": "p-jonas",
+      "author": "p-jonas",
+      "writtenAt": "2025-03-14",
+      "lastVerifiedAt": "2025-03-14",
+      "status": "current",
+      "facts": [
+        "f-veldra-cutoff-be",
+        "f-veldra-escalation",
+        "f-veldra-nl-payroll"
+      ],
+      "notes": "Signed annex. Correct, but covers only BE and NL service levels. Its owner leaves the account on 2026-10-15."
+    },
+    {
+      "id": "doc-19",
+      "file": "documents/doc-19-veldra-germany-implementation-status.md",
+      "type": "document",
+      "title": "Veldra Deutschland, Innovapay implementation status",
+      "language": "en",
+      "scope": {
+        "country": "DE",
+        "customer": "cus-veldra",
+        "product": "Innovapay",
+        "team": "Implementation Germany"
+      },
+      "owner": "p-katrin",
+      "author": "p-katrin",
+      "writtenAt": "2025-10-01",
+      "lastVerifiedAt": "2026-02-11",
+      "status": "outdated",
+      "facts": ["f-veldra-de-golive"],
+      "notes": "Wiki status page, last updated in February. Still says go-live 1 April."
+    },
+    {
+      "id": "doc-20",
+      "file": "documents/doc-20-veldra-spain-payroll-instructions.md",
+      "type": "document",
+      "title": "Veldra Iberia: instrucciones de nómina / payroll working instructions",
+      "language": "en",
+      "scope": {
+        "country": "ES",
+        "customer": "cus-veldra",
+        "product": "Managed payroll",
+        "team": "Managed payroll Spain"
+      },
+      "owner": "p-marta",
+      "author": "p-marta",
+      "writtenAt": "2023-09-12",
+      "lastVerifiedAt": "2025-01-15",
+      "status": "partly-outdated",
+      "facts": ["f-veldra-es-extra-pay"],
+      "notes": "Accurate except that it does not describe prorrateo for store staff, introduced in the 2025 store collective agreement."
+    },
+    {
+      "id": "doc-21",
+      "file": "documents/doc-21-veldra-handover-notes-draft.md",
+      "type": "document",
+      "title": "Veldra handover notes (draft)",
+      "language": "en",
+      "scope": {
+        "country": null,
+        "customer": "cus-veldra",
+        "product": null,
+        "team": "Enterprise accounts"
+      },
+      "owner": "p-jonas",
+      "author": "p-jonas",
+      "writtenAt": "2026-09-26",
+      "lastVerifiedAt": null,
+      "status": "draft",
+      "facts": ["f-veldra-pl-scope"],
+      "notes": "Half finished. Mostly right, useful, but lists Poland as live and has TODOs where Jonas meant to add names."
+    },
+    {
+      "id": "doc-22",
+      "file": "documents/doc-22-veldra-flex-income-plan-configuration.md",
+      "type": "document",
+      "title": "Veldra Belgium, Flex Income Plan configuration",
+      "language": "en",
+      "scope": {
+        "country": "BE",
+        "customer": "cus-veldra",
+        "product": "Flex Income Plan",
+        "team": "Reward products Belgium"
+      },
+      "owner": "p-nadia",
+      "author": "p-nadia",
+      "writtenAt": "2024-02-19",
+      "lastVerifiedAt": "2026-02-03",
+      "status": "current",
+      "facts": [],
+      "notes": "Control item for the Veldra account."
+    },
+    {
+      "id": "mail-01",
+      "file": "emails/mail-01-fw-geboorteverlof-document.eml",
+      "type": "email",
+      "date": "2026-09-30T09:24:00+02:00",
+      "from": "p-bram",
+      "to": ["p-lotte"],
+      "scope": {
+        "country": "BE",
+        "customer": "cus-havenkaai"
+      },
+      "status": "record",
+      "facts": ["f-birth-leave-be"],
+      "attachments": ["doc-04"],
+      "notes": "Bram heard Lotte asking about birth leave and sends 'the document he always uses', the uncontrolled copy."
+    },
+    {
+      "id": "mail-02",
+      "file": "emails/mail-02-veldra-de-golive-moved.eml",
+      "type": "email",
+      "date": "2026-02-24T16:05:00+01:00",
+      "from": "p-katrin",
+      "to": ["p-jonas", "anja.keller@veldra.example"],
+      "scope": {
+        "country": "DE",
+        "customer": "cus-veldra"
+      },
+      "status": "record",
+      "facts": ["f-veldra-de-golive"],
+      "notes": "Decision to move go-live to 1 July. The wiki page (doc-19) was never updated."
+    },
+    {
+      "id": "mail-03",
+      "file": "emails/mail-03-template-migration-notice.eml",
+      "type": "email",
+      "date": "2026-09-18T11:00:00+02:00",
+      "from": "p-ellen",
+      "to": ["all-belgium@sdworx.example"],
+      "scope": {
+        "country": "BE"
+      },
+      "status": "record",
+      "facts": [],
+      "notes": "Announces that svc-template-migration will restyle all SharePoint documents from 22 to 26 September. Says explicitly that content is not reviewed and modified dates will change."
+    },
+    {
+      "id": "mail-04",
+      "file": "emails/mail-04-legal-update-december-2025.eml",
+      "type": "email",
+      "date": "2025-12-19T08:30:00+01:00",
+      "from": "p-pieter",
+      "to": ["legal-updates-be@sdworx.example"],
+      "scope": {
+        "country": "BE"
+      },
+      "status": "record",
+      "facts": ["f-meal-vouchers"],
+      "notes": "Monthly legal newsletter. Meal vouchers go to EUR 10."
+    },
+    {
+      "id": "mail-05",
+      "file": "emails/mail-05-legal-update-june-2026.eml",
+      "type": "email",
+      "date": "2026-06-26T08:30:00+02:00",
+      "from": "p-pieter",
+      "to": ["legal-updates-be@sdworx.example"],
+      "scope": {
+        "country": "BE"
+      },
+      "status": "record",
+      "facts": ["f-centenindex", "f-pay-transparency-be"],
+      "notes": "Monthly legal newsletter. Pay transparency deadline missed, indexation cap law."
+    },
+    {
+      "id": "mail-06",
+      "file": "emails/mail-06-veldra-cutoff-request.eml",
+      "type": "email",
+      "date": "2026-09-08T14:12:00+02:00",
+      "from": "mark.janssen@veldra.example",
+      "to": ["p-jonas"],
+      "cc": ["p-sofie"],
+      "scope": {
+        "country": "BE",
+        "customer": "cus-veldra"
+      },
+      "status": "record",
+      "facts": ["f-veldra-cutoff-be"],
+      "notes": "Request to move the cut-off to the 17th. No reply in the corpus."
+    },
+    {
+      "id": "mail-07",
+      "file": "emails/mail-07-veldra-france-new-contact.eml",
+      "type": "email",
+      "date": "2026-04-02T10:40:00+02:00",
+      "from": "p-julie",
+      "to": ["p-jonas"],
+      "scope": {
+        "country": "FR",
+        "customer": "cus-veldra"
+      },
+      "status": "record",
+      "facts": ["f-veldra-fr-contact", "f-veldra-hr-contact"],
+      "notes": "Introduces herself after the integration, mentions she met Charlotte Dubois."
+    },
+    {
+      "id": "mail-08",
+      "file": "emails/mail-08-veldra-de-betriebsrat.eml",
+      "type": "email",
+      "date": "2026-08-27T09:15:00+02:00",
+      "from": "p-katrin",
+      "to": ["p-jonas", "p-ruben"],
+      "scope": {
+        "country": "DE",
+        "customer": "cus-veldra",
+        "product": "Protime"
+      },
+      "status": "record",
+      "facts": ["f-veldra-de-golive"],
+      "notes": "Betriebsrat has not approved Protime, rollout on hold."
+    },
+    {
+      "id": "mail-09",
+      "file": "emails/mail-09-auto-reply-wim.eml",
+      "type": "email",
+      "date": "2026-09-29T15:02:00+02:00",
+      "from": "p-wim",
+      "to": ["p-elif"],
+      "scope": {
+        "customer": "cus-veldra"
+      },
+      "status": "record",
+      "facts": ["f-veldra-escalation"],
+      "notes": "Elif used the old escalation list. Wim's reply says he moved role in March 2025 and points to Sofie."
+    },
+    {
+      "id": "mail-10",
+      "file": "emails/mail-10-jonas-intro-elif.eml",
+      "type": "email",
+      "date": "2026-09-22T17:45:00+02:00",
+      "from": "p-jonas",
+      "to": ["p-elif"],
+      "scope": {
+        "customer": "cus-veldra"
+      },
+      "status": "record",
+      "facts": [],
+      "notes": "Handover intro. Attaches the 2022 account plan (doc-16) as 'the best overview we have, some things changed'."
+    },
+    {
+      "id": "mail-11",
+      "file": "emails/mail-11-geboorteverlof-2021-annick.eml",
+      "type": "email",
+      "date": "2021-01-12T10:03:00+01:00",
+      "from": "p-annick",
+      "to": ["cs-belgium@sdworx.example"],
+      "scope": {
+        "country": "BE"
+      },
+      "status": "record",
+      "facts": ["f-birth-leave-be"],
+      "notes": "Old but true history: 10 to 15 days in 2021, 20 days from 2023. Shows the doc-01 content was right when written."
+    },
+    {
+      "id": "mail-12",
+      "file": "emails/mail-12-havenkaai-followup-birth-leave.eml",
+      "type": "email",
+      "date": "2026-09-30T11:48:00+02:00",
+      "from": "inge.claes@havenkaai.example",
+      "to": ["p-lotte"],
+      "scope": {
+        "country": "BE",
+        "customer": "cus-havenkaai"
+      },
+      "status": "record",
+      "facts": ["f-birth-leave-be"],
+      "notes": "Customer follows up: Youssef read online it is 20 days, you said 15. Result of the wrong answer."
+    },
+    {
+      "id": "call-01",
+      "file": "calls/call-01-havenkaai-geboorteverlof.txt",
+      "type": "call",
+      "date": "2026-09-30T09:12:00+02:00",
+      "participants": ["p-lotte", "Inge Claes (Havenkaai)"],
+      "language": "nl",
+      "scope": {
+        "country": "BE",
+        "customer": "cus-havenkaai"
+      },
+      "status": "record",
+      "facts": ["f-birth-leave-be"],
+      "notes": "The urgent call from the brief. Inge asks how many days birth leave Youssef Benali gets and who pays. Lotte puts her on hold, searches, ends up saying 15 days, employer pays 3 days, and promises to confirm by email."
+    },
+    {
+      "id": "call-02",
+      "file": "calls/call-02-veldra-maaltijdcheques.txt",
+      "type": "call",
+      "date": "2026-09-16T14:30:00+02:00",
+      "participants": [
+        "p-stijn",
+        "Veldra Belgium employee, distribution centre Laakdal"
+      ],
+      "language": "nl",
+      "scope": {
+        "country": "BE",
+        "customer": "cus-veldra"
+      },
+      "status": "record",
+      "facts": ["f-meal-vouchers"],
+      "notes": "Employee asks why their meal vouchers are EUR 8 when a friend gets EUR 10. Stijn says EUR 8 is the legal maximum (wrong). Correct answer: EUR 10 is the maximum, the value is set by the company or sector agreement."
+    },
+    {
+      "id": "call-03",
+      "file": "calls/call-03-havenkaai-indexering.txt",
+      "type": "call",
+      "date": "2026-09-25T10:05:00+02:00",
+      "participants": ["p-lotte", "Inge Claes (Havenkaai)"],
+      "language": "nl",
+      "scope": {
+        "country": "BE",
+        "customer": "cus-havenkaai"
+      },
+      "status": "record",
+      "facts": ["f-centenindex"],
+      "notes": "Inge asks about the budget for the January indexation for staff above EUR 4,000. Lotte does not know about the cap, promises a callback."
+    },
+    {
+      "id": "call-04",
+      "file": "calls/call-04-veldra-nl-geboorteverlof.txt",
+      "type": "call",
+      "date": "2026-09-10T13:20:00+02:00",
+      "participants": ["p-daan", "Noor Bakker (Veldra Europe B.V.)"],
+      "language": "nl",
+      "scope": {
+        "country": "NL",
+        "customer": "cus-veldra"
+      },
+      "status": "record",
+      "facts": ["f-birth-leave-nl"],
+      "notes": "Dutch call where doc-03 is exactly the right document. Shows the same title can be right or wrong depending on scope."
+    },
+    {
+      "id": "call-05",
+      "file": "calls/call-05-veldra-de-anja-keller.txt",
+      "type": "call",
+      "date": "2026-09-29T16:00:00+02:00",
+      "participants": ["p-elif", "Anja Keller (Veldra Deutschland)"],
+      "language": "en",
+      "scope": {
+        "country": "DE",
+        "customer": "cus-veldra"
+      },
+      "status": "record",
+      "facts": ["f-veldra-de-golive"],
+      "notes": "Elif's intro call. She refers to the April go-live from the wiki and gets corrected. Anja asks when Protime starts and Elif does not know."
+    },
+    {
+      "id": "meet-01",
+      "file": "meetings/meet-01-veldra-quarterly-service-review-q3.vtt",
+      "type": "meeting",
+      "date": "2026-09-17T10:00:00+02:00",
+      "participants": [
+        "p-jonas",
+        "p-sofie",
+        "p-katrin",
+        "Charlotte Dubois",
+        "Mark Janssen"
+      ],
+      "language": "en",
+      "scope": {
+        "customer": "cus-veldra"
+      },
+      "status": "record",
+      "facts": [
+        "f-veldra-cutoff-be",
+        "f-veldra-hr-contact",
+        "f-pay-transparency-be",
+        "f-veldra-de-golive"
+      ],
+      "notes": "Quarterly review. Mark raises the cut-off. Charlotte asks about pay transparency reporting across countries. Decisions and action items are spoken, never written in a document."
+    },
+    {
+      "id": "meet-02",
+      "file": "meetings/meet-02-veldra-germany-golive-retro.vtt",
+      "type": "meeting",
+      "date": "2026-07-22T14:00:00+02:00",
+      "participants": ["p-katrin", "p-jonas", "p-ruben"],
+      "language": "en",
+      "scope": {
+        "country": "DE",
+        "customer": "cus-veldra"
+      },
+      "status": "record",
+      "facts": ["f-veldra-de-golive"],
+      "notes": "Retro after the July go-live. Lessons about data migration. Katrin says she will update the wiki page (she never does)."
+    },
+    {
+      "id": "meet-03",
+      "file": "meetings/meet-03-veldra-handover-jonas-elif.vtt",
+      "type": "meeting",
+      "date": "2026-09-29T09:30:00+02:00",
+      "participants": ["p-jonas", "p-elif"],
+      "language": "en",
+      "scope": {
+        "customer": "cus-veldra"
+      },
+      "status": "record",
+      "facts": [
+        "f-veldra-escalation",
+        "f-veldra-hr-contact",
+        "f-veldra-nl-payroll",
+        "f-veldra-es-extra-pay",
+        "f-veldra-fr-contact",
+        "f-veldra-pl-scope"
+      ],
+      "notes": "The richest source for onboarding: Jonas explains who to call per country, what is outdated in the account plan, and the Spanish quirk. The 30 minute call from the brief, but spoken, not written."
+    },
+    {
+      "id": "meet-04",
+      "file": "meetings/meet-04-cs-belgium-weekly-huddle.vtt",
+      "type": "meeting",
+      "date": "2026-09-24T08:45:00+02:00",
+      "participants": ["p-bram", "p-lotte", "p-stijn", "p-ellen"],
+      "language": "nl",
+      "scope": {
+        "country": "BE",
+        "team": "Customer service Belgium (SME)"
+      },
+      "status": "record",
+      "facts": ["f-birth-leave-be", "f-meal-vouchers"],
+      "notes": "Team complains that search results all show 'modified this week' since the template migration. Ellen explains. Someone mentions there are two meal voucher documents."
+    },
+    {
+      "id": "chat-01",
+      "file": "chats/chat-01-cs-belgium-channel.json",
+      "type": "chat",
+      "date": "2026-09-30",
+      "channel": "CS Belgium / General",
+      "language": "nl",
+      "scope": {
+        "country": "BE"
+      },
+      "status": "record",
+      "facts": ["f-birth-leave-be"],
+      "notes": "Lotte asks the channel 'geboorteverlof, 15 of 20 dagen?'. Three different answers. Pieter answers late with a link to doc-05."
+    },
+    {
+      "id": "chat-02",
+      "file": "chats/chat-02-marta-jonas-dm.json",
+      "type": "chat",
+      "date": "2025-06-03",
+      "channel": "Direct message Marta Llorens and Jonas Peeters",
+      "language": "en",
+      "scope": {
+        "country": "ES",
+        "customer": "cus-veldra"
+      },
+      "status": "record",
+      "facts": ["f-veldra-es-extra-pay"],
+      "notes": "Marta explains the prorrateo change for store staff. Only place it is written down."
+    },
+    {
+      "id": "chat-03",
+      "file": "chats/chat-03-legal-be-questions.json",
+      "type": "chat",
+      "date": "2026-07-14",
+      "channel": "Legal Belgium / Questions",
+      "language": "nl",
+      "scope": {
+        "country": "BE"
+      },
+      "status": "record",
+      "facts": ["f-centenindex"],
+      "notes": "A consultant asks how the cap works. Pieter gives a precise worked example. The best explanation in the company, buried in a channel."
+    },
+    {
+      "id": "chat-04",
+      "file": "chats/chat-04-veldra-account-channel.json",
+      "type": "chat",
+      "date": "2026-08-18",
+      "channel": "Veldra account team / General",
+      "language": "en",
+      "scope": {
+        "customer": "cus-veldra"
+      },
+      "status": "record",
+      "facts": ["f-veldra-pl-scope", "f-veldra-de-golive"],
+      "notes": "Tomasz posts the Poland scoping status. Ruben asks about Protime Germany."
+    },
+    {
+      "id": "chat-05",
+      "file": "chats/chat-05-elif-sofie-dm.json",
+      "type": "chat",
+      "date": "2026-09-30",
+      "channel": "Direct message Elif Aydin and Sofie Hermans",
+      "language": "en",
+      "scope": {
+        "customer": "cus-veldra"
+      },
+      "status": "record",
+      "facts": ["f-veldra-escalation", "f-veldra-cutoff-be"],
+      "notes": "Elif asks 'which document do I trust for the cut-off, the plan says 20'. Sofie answers 18, points to the annex, mentions the pending request."
+    },
+    {
+      "id": "tickets",
+      "file": "tickets.json",
+      "type": "tickets",
+      "status": "record",
+      "notes": "Service desk tickets. ticket-02 is the Havenkaai birth leave ticket resolved with the wrong answer. ticket-04 is a meal voucher ticket resolved with the old document. Resolution notes cite the document used."
+    },
+    {
+      "id": "agent-log",
+      "file": "agent-log.json",
+      "type": "agent-log",
+      "status": "record",
+      "notes": "What the existing internal agent returned. The birth leave query returns doc-01, doc-02 and doc-03, the brief's three documents. It never returns doc-05."
+    }
+  ]
+}

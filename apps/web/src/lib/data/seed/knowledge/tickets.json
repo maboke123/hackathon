@@ -1,0 +1,147 @@
+{
+  "exportedAt": "2026-09-30T18:00:00+02:00",
+  "system": "Service desk",
+  "tickets": [
+    {
+      "id": "SR-2026-041877",
+      "createdAt": "2026-06-17T08:52:00+02:00",
+      "channel": "email",
+      "customer": "Drukkerij Verlinden BV",
+      "requester": "An Verlinden, zaakvoerder",
+      "assignee": "stijn.mertens@sdworx.example",
+      "category": "Loonvoordelen",
+      "subject": "Ecocheques voor deeltijdse bedienden",
+      "description": "Klant (PC 200, 14 werknemers) vraagt hoeveel ecocheques een bediende krijgt die op 1 maart 2026 in dienst kwam en 4/5 werkt, bij de betaling van juni. Ze vraagt ook of ze de ecocheques mogen vervangen door een andere premie.",
+      "status": "resolved",
+      "resolvedAt": "2026-06-17T11:20:00+02:00",
+      "resolution": "Uitgelegd aan de hand van de Ecocheques FAQ: in PC 200 loopt de referteperiode van 1 juni tot 31 mei, betaling in juni. Pro rata voor de gewerkte periode en de arbeidsduur: 3 maanden op 12, 4/5 van EUR 250, dus EUR 50. Vervangen kan enkel via een ondernemings-cao met een gelijkwaardig voordeel, doorverwezen naar de accountmanager. Klant tevreden.",
+      "linkedDocuments": [
+        "/sites/CS-Belgium/Shared Documents/FAQ/Ecocheques FAQ.pdf"
+      ],
+      "linkedCall": null
+    },
+    {
+      "id": "SR-2026-043960",
+      "createdAt": "2026-07-08T14:05:00+02:00",
+      "channel": "portal",
+      "customer": "Havenkaai Logistics NV",
+      "requester": "Inge Claes, HR manager",
+      "assignee": "lotte.verhaegen@sdworx.example",
+      "category": "Dimona",
+      "subject": "Dimona jobstudent verkeerde einddatum",
+      "description": "Jobstudent in het magazijn (zomerjob juli) is aangegeven met Dimona STU tot 31/07, maar blijft tot 22/08. Klant vraagt of de aangifte aangepast moet worden of dat er een nieuwe Dimona nodig is. Student heeft nog voldoende uren in zijn contingent volgens Student@work.",
+      "status": "resolved",
+      "resolvedAt": "2026-07-08T16:40:00+02:00",
+      "resolution": "Bestaande Dimona STU aangepast (einddatum 22/08 en aantal geplande uren voor het derde kwartaal bijgewerkt) volgens de Dimona procedure. Geen nieuwe aangifte nodig. Bevestiging van de RSZ doorgestuurd naar de klant.",
+      "linkedDocuments": [
+        "/sites/CS-Belgium/Shared Documents/Werkinstructies/Dimona procedure.pdf"
+      ],
+      "linkedCall": null
+    },
+    {
+      "id": "SR-2026-044512",
+      "createdAt": "2026-07-15T09:31:00+02:00",
+      "channel": "email",
+      "customer": "Veldra Belgium NV",
+      "requester": "Mark Janssen, payroll manager Benelux",
+      "assignee": "nadia.bouchama@sdworx.example",
+      "category": "Flex Income Plan",
+      "subject": "Flex Income Plan: nieuwe bedienden en de keuzeronde 2027",
+      "description": "Mark vraagt of bedienden die deze zomer in dienst komen (kantoor Brussel en distributiecentrum Laakdal) al kunnen deelnemen aan de keuzeronde van november 2026, en wat er gebeurt met hun eindejaarspremie als ze niet mogen deelnemen.",
+      "status": "resolved",
+      "resolvedAt": "2026-07-16T10:12:00+02:00",
+      "resolution": "Answered with the Veldra Belgium configuration: employees need 6 months of service on 1 October of the year before. Summer 2026 starters are not eligible for the 2027 round and join the round of November 2027. Until then they receive their eindejaarspremie in cash with the December payroll as before. Arbeiders at Laakdal stay out of scope.",
+      "linkedDocuments": [
+        "/sites/Reward-BE/Shared Documents/Flex Income Plan/Customers/Veldra Belgium configuration.pdf"
+      ],
+      "linkedCall": null
+    },
+    {
+      "id": "SR-2026-045788",
+      "createdAt": "2026-08-04T10:18:00+02:00",
+      "channel": "email",
+      "customer": "Veldra Deutschland GmbH",
+      "requester": "Anja Keller, HR business partner Germany",
+      "assignee": "katrin.weber@sdworx.example",
+      "category": "Payroll run",
+      "subject": "First Innovapay payroll July: missing overtime for store staff",
+      "description": "After the first payroll on Innovapay (July 2026) six store employees in Düsseldorf reported that their June overtime was not paid. The overtime was entered in the old system after its last run. Anja asks how the correction will be paid and whether the employees get a corrected Entgeltabrechnung.",
+      "status": "resolved",
+      "resolvedAt": "2026-08-06T15:47:00+02:00",
+      "resolution": "Overtime hours from the June migration gap loaded as a retroactive correction in the August run (Rückrechnung). Corrected payslips issued with the August payroll. Added a check for open variable pay items to the migration checklist for the remaining stores.",
+      "linkedDocuments": [],
+      "linkedCall": null
+    },
+    {
+      "id": "SR-2026-047102",
+      "createdAt": "2026-09-16T14:30:41+02:00",
+      "channel": "phone",
+      "customer": "Veldra Belgium NV",
+      "requester": "Werknemer Veldra Belgium NV, arbeider distributiecentrum Laakdal (personeelsnummer 450921)",
+      "assignee": "stijn.mertens@sdworx.example",
+      "category": "Loonvoordelen",
+      "subject": "Waarde maaltijdcheques 8 euro",
+      "description": "Werknemer belt de werknemerslijn: ontvangt maaltijdcheques van 8 euro per gewerkte dag, een vriend bij een ander magazijn in Geel krijgt 10 euro. Vraagt of er bij Veldra een fout zit.",
+      "status": "resolved",
+      "resolvedAt": "2026-09-16T14:36:10+02:00",
+      "resolution": "Uitgelegd volgens de werkinstructie Maaltijdcheques: de maximale waarde is 8 euro per gewerkte dag (werkgever max 6,91 euro, werknemer min 1,09 euro). De werknemer ontvangt dus het maximum. Aantal cheques augustus (21) en eigen bijdrage (22,89 euro) nagekeken, beide correct. Geen fout.",
+      "linkedDocuments": [
+        "/sites/CS-Belgium/Shared Documents/Werkinstructies/Maaltijdcheques.pdf"
+      ],
+      "linkedCall": "call-02-veldra-maaltijdcheques.txt"
+    },
+    {
+      "id": "SR-2026-047655",
+      "createdAt": "2026-09-22T13:10:00+02:00",
+      "channel": "portal",
+      "customer": "Bakkerij Van Hove BV",
+      "requester": "Katleen Van Hove, zaakvoerster",
+      "assignee": "bram.claessens@sdworx.example",
+      "category": "Vakantie",
+      "subject": "Vertrekvakantiegeld bediende uit dienst eind september",
+      "description": "Bediende gaat uit dienst op 30/09. Klant vraagt of het dubbel vakantiegeld voor volgend jaar nu al betaald moet worden en hoe het berekend wordt.",
+      "status": "resolved",
+      "resolvedAt": "2026-09-22T15:02:00+02:00",
+      "resolution": "Uitgelegd dat bij uitdiensttreding van een bediende het vertrekvakantiegeld wordt betaald: enkel en dubbel vakantiegeld op de prestaties van het lopende jaar (vakantiedienstjaar 2026), samen met de laatste loonafrekening. Berekening gebeurt automatisch in de run van september. Verwezen naar de fiche Dubbel vakantiegeld van Legal-BE.",
+      "linkedDocuments": [
+        "/sites/Legal-BE/Kennisbank/Vakantie/Dubbel vakantiegeld.pdf"
+      ],
+      "linkedCall": null
+    },
+    {
+      "id": "SR-2026-047981",
+      "createdAt": "2026-09-25T10:05:18+02:00",
+      "channel": "phone",
+      "customer": "Havenkaai Logistics NV",
+      "requester": "Inge Claes, HR manager",
+      "assignee": "lotte.verhaegen@sdworx.example",
+      "category": "Indexering",
+      "subject": "Budget indexering januari 2027 voor lonen boven 4.000 euro",
+      "description": "Inge maakt het personeelsbudget 2027 op en vraagt hoe de indexering van januari 2027 werkt voor een twaalftal bedienden (PC 200) met een brutoloon boven 4.000 euro. Ze las in de pers over een 'centenindex'. Fiche Indexering PC 200 januari 2026 nagekeken (2,21%), daar staat niets over een grens van 4.000 euro. Geen ander document gevonden. Vraag doorgezet naar Legal, klant wordt teruggebeld met een rekenvoorbeeld per mail. Budget moet half oktober ingediend worden.\n\n29/09: nog geen antwoord van Legal, wacht op terugkoppeling.",
+      "status": "open",
+      "resolvedAt": null,
+      "resolution": null,
+      "linkedDocuments": [],
+      "linkedCall": "call-03-havenkaai-indexering.txt"
+    },
+    {
+      "id": "SR-2026-048213",
+      "createdAt": "2026-09-30T09:12:07+02:00",
+      "channel": "phone",
+      "customer": "Havenkaai Logistics NV",
+      "requester": "Inge Claes, HR manager",
+      "assignee": "lotte.verhaegen@sdworx.example",
+      "category": "Verloven",
+      "subject": "Geboorteverlof arbeider Youssef Benali",
+      "description": "Klant vraagt dringend hoeveel dagen geboorteverlof een magazijnier (arbeider, PC 140.03) krijgt en wie welke dagen betaalt. Youssef Benali is vrijdag 25/09 vader geworden. Klant wil de planning van oktober vandaag afronden en vraagt een bevestiging per mail.\n\nHeropend 30/09 11:52: klant mailt dat de werknemer online leest dat het 20 dagen zijn en niet 15. Antwoord opnieuw na te kijken.",
+      "status": "open",
+      "resolvedAt": "2026-09-30T09:19:30+02:00",
+      "resolution": "Telefonisch bevestigd en per mail verstuurd: 15 dagen geboorteverlof, de eerste 3 dagen door de werkgever betaald aan 100%, de overige 12 dagen door de mutualiteit. Op te nemen binnen 4 maanden na de geboorte, mag gespreid worden. Bron: Werkinstructie geboorteverlof en Birth leave quick guide.",
+      "linkedDocuments": [
+        "/sites/CS-Belgium/Shared Documents/Werkinstructies/Werkinstructie geboorteverlof.pdf",
+        "/sites/CS-Belgium/Shared Documents/Quick guides/Birth leave quick guide.pdf"
+      ],
+      "linkedCall": "call-01-havenkaai-geboorteverlof.txt"
+    }
+  ]
+}

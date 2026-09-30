@@ -1,0 +1,36 @@
+Message-ID: <AM6PR10MB2214.8C3E91D2@sdworx.example>
+Date: Tue, 24 Feb 2026 16:05:00 +0100
+From: Katrin Weber <katrin.weber@sdworx.example>
+To: Jonas Peeters <jonas.peeters@sdworx.example>, Anja Keller <anja.keller@veldra.example>
+Subject: Veldra Deutschland: go-live moved to 1 July 2026
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+
+Dear Anja, dear Jonas,
+
+Thank you both for the call this afternoon. As agreed, a short written summary of the decision.
+
+Decision
+The go-live of Innovapay for Veldra Deutschland GmbH moves from 1 April 2026 to 1 July 2026. The first live payroll will be the July payroll.
+
+Why
+- Parallel run 1 (February data) was not representative. About 8% of the employee records still have no valid Steuer-ID or Krankenkasse, mostly store staff hired in the last two years.
+- The previous provider still has not delivered the year-to-date values (Lohnjournal) as a structured file. Entering them by hand for 600 employees is too risky for a go-live in April.
+- With these two open points we cannot give a go at the go / no-go meeting on 25 March, so we prefer to decide now and not in the last week.
+
+What this means
+- Veldra extends the contract with the previous provider by three months (April to June payroll). Anja, you will confirm this with them this week.
+- New plan: parallel run 1 with April data, parallel run 2 with May data, go / no-go on 17 June, go-live 1 July.
+- Year-to-date values will be loaded once, at the end of June, from the final file of the previous provider.
+- Protime for the stores does not go live on 1 April either. We decouple it from the payroll go-live. The time registration in the stores needs the agreement of the Betriebsrat first, and Anja has told us this will take more time than we assumed. We will plan Protime separately once there is a date for the Betriebsrat.
+
+I will send the updated project plan on Friday. Jonas, could you inform Charlotte Dubois at group level? Anja will inform the local management.
+
+Kind regards,
+Katrin
+
+--
+Katrin Weber
+Innovapay implementation lead Germany
+SD Worx | Düsseldorf
++49 211 *** ** 83

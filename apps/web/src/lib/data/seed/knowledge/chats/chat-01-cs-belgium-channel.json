@@ -1,0 +1,157 @@
+{
+  "team": "CS Belgium",
+  "channel": "General",
+  "exportedAt": "2026-09-30T18:00:00+02:00",
+  "messages": [
+    {
+      "id": "1790752841000",
+      "replyToId": null,
+      "from": {
+        "name": "Lotte Verhaegen",
+        "email": "lotte.verhaegen@sdworx.example"
+      },
+      "createdAt": "2026-09-30T09:20:41+02:00",
+      "body": "Snelle vraag: geboorteverlof, 15 of 20 dagen? Net Havenkaai aan de lijn gehad, een arbeider bij hen wordt papa. Ik heb 15 gezegd op basis van de werkinstructie maar de assistent geeft mij ook iets over 1 week plus 5 weken. Nu twijfel ik.",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1790752918000",
+      "replyToId": "1790752841000",
+      "from": {
+        "name": "Stijn Mertens",
+        "email": "stijn.mertens@sdworx.example"
+      },
+      "createdAt": "2026-09-30T09:21:58+02:00",
+      "body": "15 toch? Staat zo in de werkinstructie, 3 dagen werkgever en de rest via de mutualiteit. Die is vorige week nog aangepast volgens SharePoint.",
+      "attachments": [
+        {
+          "name": "Werkinstructie geboorteverlof.pdf",
+          "path": "/sites/CS-Belgium/Shared Documents/Werkinstructies/Werkinstructie geboorteverlof.pdf"
+        }
+      ],
+      "reactions": [
+        {
+          "type": "like",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "1790753007000",
+      "replyToId": "1790752841000",
+      "from": {
+        "name": "Bram Claessens",
+        "email": "bram.claessens@sdworx.example"
+      },
+      "createdAt": "2026-09-30T09:23:27+02:00",
+      "body": "Nee, 20 sinds januari 2023. Ik stuur je het document dat ik altijd gebruik, zit in je mailbox binnen een minuut.",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1790753090000",
+      "replyToId": "1790752841000",
+      "from": {
+        "name": "Ellen Goossens",
+        "email": "ellen.goossens@sdworx.example"
+      },
+      "createdAt": "2026-09-30T09:24:50+02:00",
+      "body": "Inhoudelijk kan ik je niet helpen, maar let op met die datum: alles op de CS-site staat op 'gewijzigd vorige week' door de template-migratie. Dat zegt niets over de inhoud. En dat document met 1 week plus 5 weken aanvullend geboorteverlof komt van de site van Legal NL, dat is de Nederlandse regeling.",
+      "attachments": [],
+      "reactions": [
+        {
+          "type": "like",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "id": "1790753195000",
+      "replyToId": "1790752841000",
+      "from": {
+        "name": "Stijn Mertens",
+        "email": "stijn.mertens@sdworx.example"
+      },
+      "createdAt": "2026-09-30T09:26:35+02:00",
+      "body": "Hmm ok. Dan is onze werkinstructie dus niet mee? Ik heb die vorige maand nog gebruikt voor een klant.",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1790753520000",
+      "replyToId": "1790752841000",
+      "from": {
+        "name": "Lotte Verhaegen",
+        "email": "lotte.verhaegen@sdworx.example"
+      },
+      "createdAt": "2026-09-30T09:32:00+02:00",
+      "body": "Bram, je mail is binnen, dank je. Daar staat 20. Maar het is een kopie van 2023 op je OneDrive, is er geen officiele versie? Ik wil het zeker weten voor ik de klant terugbel. @Pieter De Smedt kan jij bevestigen?",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1790761860000",
+      "replyToId": "1790752841000",
+      "from": {
+        "name": "Lotte Verhaegen",
+        "email": "lotte.verhaegen@sdworx.example"
+      },
+      "createdAt": "2026-09-30T11:51:00+02:00",
+      "body": "Update: klant heeft intussen gemaild, de werknemer heeft online gelezen dat het 20 dagen is. Ik heb het ticket terug opengezet.",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1790763014000",
+      "replyToId": "1790752841000",
+      "from": {
+        "name": "Pieter De Smedt",
+        "email": "pieter.desmedt@sdworx.example"
+      },
+      "createdAt": "2026-09-30T12:10:14+02:00",
+      "body": "Sorry, zat de hele ochtend in een opleiding. Het is 20 dagen voor geboortes vanaf 1 januari 2023, voor arbeiders en bedienden hetzelfde. De eerste 3 dagen betaalt de werkgever aan 100%, de 17 andere betaalt de mutualiteit aan 82% van het begrensde brutoloon. Op te nemen binnen 4 maanden na de geboorte, de werknemer verwittigt de werkgever. De fiche op de Legal-BE kennisbank is de juiste, die heb ik in juni nog nagekeken.",
+      "attachments": [
+        {
+          "name": "Geboorteverlof België.pdf",
+          "path": "/sites/Legal-BE/Kennisbank/Verloven/Geboorteverlof België.pdf"
+        }
+      ],
+      "reactions": [
+        {
+          "type": "like",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "id": "1790763190000",
+      "replyToId": "1790752841000",
+      "from": {
+        "name": "Lotte Verhaegen",
+        "email": "lotte.verhaegen@sdworx.example"
+      },
+      "createdAt": "2026-09-30T12:13:10+02:00",
+      "body": "Top, merci Pieter. Ik bel Inge terug en pas het ticket aan.",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1790763322000",
+      "replyToId": "1790752841000",
+      "from": {
+        "name": "Bram Claessens",
+        "email": "bram.claessens@sdworx.example"
+      },
+      "createdAt": "2026-09-30T12:15:22+02:00",
+      "body": "Waarom vinden we die fiche niet via de assistent? Ik zet het op de agenda van de huddle volgende week.",
+      "attachments": [],
+      "reactions": [
+        {
+          "type": "like",
+          "count": 3
+        }
+      ]
+    }
+  ]
+}

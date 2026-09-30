@@ -1,0 +1,39 @@
+Call ID: 0d84a6f2-2b7c-4e19-b3d5-71c9e6a0f852
+Queue: Werknemerslijn Veldra Belgium (NL)
+Direction: Inbound
+Started: 2026-09-16T14:30:41+02:00
+Duration: 00:04:02
+Agent: Stijn Mertens <stijn.mertens@sdworx.example>
+Caller: +32 4** ** ** 63
+Recording: yes (consent message played)
+Transcript: automatic speech recognition, nl-BE
+
+[00:00] Agent: SD Worx, goeiemiddag, met Stijn.
+[00:03] Caller: Ja, hallo, goeiemiddag. Ik werk bij Veldra, in het distributiecentrum in Laakdal, en ik had een vraag over mijn loonbrief.
+[00:11] Agent: Ja, zeker. Mag ik eerst uw personeelsnummer, dan zoek ik u op?
+[00:17] Caller: Eh, dat is vier vijf, nul negen, twee één.
+[00:22] Agent: Momentje. Ja, ik heb u gevonden. Ik zie u staan als arbeider in Laakdal, ploegenstelsel. Klopt dat?
+[00:29] Caller: Ja, dat klopt, in de late shift.
+[00:32] Agent: Oké. Wat is uw vraag?
+[00:35] Caller: Het gaat over de maaltijdcheques. Ik krijg er acht euro per dag. En een vriend van mij, die werkt bij een ander magazijn in Geel, die krijgt er tien. Dus ik vroeg me af, is dat bij ons een fout of zo?
+[00:53] Agent: Ah, maaltijdcheques. Wacht, we hebben daar een werkinstructie voor. Mag ik u even in de wacht zetten?
+[01:00] Caller: Ja, geen probleem.
+[01:02] [wachtmuziek 00:41]
+[01:43] Agent: Bent u daar nog?
+[01:46] Caller: Ja.
+[01:48] Agent: Ik heb het hier. Maaltijdcheques, bedragen en voorwaarden. Het maximum is acht euro per gewerkte dag. Daarvan betaalt de werkgever maximum zes euro eenennegentig en u zelf minstens één euro negen. Die één euro negen ziet u terug als inhouding op uw loonbrief.
+[02:05] Caller: Ja, die inhouding zie ik staan. Maar dan snap ik niet hoe mijn vriend er tien krijgt.
+[02:12] Agent: Tja, volgens wat ik hier heb is acht euro het wettelijk maximum, dus meer dan acht kan eigenlijk niet voor een maaltijdcheque. Misschien krijgt hij er nog iets anders bij, ecocheques of een ander voordeel, en telt hij dat mee?
+[02:28] Caller: Nee, hij zei echt tien euro op zijn kaart, van Pluxee of Edenred, ik weet het niet meer.
+[02:36] Agent: Hm. Dan zou ik het niet weten. Mogelijk is het een andere regeling bij zijn werkgever, of heeft hij het verkeerd gezien. Bij u is het in elk geval correct, acht euro is het maximum en dat krijgt u ook.
+[02:52] Caller: Oké. Dus bij ons is alles juist.
+[02:55] Agent: Ja, bij u is het juist berekend. Ik zie ook het aantal cheques, eenentwintig in augustus, dat komt overeen met uw gewerkte dagen.
+[03:05] Caller: Ja, dat klopt, ik had een week verlof.
+[03:08] Agent: En uw eigen bijdrage, eenentwintig keer één euro negen, dat is tweeëntwintig euro negenentachtig, die staat ook juist ingehouden.
+[03:17] Caller: Ja, ik zie dat staan. Maar ik dacht, als het bij een ander bedrijf tien is, dan is er misschien iets veranderd en is dat bij ons nog niet aangepast.
+[03:30] Agent: Nee, voor zover ik weet is er niets veranderd. Wij volgen wat in de werkinstructie staat, en dat is acht euro.
+[03:39] Caller: Oké, als u het zegt.
+[03:42] Agent: Dan klopt dat. Nog iets anders dat ik voor u kan nakijken?
+[03:47] Caller: Nee, nee, dat was het. Ik ga het tegen hem zeggen dat hij [onverstaanbaar] eens moet nakijken.
+[03:55] Agent: Doe dat. Nog een fijne dag.
+[03:57] Caller: Merci, u ook. Dag.

@@ -1,0 +1,237 @@
+WEBVTT
+
+NOTE
+Meeting: Veldra handover, Jonas and Elif
+Date: 2026-09-29 09:30 (Europe/Brussels)
+Organiser: Jonas Peeters (jonas.peeters@sdworx.example)
+Attendees: Jonas Peeters, Elif Aydin
+Transcript: generated automatically by Microsoft Teams
+Duration: 00:12:43
+
+00:00:04.120 --> 00:00:06.742
+<v Jonas Peeters>Morning Elif. Can you hear me?</v>
+
+00:00:07.087 --> 00:00:10.080
+<v Elif Aydin>Yes, morning. I can hear you fine.</v>
+
+00:00:11.028 --> 00:00:18.465
+<v Jonas Peeters>Good. I have a hard stop at ten, sorry, I have a Protime onboarding session. So let's go fast.</v>
+
+00:00:19.554 --> 00:00:29.954
+<v Elif Aydin>No problem. I read the account plan you sent last week. And I have the contact list from the Veldra folder. I have quite a few questions.</v>
+
+00:00:30.164 --> 00:00:44.268
+<v Jonas Peeters>Okay. First thing about that account plan. It's from 2022, Hilde wrote it. It's still the best overview of the account, that's why I sent it. But a lot of the names in it are wrong now.</v>
+
+00:00:44.557 --> 00:00:45.698
+<v Elif Aydin>Which ones?</v>
+
+00:00:46.180 --> 00:00:56.951
+<v Jonas Peeters>Let's go through it. On the Veldra side, the plan has Paul Verbeke as HR director Benelux and main decision maker. Paul left Veldra in 2024. Forget him.</v>
+
+00:00:57.569 --> 00:00:59.450
+<v Elif Aydin>Okay. Who replaced him?</v>
+
+00:01:00.314 --> 00:01:15.529
+<v Jonas Peeters>Nobody directly. Veldra created a group role. Charlotte Dubois, group HR director Europe, since June 2024. She's based in Amsterdam, and she decides on HR and payroll for all countries. If something needs a signature or a budget, it's Charlotte.</v>
+
+00:01:15.902 --> 00:01:20.376
+<v Elif Aydin>I saw her name in the invite for the quarterly review.</v>
+
+00:01:21.377 --> 00:01:32.518
+<v Jonas Peeters>Yes, she was there on the seventeenth. She's direct, she prefers a short answer and a date over a long explanation. And she speaks French, so that helps you.</v>
+
+00:01:33.129 --> 00:01:36.121
+<v Elif Aydin>Good to know. And day to day?</v>
+
+00:01:36.586 --> 00:01:47.356
+<v Jonas Peeters>Day to day for Belgium and the Netherlands is Mark Janssen, payroll manager Benelux. He's fine, very precise. For Germany it's Anja Keller, HR business partner in Düsseldorf.</v>
+
+00:01:48.177 --> 00:01:50.429
+<v Elif Aydin>Okay. Then on our side.</v>
+
+00:01:50.971 --> 00:02:04.334
+<v Jonas Peeters>Right. This is the part where the plan is most wrong. Belgium and the Netherlands, your first person is Sofie Hermans, service delivery manager Benelux. She's also the escalation contact for Benelux. Since March 2025.</v>
+
+00:02:05.430 --> 00:02:09.163
+<v Elif Aydin>The plan says Wim Van den Broeck for escalation.</v>
+
+00:02:09.604 --> 00:02:27.782
+<v Jonas Peeters>Yes. Wim had Sofie's job until March last year. Then he moved to the Innovapay programme office, he runs migrations now. He's still here, he's nice, but he's not on Veldra anymore. If you escalate to Wim, he'll just forward it to Sofie and you've lost a day.</v>
+
+00:02:28.630 --> 00:02:31.253
+<v Elif Aydin>Okay. Sofie for Benelux, also escalation.</v>
+
+00:02:32.189 --> 00:02:47.774
+<v Jonas Peeters>And the annex B we signed in March 2025 names her. That annex is the one document you can trust for Belgium and the Netherlands. Service levels, contacts, the whole calendar. It's signed, so if the customer disagrees, that's what counts.</v>
+
+00:02:48.405 --> 00:02:50.657
+<v Elif Aydin>Only Belgium and the Netherlands?</v>
+
+00:02:51.076 --> 00:02:59.254
+<v Jonas Peeters>Only those two. The other countries have their own contracts through the local SD Worx companies. That's why it's so messy.</v>
+
+00:03:00.005 --> 00:03:00.775
+<v Elif Aydin>Okay.</v>
+
+00:03:01.320 --> 00:03:22.460
+<v Jonas Peeters>Belgium. Payroll is on Innovapay since January 2025, before that it was the old Belgian engine. Laakdal is the big one, the distribution centre, most of the workers. And the office in Brussels. They also have the Flex Income Plan since 2024. For that, Nadia Bouchama in Reward, she configured it and she knows every detail.</v>
+
+00:03:23.440 --> 00:03:26.433
+<v Elif Aydin>Nadia, okay. I know her a bit.</v>
+
+00:03:26.728 --> 00:03:33.795
+<v Jonas Peeters>Netherlands. The plan says they're on the legacy Dutch engine and that a migration is planned for 2023.</v>
+
+00:03:34.339 --> 00:03:36.220
+<v Elif Aydin>Yes, I read that.</v>
+
+00:03:36.796 --> 00:03:49.788
+<v Jonas Peeters>That's old. The Netherlands went live on Innovapay in April 2024. A year later than in the plan, but it's done. And Protime since last year. It's the quietest country, honestly. Sofie covers it.</v>
+
+00:03:50.722 --> 00:03:53.715
+<v Elif Aydin>So the Netherlands also goes to Sofie.</v>
+
+00:03:54.553 --> 00:03:56.435
+<v Jonas Peeters>Yes, Benelux is Sofie.</v>
+
+00:04:57.250 --> 00:04:58.020
+<v Elif Aydin>Germany?</v>
+
+00:04:58.889 --> 00:05:14.845
+<v Jonas Peeters>Germany is Katrin Weber, implementation lead in Düsseldorf. She did the Innovapay implementation and she still runs it. Katrin keeps a status page on the implementation wiki with the timeline and the open points. She'll walk you through it, it's her project.</v>
+
+00:05:15.798 --> 00:05:21.383
+<v Elif Aydin>I have a call with Anja this afternoon actually. I wanted to introduce myself.</v>
+
+00:05:21.811 --> 00:05:33.692
+<v Jonas Peeters>Good, good. Anja is nice. She had a tough summer. Ask Katrin if you want the details, I don't want to give you half of it now, we don't have time.</v>
+
+00:05:33.962 --> 00:05:37.696
+<v Elif Aydin>Okay. I'll read the wiki page before the call.</v>
+
+00:05:38.470 --> 00:05:48.130
+<v Jonas Peeters>France. This one changed this year. The contact list you have probably still has someone at Paie et RH Solutions, with their old email address.</v>
+
+00:05:48.402 --> 00:05:52.876
+<v Elif Aydin>Yes, there's a name with a paieetrh domain. I wasn't sure.</v>
+
+00:05:53.782 --> 00:06:16.033
+<v Jonas Peeters>SD Worx bought Paie et RH Solutions and they've been integrated this year. Those old addresses, I wouldn't rely on them. Your contact for France is Julie Martin, service manager for key accounts at SD Worx France. She joined with the integration and she wrote to me in April to introduce herself. She had already met Charlotte in Paris.</v>
+
+00:06:16.444 --> 00:06:19.436
+<v Elif Aydin>Julie Martin. Is she French speaking only?</v>
+
+00:06:20.398 --> 00:06:25.613
+<v Jonas Peeters>No, her English is good. But she'll like it if you speak French.</v>
+
+00:06:25.980 --> 00:06:27.861
+<v Elif Aydin>That I can do.</v>
+
+00:07:13.459 --> 00:07:24.599
+<v Jonas Peeters>Then Spain. This is the one I really want you to remember. Spain is Marta Llorens, payroll service manager in Barcelona. Managed payroll. Office in Barcelona and nine stores.</v>
+
+00:07:25.400 --> 00:07:30.985
+<v Elif Aydin>There's a working instruction for Spain in the Payroll ES folder, right? Instrucciones nómina.</v>
+
+00:07:32.066 --> 00:07:40.984
+<v Jonas Peeters>Yes, Marta wrote it. It's good, but it misses one thing. In Spain Veldra pays fourteen salaries. Twelve months plus two pagas extra.</v>
+
+00:07:41.388 --> 00:07:44.380
+<v Elif Aydin>The extra payments in June and December.</v>
+
+00:07:44.731 --> 00:08:03.280
+<v Jonas Peeters>Exactly. And the instruction says all staff get them in full in June and December. That was true when she wrote it. But since the store collective agreement of 2025, the store staff get the two extra payments prorated over the twelve months. Prorrateo. So every month a bit.</v>
+
+00:08:03.549 --> 00:08:05.060
+<v Elif Aydin>And the office?</v>
+
+00:08:05.893 --> 00:08:15.182
+<v Jonas Peeters>The office staff still get them in full in June and December. So you have two groups in one company with two different systems.</v>
+
+00:08:15.778 --> 00:08:18.401
+<v Elif Aydin>And that's not in the instruction.</v>
+
+00:08:18.928 --> 00:08:36.365
+<v Jonas Peeters>It's not written down anywhere, except in a Teams chat Marta sent me last year when it changed. Marta knows it. Nobody else does. If a store manager in Madrid calls in June asking why there is no paga extra on the payslip, that's the reason.</v>
+
+00:08:36.959 --> 00:08:39.581
+<v Elif Aydin>I would never have found that.</v>
+
+00:08:39.829 --> 00:08:49.118
+<v Jonas Peeters>No. That's exactly my worry. If Marta is on holiday, nobody knows. So please, when you meet her, ask her to update the instruction.</v>
+
+00:08:49.333 --> 00:08:55.659
+<v Elif Aydin>I'll put it on my list. Marta, update the Spanish instruction with prorrateo for the stores.</v>
+
+00:09:36.157 --> 00:09:37.668
+<v Jonas Peeters>Poland. Last one.</v>
+
+00:09:38.386 --> 00:09:43.601
+<v Elif Aydin>Veldra has six entities now, right? So Poland is one of ours too?</v>
+
+00:09:44.053 --> 00:10:00.379
+<v Jonas Peeters>No. Poland is not a payroll customer. Not yet. Veldra has the shared service centre in Wrocław, about two hundred and fifty people, and Tomasz Nowak from our Polish payroll team is scoping it for a go-live on the first of January 2027.</v>
+
+00:10:01.370 --> 00:10:03.252
+<v Elif Aydin>Is there a contract?</v>
+
+00:10:03.911 --> 00:10:16.163
+<v Jonas Peeters>No. Nothing is signed. Tomasz posted a status in the account channel in August, read that. And please don't promise Charlotte a date. If she asks, it's scoping, and Tomasz owns it.</v>
+
+00:10:16.809 --> 00:10:19.801
+<v Elif Aydin>Okay. Scoping, Tomasz, no contract, no promises.</v>
+
+00:10:20.637 --> 00:10:21.407
+<v Jonas Peeters>Exactly.</v>
+
+00:10:21.944 --> 00:10:24.566
+<v Elif Aydin>Can I ask something more general?</v>
+
+00:10:25.264 --> 00:10:26.035
+<v Jonas Peeters>Sure.</v>
+
+00:10:26.528 --> 00:10:39.151
+<v Elif Aydin>I've been looking through the Veldra folder for a week, and I find three versions of everything. The plan, the contact list, the annex, notes. How do I know which document to trust?</v>
+
+00:10:39.969 --> 00:10:49.258
+<v Jonas Peeters>Honestly? For Belgium and the Netherlands, the annex. For the rest, people. Sofie, Katrin, Julie, Marta, Tomasz. The documents are always a year behind.</v>
+
+00:10:50.074 --> 00:10:51.956
+<v Elif Aydin>That's not very reassuring.</v>
+
+00:10:52.883 --> 00:11:02.542
+<v Jonas Peeters>No. I know. That's why I'm writing handover notes. They're a draft, half done. I'll share them this week, but check them with the people.</v>
+
+00:11:03.616 --> 00:11:12.534
+<v Elif Aydin>I have a list of questions on the service levels and the calendar. Should I go through those with you or with Sofie?</v>
+
+00:11:13.335 --> 00:11:19.291
+<v Jonas Peeters>With Sofie. She runs the calendar every month, she knows it better than I do.</v>
+
+00:11:20.017 --> 00:11:20.787
+<v Elif Aydin>Okay.</v>
+
+00:11:51.248 --> 00:12:03.499
+<v Jonas Peeters>So actions. I send you an intro email to Sofie, Katrin, Julie, Marta and Tomasz today. I share my handover notes this week. You shadow the October payroll for Belgium with Sofie.</v>
+
+00:12:04.294 --> 00:12:08.768
+<v Elif Aydin>And I take the Charlotte relationship from the next quarterly review.</v>
+
+00:12:09.594 --> 00:12:15.179
+<v Jonas Peeters>Yes. I'll do one more call with Charlotte together with you before the fifteenth.</v>
+
+00:12:15.655 --> 00:12:23.092
+<v Elif Aydin>And I talk to Marta about the Spanish instruction, and I go through the service level questions with Sofie.</v>
+
+00:12:23.458 --> 00:12:26.821
+<v Jonas Peeters>Perfect. Anything else urgent? I have two minutes.</v>
+
+00:12:27.773 --> 00:12:34.839
+<v Elif Aydin>No, I think I have enough to start. Thanks, Jonas. This was more useful than the whole folder.</v>
+
+00:12:35.425 --> 00:12:40.640
+<v Jonas Peeters>That's a bit sad, but thank you. Good luck with Anja this afternoon.</v>
+
+00:12:41.075 --> 00:12:42.215
+<v Elif Aydin>Thanks. Bye.</v>

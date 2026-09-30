@@ -1,0 +1,118 @@
+{
+  "team": null,
+  "channel": "Marta Llorens, Jonas Peeters",
+  "exportedAt": "2026-09-30T18:00:00+02:00",
+  "messages": [
+    {
+      "id": "1748940120000",
+      "replyToId": null,
+      "from": {
+        "name": "Jonas Peeters",
+        "email": "jonas.peeters@sdworx.example"
+      },
+      "createdAt": "2025-06-03T10:42:00+02:00",
+      "body": "Hi Marta, quick one. Mark Janssen got a question from the Iberia HR team: why do store staff not get a big payslip in June anymore? He thought all of Spain pays the extra month in June and December.",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1748940480000",
+      "replyToId": "1748940120000",
+      "from": {
+        "name": "Marta Llorens",
+        "email": "marta.llorens@sdworx.example"
+      },
+      "createdAt": "2025-06-03T10:48:00+02:00",
+      "body": "Hi Jonas. That changed this year. The new collective agreement for their stores says the two pagas extra are prorated for store staff (prorrateo). So they get 1/6 of the extra payments every month, 12 payslips instead of 14.",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1748940600000",
+      "replyToId": "1748940120000",
+      "from": {
+        "name": "Marta Llorens",
+        "email": "marta.llorens@sdworx.example"
+      },
+      "createdAt": "2025-06-03T10:50:00+02:00",
+      "body": "Office staff in Barcelona are not under the store agreement. They still get the paga extra in full in June and in December. Veldra Iberia still pays 14 salaries in total, only the timing is different for the stores.",
+      "attachments": [],
+      "reactions": [
+        {
+          "type": "like",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "1748940780000",
+      "replyToId": "1748940120000",
+      "from": {
+        "name": "Jonas Peeters",
+        "email": "jonas.peeters@sdworx.example"
+      },
+      "createdAt": "2025-06-03T10:53:00+02:00",
+      "body": "Clear, thanks. So a store assistant on 1,400 gross a month now sees roughly 1,633 every month and nothing extra in June?",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1748940960000",
+      "replyToId": "1748940120000",
+      "from": {
+        "name": "Marta Llorens",
+        "email": "marta.llorens@sdworx.example"
+      },
+      "createdAt": "2025-06-03T10:56:00+02:00",
+      "body": "Exactly. 1,400 x 2 / 12 = 233.33 extra per month. Some store managers were confused because the old payslips had the June peak. We explained it in the store meetings in February.",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1748941080000",
+      "replyToId": "1748940120000",
+      "from": {
+        "name": "Jonas Peeters",
+        "email": "jonas.peeters@sdworx.example"
+      },
+      "createdAt": "2025-06-03T10:58:00+02:00",
+      "body": "Is this in your working instructions for Veldra? I only have the version from January.",
+      "attachments": [
+        {
+          "name": "Instrucciones nomina Veldra.pdf",
+          "path": "/sites/Payroll-ES/Documentos/Clientes/Veldra Iberia/Instrucciones nomina Veldra.pdf"
+        }
+      ],
+      "reactions": []
+    },
+    {
+      "id": "1748941320000",
+      "replyToId": "1748940120000",
+      "from": {
+        "name": "Marta Llorens",
+        "email": "marta.llorens@sdworx.example"
+      },
+      "createdAt": "2025-06-03T11:02:00+02:00",
+      "body": "Not yet, sorry. The team knows it and the payroll setup is correct, the document still describes June and December for everyone. I will add a section after the summer closing.",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1748941440000",
+      "replyToId": "1748940120000",
+      "from": {
+        "name": "Jonas Peeters",
+        "email": "jonas.peeters@sdworx.example"
+      },
+      "createdAt": "2025-06-03T11:04:00+02:00",
+      "body": "Fine. I will answer Mark with this. Gracias!",
+      "attachments": [],
+      "reactions": [
+        {
+          "type": "like",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

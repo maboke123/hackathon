@@ -1,0 +1,162 @@
+WEBVTT
+
+NOTE
+Meeting: CS Belgium weekly huddle
+Date: 2026-09-24 08:45 (Europe/Brussels)
+Organiser: Bram Claessens (bram.claessens@sdworx.example)
+Attendees: Bram Claessens, Lotte Verhaegen, Stijn Mertens, Ellen Goossens
+Transcript: generated automatically by Microsoft Teams
+Duration: 00:10:54
+
+00:00:04.120 --> 00:00:07.483
+<v Bram Claessens>Goeiemorgen allemaal. Stijn, jij zit in Hasselt vandaag?</v>
+
+00:00:08.057 --> 00:00:10.309
+<v Stijn Mertens>Ja, ik ben er. Goeiemorgen.</v>
+
+00:00:11.404 --> 00:00:25.137
+<v Bram Claessens>Oké. Ellen is er ook bij vandaag, die heb ik uitgenodigd voor het puntje over SharePoint. Maar eerst de cijfers. Vorige week zaten we op tweehonderd achttien tickets, dat is iets meer dan normaal voor september.</v>
+
+00:00:26.123 --> 00:00:32.079
+<v Lotte Verhaegen>Dat is de start van het schooljaar. Veel vragen over studenten en over de premies.</v>
+
+00:00:33.169 --> 00:00:41.346
+<v Bram Claessens>Ja. De gemiddelde afhandeltijd is iets gestegen, van vier naar bijna vijf uur. Niet dramatisch, maar ik wil wel weten waarom.</v>
+
+00:00:41.911 --> 00:00:48.607
+<v Stijn Mertens>Ik denk dat ik het weet. Het zoeken duurt langer. Sinds dinsdag vind ik niks meer terug.</v>
+
+00:00:49.141 --> 00:01:00.652
+<v Lotte Verhaegen>Ja, dat wou ik ook zeggen. Als ik iets zoek in onze SharePoint, staat alles op gewijzigd deze week. Alles. Ik weet niet meer wat recent is en wat niet.</v>
+
+00:01:01.578 --> 00:01:03.089
+<v Bram Claessens>Hoe bedoel je?</v>
+
+00:01:04.103 --> 00:01:20.058
+<v Lotte Verhaegen>Gisteren zocht ik iets over ecocheques, en de eerste vijf resultaten stonden allemaal op gewijzigd dinsdag of woensdag. En de quick guide over geboorteverlof staat op gewijzigd gisteren. Normaal kijk ik naar die datum om te zien welke versie ik moet nemen.</v>
+
+00:01:20.307 --> 00:01:26.263
+<v Stijn Mertens>Bij mij hetzelfde. Ik dacht eerst dat iemand van Legal alles aan het nakijken was.</v>
+
+00:01:26.556 --> 00:01:31.400
+<v Ellen Goossens>Mag ik even? Dat is door ons. Dat is de template migratie.</v>
+
+00:01:32.495 --> 00:01:33.636
+<v Lotte Verhaegen>De wat?</v>
+
+00:01:34.149 --> 00:01:50.104
+<v Ellen Goossens>Ik heb vorige week een mail gestuurd naar iedereen in België. Van tweeëntwintig tot zesentwintig september zetten we alle documenten op de SharePoint sites van CS Belgium, Legal en Staffing in de nieuwe huisstijl. Nieuw logo, nieuwe lettertypes, nieuwe kop en voet.</v>
+
+00:01:51.009 --> 00:01:54.001
+<v Lotte Verhaegen>Oh. Die mail heb ik dan gemist.</v>
+
+00:01:54.320 --> 00:01:56.201
+<v Stijn Mertens>Ik ook, eerlijk gezegd.</v>
+
+00:01:56.679 --> 00:02:13.005
+<v Ellen Goossens>Dat dacht ik al. Het gebeurt automatisch, met een service account, svc template migration. Dat opent elk document, past de opmaak aan en slaat het terug op. En daardoor verandert de datum van laatste wijziging, en bij gewijzigd door staat dat service account.</v>
+
+00:02:13.917 --> 00:02:15.428
+<v Bram Claessens>Maar de inhoud?</v>
+
+00:02:16.442 --> 00:02:28.694
+<v Ellen Goossens>De inhoud wordt niet aangeraakt. En ook niet nagekeken. Dat stond ook in de mail. Een document van 2021 blijft een document van 2021, ook als er gewijzigd deze week op staat.</v>
+
+00:02:29.303 --> 00:02:38.221
+<v Stijn Mertens>Dat is net het probleem. Aan de telefoon kijk ik naar die datum. Als er deze week staat, denk ik, dat is nagekeken.</v>
+
+00:02:38.583 --> 00:02:42.316
+<v Ellen Goossens>Ik snap het. Dat hadden we beter moeten uitleggen.</v>
+
+00:02:43.347 --> 00:02:45.970
+<v Bram Claessens>Kan je dat terugdraaien? De datum?</v>
+
+00:02:46.292 --> 00:03:02.618
+<v Ellen Goossens>Nee, niet in SharePoint. Wat je wel kan doen is de versiegeschiedenis openen. Daar zie je elke versie, en dan zie je dat de vorige versie van voor de migratie bijvoorbeeld van 2022 is, door een collega. Dat is de echte laatste wijziging.</v>
+
+00:03:03.228 --> 00:03:07.702
+<v Lotte Verhaegen>Met een klant aan de lijn ga ik geen versiegeschiedenis openen.</v>
+
+00:03:08.319 --> 00:03:10.571
+<v Bram Claessens>Nee, dat is niet realistisch.</v>
+
+00:03:11.400 --> 00:03:19.208
+<v Ellen Goossens>Dat weet ik. Ik neem het mee. Misschien kunnen we in de zoekresultaten een ander veld tonen. Ik beloof niks.</v>
+
+00:06:09.870 --> 00:06:14.344
+<v Stijn Mertens>Nog iets in dezelfde sfeer. Er zijn twee documenten over maaltijdcheques.</v>
+
+00:06:15.326 --> 00:06:16.096
+<v Bram Claessens>Twee?</v>
+
+00:06:16.705 --> 00:06:28.216
+<v Stijn Mertens>Ja. Eentje bij onze werkinstructies, Maaltijdcheques, en eentje op de Legal site, Maaltijdcheques twintig zesentwintig of zoiets. Ik zag ze allebei in de zoekresultaten, allebei met gewijzigd deze week natuurlijk.</v>
+
+00:06:28.952 --> 00:06:30.834
+<v Lotte Verhaegen>Staat daar hetzelfde in?</v>
+
+00:06:31.091 --> 00:06:37.787
+<v Stijn Mertens>Geen idee. Ik gebruik altijd die van ons, bij de werkinstructies. Die andere heb ik nooit opengedaan.</v>
+
+00:06:38.305 --> 00:06:40.187
+<v Bram Claessens>Welke is de goede?</v>
+
+00:06:40.595 --> 00:06:42.847
+<v Stijn Mertens>Dat is net mijn vraag.</v>
+
+00:06:43.558 --> 00:06:52.476
+<v Ellen Goossens>In principe is Legal de bron voor wetgeving. Maar ik kan niet zeggen of jullie werkinstructie daarmee overeenkomt, dat moet iemand inhoudelijk bekijken.</v>
+
+00:06:52.819 --> 00:07:00.626
+<v Bram Claessens>Oké. Ik vraag het aan Pieter. Welk document leidend is voor maaltijdcheques, en of we die van ons moeten schrappen.</v>
+
+00:07:01.395 --> 00:07:10.313
+<v Ellen Goossens>En als jullie nog zulke dubbels zien, stuur ze naar mij. Voor de helft van jullie werkinstructies is er trouwens geen eigenaar meer.</v>
+
+00:07:10.531 --> 00:07:12.413
+<v Bram Claessens>Sinds Annick weg is.</v>
+
+00:07:13.497 --> 00:07:22.416
+<v Ellen Goossens>Ja. Veel van die documenten zijn van Annick, en daar staat niemand meer op. Die zijn dus ook al lang niet meer nagekeken.</v>
+
+00:07:22.818 --> 00:07:24.700
+<v Lotte Verhaegen>Welke zijn dat dan?</v>
+
+00:07:25.572 --> 00:07:30.787
+<v Ellen Goossens>Ik kan een lijst trekken. Maar dat zijn er een stuk of veertig.</v>
+
+00:07:31.003 --> 00:07:38.810
+<v Bram Claessens>Stuur die lijst maar. Dan verdelen we ze in het team. Niet deze maand, met de drukte, maar in oktober.</v>
+
+00:09:59.747 --> 00:10:06.814
+<v Bram Claessens>Oké, dan nog kort de planning. Stijn, jij hebt volgende week de Veldra werknemerslijn op maandag en dinsdag.</v>
+
+00:10:07.723 --> 00:10:10.345
+<v Stijn Mertens>Ja, dat staat in mijn agenda.</v>
+
+00:10:10.624 --> 00:10:12.876
+<v Bram Claessens>Lotte, alles rustig bij Havenkaai?</v>
+
+00:10:13.540 --> 00:10:21.348
+<v Lotte Verhaegen>Ja, rustig. Inge is met haar budget voor volgend jaar bezig, dus ik verwacht nog wel vragen over de indexering.</v>
+
+00:10:22.420 --> 00:10:26.153
+<v Bram Claessens>Oké. Laat het weten als je hulp nodig hebt.</v>
+
+00:10:26.663 --> 00:10:27.804
+<v Lotte Verhaegen>Doe ik.</v>
+
+00:10:28.266 --> 00:10:42.000
+<v Bram Claessens>Dan de acties. Ellen stuurt de lijst van werkinstructies zonder eigenaar. Ik vraag aan Pieter welk maaltijdcheque document leidend is. En iedereen, kijk niet blind naar gewijzigd op, kijk naar de versiegeschiedenis als het belangrijk is.</v>
+
+00:10:42.297 --> 00:10:45.290
+<v Ellen Goossens>En lees de mail van vorige week.</v>
+
+00:10:46.224 --> 00:10:49.957
+<v Bram Claessens>En lees de mail van Ellen, ja. Merci iedereen.</v>
+
+00:10:50.507 --> 00:10:52.019
+<v Stijn Mertens>Merci, tot later.</v>
+
+00:10:52.269 --> 00:10:53.039
+<v Lotte Verhaegen>Dag.</v>

@@ -1,0 +1,45 @@
+Message-ID: <PR3PR02MB6120.1B7D5E44@sdworx.example>
+Date: Fri, 18 Sep 2026 11:00:00 +0200
+From: Ellen Goossens <ellen.goossens@sdworx.example>
+To: All Belgium <all-belgium@sdworx.example>
+Subject: Nieuwe huisstijl in SharePoint-documenten van 22 tot 26 september / Nouveau modèle dans les documents SharePoint du 22 au 26 septembre
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+
+(Version française plus bas)
+
+Beste collega's,
+
+Van maandag 22 tot vrijdag 26 september zetten we alle documenten op de SharePoint-sites CS-Belgium, Legal-BE en Staffing-BE om naar de nieuwe huisstijl (nieuw logo, lettertype en voettekst). Dat gebeurt automatisch met het serviceaccount svc-template-migration.
+
+Wat verandert er?
+- Alleen de opmaak: logo, kleuren, lettertype, kop- en voettekst.
+- De inhoud van de documenten wordt niet gewijzigd en ook niet nagekeken. Een document dat verouderd was, blijft verouderd.
+
+Waar moet je op letten?
+- De datum "Gewijzigd" van elk omgezet document wordt de datum van de migratie, en "Gewijzigd door" wordt svc-template-migration. In de zoekresultaten ziet het er dus uit alsof alles deze week bewerkt is. Dat klopt niet.
+- De versiegeschiedenis blijft bewaard. Wil je weten wanneer de inhoud echt het laatst is aangepast, kijk dan in de versiegeschiedenis naar de laatste versie vóór 22 september.
+- Documenten die je tijdens de migratie open hebt, worden later opnieuw geprobeerd. Sla je werk dus tijdig op.
+
+Vragen of iets dat niet goed is omgezet? Meld het via het formulier Knowledge support op de intranetpagina van Knowledge and content operations.
+
+Bedankt,
+Ellen
+
+---
+
+Chers collègues,
+
+Du lundi 22 au vendredi 26 septembre, tous les documents des sites SharePoint CS-Belgium, Legal-BE et Staffing-BE passent au nouveau modèle graphique. La conversion est automatique, via le compte de service svc-template-migration.
+
+- Seule la mise en page change. Le contenu n'est ni modifié ni relu.
+- La date "Modifié" devient la date de la migration et "Modifié par" devient svc-template-migration. Un document ancien paraîtra donc récent dans les résultats de recherche.
+- L'historique des versions est conservé. Consultez la dernière version avant le 22 septembre pour connaître la date réelle de la dernière modification du contenu.
+
+Merci,
+Ellen
+
+--
+Ellen Goossens
+Knowledge manager
+Knowledge and content operations, SD Worx | Antwerpen

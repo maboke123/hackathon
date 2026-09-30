@@ -1,0 +1,118 @@
+{
+  "team": "Veldra account team",
+  "channel": "General",
+  "exportedAt": "2026-09-30T18:00:00+02:00",
+  "messages": [
+    {
+      "id": "1787038200000",
+      "replyToId": null,
+      "from": {
+        "name": "Tomasz Nowak",
+        "email": "tomasz.nowak@sdworx.example"
+      },
+      "createdAt": "2026-08-18T09:30:00+02:00",
+      "body": "Status Veldra Polska: scoping is ongoing, target go-live 1 January 2027 for the shared service centre in Wrocław (about 250 employees). No contract signed yet. We had the second workshop with their finance team last week. Still waiting for the payroll data extract from their current provider and a decision on whether they want PPK handled by us.",
+      "attachments": [],
+      "reactions": [
+        {
+          "type": "like",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "id": "1787038500000",
+      "replyToId": "1787038200000",
+      "from": {
+        "name": "Jonas Peeters",
+        "email": "jonas.peeters@sdworx.example"
+      },
+      "createdAt": "2026-08-18T09:35:00+02:00",
+      "body": "Thanks Tomasz. Charlotte told me the proposal goes to their board in October. If that slips, 1 January is tight?",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1787038980000",
+      "replyToId": "1787038200000",
+      "from": {
+        "name": "Tomasz Nowak",
+        "email": "tomasz.nowak@sdworx.example"
+      },
+      "createdAt": "2026-08-18T09:43:00+02:00",
+      "body": "Very tight. We need a signature by mid October at the latest, otherwise I would propose 1 April 2027. I will keep this channel posted.",
+      "attachments": [],
+      "reactions": [
+        {
+          "type": "like",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "1787044800000",
+      "replyToId": null,
+      "from": {
+        "name": "Ruben Jacobs",
+        "email": "ruben.jacobs@sdworx.example"
+      },
+      "createdAt": "2026-08-18T11:20:00+02:00",
+      "body": "Question for Germany: can I plan the Protime rollout for the Düsseldorf office and the stores in October? I have two consultants free from week 41.",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1787045700000",
+      "replyToId": "1787044800000",
+      "from": {
+        "name": "Katrin Weber",
+        "email": "katrin.weber@sdworx.example"
+      },
+      "createdAt": "2026-08-18T11:35:00+02:00",
+      "body": "Not yet. Payroll on Innovapay is stable since the go-live on 1 July, but the Betriebsrat has not agreed to Protime. Time registration needs a Betriebsvereinbarung in Germany, and they have questions about who sees the clocking data. Anja expects their next session end of August.",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1787046000000",
+      "replyToId": "1787044800000",
+      "from": {
+        "name": "Ruben Jacobs",
+        "email": "ruben.jacobs@sdworx.example"
+      },
+      "createdAt": "2026-08-18T11:40:00+02:00",
+      "body": "Ok, then I keep the consultants on option only. Let me know as soon as you hear something.",
+      "attachments": [],
+      "reactions": [
+        {
+          "type": "like",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "1787046600000",
+      "replyToId": "1787044800000",
+      "from": {
+        "name": "Jonas Peeters",
+        "email": "jonas.peeters@sdworx.example"
+      },
+      "createdAt": "2026-08-18T11:50:00+02:00",
+      "body": "Agreed. Protime Germany stays on hold until the Betriebsrat signs. Katrin, can you add that to the status page on the wiki? People keep asking me.",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1787046900000",
+      "replyToId": "1787044800000",
+      "from": {
+        "name": "Katrin Weber",
+        "email": "katrin.weber@sdworx.example"
+      },
+      "createdAt": "2026-08-18T11:55:00+02:00",
+      "body": "Will do.",
+      "attachments": [],
+      "reactions": []
+    }
+  ]
+}

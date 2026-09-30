@@ -1,0 +1,34 @@
+Message-ID: <AM6PR10MB2214.9F04B6C3@sdworx.example>
+Date: Thu, 27 Aug 2026 09:15:00 +0200
+From: Katrin Weber <katrin.weber@sdworx.example>
+To: Jonas Peeters <jonas.peeters@sdworx.example>, Ruben Jacobs <ruben.jacobs@sdworx.example>
+Subject: Veldra DE: Protime on hold, no agreement from the Betriebsrat
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+
+Hi Jonas, hi Ruben,
+
+Anja Keller called me yesterday after the meeting of the Betriebsrat. Short version: they did not approve the Betriebsvereinbarung for time registration, so the Protime rollout in the stores stays on hold.
+
+What I understood from Anja:
+- Time registration is a co-determination topic (Mitbestimmung), so Veldra cannot introduce Protime in the stores without an agreement with the Betriebsrat.
+- The Betriebsrat is not against clocking as such. Their concerns are the myProtime app on private phones, who can see the clocking data, and whether the data could be used for performance checks of individual store staff.
+- They asked for a written description of the roles and access rights, and for a guarantee that location data is not stored.
+- The next ordinary meeting is on 8 October. Anja will try to put it on the agenda again, but she expects December at the earliest for a signed agreement.
+
+Payroll is not affected. Innovapay has been live since 1 July and the August run went fine. Store hours still come in through the Excel template, as in July and August. That stays the workaround until Protime can start.
+
+Ruben, can you prepare a one-page description of the Protime set-up for the stores (roles, who sees what, data retention, no location tracking) so Anja can share it with the Betriebsrat? In German if possible, otherwise English and I will translate. Before 25 September would be good.
+
+Jonas, you might want to mention this to Charlotte Dubois before the Q3 review so it does not come as a surprise.
+
+I will keep the status in the project log.
+
+Best,
+Katrin
+
+--
+Katrin Weber
+Innovapay implementation lead Germany
+SD Worx | Düsseldorf
++49 211 *** ** 83

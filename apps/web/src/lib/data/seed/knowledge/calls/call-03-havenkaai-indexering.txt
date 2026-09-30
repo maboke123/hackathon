@@ -1,0 +1,37 @@
+Call ID: a3f9c512-6e08-4b7d-9d24-c85b1f37e0a9
+Queue: Klantenservice Payroll voor kmo (NL)
+Direction: Inbound
+Started: 2026-09-25T10:05:18+02:00
+Duration: 00:04:20
+Agent: Lotte Verhaegen <lotte.verhaegen@sdworx.example>
+Caller: +32 3 *** ** 41 (Inge Claes)
+Recording: yes (consent message played)
+Transcript: automatic speech recognition, nl-BE
+
+[00:00] Agent: Goeiemorgen, SD Worx klantenservice, met Lotte.
+[00:02] Caller: Dag Lotte, Inge Claes hier, van Havenkaai.
+[00:05] Agent: Dag Inge. Alles goed?
+[00:08] Caller: Ja hoor, druk, het is budgettijd. Daarom bel ik ook eigenlijk. Ik ben de loonkost voor volgend jaar aan het opmaken en ik zit met de indexering van januari.
+[00:21] Agent: Ja. Voor de bedienden of voor de arbeiders?
+[00:24] Caller: Voor de bedienden, die zitten in het PC 200. De arbeiders heeft onze boekhouder al gedaan met het percentage van de sector.
+[00:34] Agent: Oké. In het PC 200 wordt er inderdaad één keer per jaar geïndexeerd, in januari.
+[00:41] Caller: Ja, dat weet ik. Maar mijn vraag is specifiek. Wij hebben een stuk of twaalf mensen die boven de vierduizend euro bruto zitten. De planners, de ploegleiders, de IT, de mensen van finance. En ik las in De Tijd dat die niet meer volledig geïndexeerd worden? Iets met een centen index?
+[01:01] Agent: Ah. Eh, dat moet ik even nakijken. Mag ik u heel even in de wacht zetten?
+[01:08] Caller: Ja, doe maar.
+[01:10] [wachtmuziek 01:03]
+[02:13] Agent: Inge, ik ben er terug.
+[02:16] Caller: Ja.
+[02:17] Agent: Ik heb hier onze fiche over de indexering van het PC 200 van januari twintig zesentwintig. Daar was het twee komma eenentwintig procent. Maar dat gaat over dit jaar, en over een grens van vierduizend euro staat daar niets in.
+[02:33] Caller: Nee, dat is het dus. Ik moet weten wat ik voor januari twintig zevenentwintig moet budgetteren. Als die mensen boven de vierduizend maar gedeeltelijk geïndexeerd worden, dan scheelt dat wel wat in mijn budget.
+[02:46] Agent: Ja, dat begrijp ik. Eerlijk gezegd, ik heb er ook iets over gehoord, maar ik weet niet hoe het precies werkt en of het al van toepassing is voor de privésector. Ik wil u daar niets verkeerds over zeggen.
+[03:03] Caller: Nee, liever niet, want ik moet dat voorleggen aan de zaakvoerder.
+[03:08] Agent: Wat ik voorstel, ik vraag het na bij onze juridische dienst, en ik bel u terug. Dan kan ik u meteen zeggen hoe het werkt en met welk percentage u best rekent.
+[03:21] Caller: Wanneer zou dat zijn? Want ik moet mijn budget half oktober indienen.
+[03:26] Agent: Ik probeer het nog deze week, anders begin volgende week. Dat moet ruim op tijd zijn.
+[03:33] Caller: Oké. En als u dat dan ook even op mail kunt zetten, met een voorbeeld, dan kan ik dat zo doorsturen.
+[03:42] Agent: Ja, dat doe ik. Kunt u mij intussen de lijst geven van die twaalf mensen, of hun brutolonen? Dan kan ik er meteen een berekening bij maken.
+[03:53] Caller: Die zitten toch bij jullie in het systeem?
+[03:57] Agent: Ja, dat is waar, ik kan ze zelf opzoeken. Ik zet een filter op boven de vierduizend euro in de loonmotor. [onverstaanbaar] Excuseer, ik zei, ik zoek ze zelf op.
+[04:09] Caller: Top. Dan hoor ik u nog.
+[04:12] Agent: Zeker. Nog een fijne dag, Inge.
+[04:16] Caller: U ook, dag.

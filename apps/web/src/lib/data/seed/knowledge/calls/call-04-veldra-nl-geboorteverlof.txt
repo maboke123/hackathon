@@ -1,0 +1,37 @@
+Call ID: 9e27b4d0-1c63-4a8f-a5e2-60f8d3c7b194
+Queue: Servicedesk Payroll NL, key accounts
+Direction: Inbound
+Started: 2026-09-10T13:20:33+02:00
+Duration: 00:03:14
+Agent: Daan Visser <daan.visser@sdworx.example>
+Caller: +31 20 *** ** 17 (Noor Bakker)
+Recording: yes (consent message played)
+Transcript: automatic speech recognition, nl-NL
+
+[00:00] Agent: Goedemiddag, servicedesk SD Worx, u spreekt met Daan.
+[00:03] Caller: Hoi Daan, met Noor Bakker, HR-adviseur bij Veldra, op het hoofdkantoor in Amsterdam.
+[00:09] Agent: Hoi Noor. Waar kan ik je mee helpen?
+[00:13] Caller: Ik heb een medewerker, bij ons op finance, zijn vriendin is vorige week bevallen. En hij vraagt hoeveel verlof hij nu precies heeft en wat hij daarvoor doorbetaald krijgt. Ik wil het even zeker weten voordat ik hem antwoord.
+[00:28] Agent: Geboorteverlof dus. Even kijken, ik zoek het op in onze kennisbank.
+[00:34] Caller: Prima.
+[00:35] Agent: Ik krijg hier een paar resultaten. Er staat ook een Belgische werkinstructie tussen, die laat ik even liggen. Ik pak het document van onze eigen juridische collega's, gewoon Geboorteverlof, laatst nagekeken in mei. Dat is de goede.
+[00:50] Caller: Oké.
+[00:51] Agent: Hij heeft eerst recht op één keer zijn wekelijkse arbeidsduur geboorteverlof. Werkt hij fulltime?
+[00:57] Caller: Nee, hij werkt tweeëndertig uur, vier dagen.
+[01:01] Agent: Dan heeft hij tweeëndertig uur geboorteverlof. Dat betalen jullie als werkgever honderd procent door, en hij moet het opnemen binnen vier weken na de geboorte.
+[01:12] Caller: Binnen vier weken. De bevalling was vorige week donderdag, dus dat moet hij dan snel plannen.
+[01:19] Agent: Klopt. En daarnaast is er het aanvullend geboorteverlof. Dat is maximaal vijf keer zijn wekelijkse arbeidsduur, dus bij hem maximaal honderdzestig uur, op te nemen binnen zes maanden na de geboorte.
+[01:31] Caller: En dat wordt ook doorbetaald?
+[01:34] Agent: Niet door jullie. Dat loopt via het UWV. Hij krijgt dan zeventig procent van zijn dagloon, tot het maximum dagloon. Jullie vragen de uitkering als werkgever aan bij het UWV. Het UWV betaalt aan jullie, en jullie betalen het via de loonstrook aan hem uit.
+[01:52] Caller: Ja, zo gaat het bij zwangerschapsverlof ook. Moet hij eerst die ene week hebben opgenomen?
+[01:59] Agent: Ja, eerst de week geboorteverlof, daarna pas het aanvullende verlof. En hij moet het aanvullend verlof minstens vier weken van tevoren bij jullie aanvragen.
+[02:09] Caller: Mag hij dat aanvullende verlof ook in delen opnemen? Hij wil een paar dagen per week thuis zijn.
+[02:16] Agent: Ja, dat mag, als jullie akkoord gaan. Het moet wel allemaal binnen die zes maanden.
+[02:23] Caller: Oké, helder. En in Innova pay, moet ik daar iets aparts voor invoeren?
+[02:29] Agent: Voor de eerste week niets bijzonders, dat is gewoon doorbetaald verlof met een eigen verlofcode. Voor het aanvullend verlof zet je de UWV-uitkering als verrekening in de invoer. Ik stuur je de link naar het document en de verlofcodes even per mail, dan heb je het op papier.
+[02:49] Caller: Graag. Mijn e-mailadres heb je?
+[02:51] Agent: Ik zie noor punt bakker at veldra punt example staan. Klopt dat?
+[02:57] Caller: Ja, dat klopt.
+[02:59] Agent: Dan komt het er zo aan. Kan ik nog ergens anders mee helpen?
+[03:05] Caller: Nee, dit was het. Dank je wel, Daan.
+[03:10] Agent: Graag gedaan. Fijne middag nog.

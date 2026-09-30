@@ -50,6 +50,43 @@ The app creates one account for three employees in the dataset. The password for
 
 The accounts are chosen in `src/lib/auth/demo-accounts.ts`: the HR manager, the warehouse manager and a full-time member of the warehouse team. Add an employee id to `employeeIds` there to get another one-click account. Signing up with any other employee email links the new account to that employee.
 
+## Knowledge corpus
+
+For the SD Worx challenge (find, trust and share knowledge) there is a second dataset: synthetic internal SD Worx knowledge, in `apps/web/src/lib/data/seed/knowledge`. It is raw and unlabelled, so we can build and demo labelling on it. All people, customers and email domains are fictional.
+
+| Path                | What                                                                                                                                   |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `documents/`        | 22 documents. Markdown source with source-system front matter (path, created, modified, modified by), rendered to PDF. One CSV export. |
+| `emails/`           | 12 emails as `.eml`                                                                                                                    |
+| `calls/`            | 5 phone call transcripts from speech recognition                                                                                       |
+| `meetings/`         | 4 Teams meeting transcripts as WebVTT                                                                                                  |
+| `chats/`            | 5 Teams channel and direct message exports as JSON                                                                                     |
+| `tickets.json`      | Service desk tickets, with the document each resolution relied on                                                                      |
+| `agent-log.json`    | What the existing internal assistant returned for real questions                                                                       |
+| `people.json`       | SD Worx colleagues, including people who left and a service account                                                                    |
+| `customers.json`    | Havenkaai Logistics (same company as the app dataset) and Veldra Sportswear, a fictional stand-in for Nike in six countries            |
+| `ground-truth.json` | Answer key: owner, scope, status and planted contradictions per item, plus the 13 facts they agree or disagree on                      |
+
+The corpus follows the two examples from the brief:
+
+- **Urgent call.** Havenkaai asks about birth leave for an employee. The assistant returns three documents: a work instruction without owner, an English quick guide "modified last week" and a Dutch document that applies to the Netherlands. A colleague emails a fourth, personal copy. The correct document (20 days) sits on the legal site and is never returned. The consultant answers 15 days and the customer follows up.
+- **Customer onboarding.** Elif takes over the Veldra account from Jonas. The 2022 account plan and the contact list are outdated (cut-off date, escalation contact, HR director, Dutch payroll engine), the German status page still shows the old go-live date, and the Spanish pay rule exists only in a chat.
+
+Traps worth knowing:
+
+- **Modified is not verified.** A brand template migration touched every file on three Belgian SharePoint sites between 22 and 26 September 2026, so their modified date says nothing about their content.
+- **Knowledge outside documents.** The EUR 4,000 indexation cap and the Spanish prorrateo rule are only explained in chats, meetings and a newsletter.
+- **Control items.** Some documents are old but correct and reviewed (holiday pay, ecocheques, Flex Income Plan). Do not flag everything old as outdated.
+
+The answer key lists the planned contradictions only. The items were written in parallel and never cross-checked on purpose, so expect more small inconsistencies, as in real data.
+
+`ground-truth.json` is for building and testing. Do not show it in the app as source data. After editing a Markdown document, regenerate its PDF from `apps/web`:
+
+```sh
+pnpm knowledge:pdf            # all documents
+pnpm knowledge:pdf doc-05     # one document
+```
+
 ## Payroll figures are simplified
 
 Payslips are calculated in `payroll.ts` with a simplified model. They look realistic but are not legally correct, so present them as simulated.

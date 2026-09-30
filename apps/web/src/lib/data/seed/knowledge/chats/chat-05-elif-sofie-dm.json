@@ -1,0 +1,111 @@
+{
+  "team": null,
+  "channel": "Elif Aydin, Sofie Hermans",
+  "exportedAt": "2026-09-30T18:00:00+02:00",
+  "messages": [
+    {
+      "id": "1790751000000",
+      "replyToId": null,
+      "from": {
+        "name": "Elif Aydin",
+        "email": "elif.aydin@sdworx.example"
+      },
+      "createdAt": "2026-09-30T08:50:00+02:00",
+      "body": "Hi Sofie, I am taking over Veldra from Jonas. Quick question: which document do I trust for the payroll cut-off in Belgium? The account plan says the 20th.",
+      "attachments": [
+        {
+          "name": "Veldra account plan 2022.pdf",
+          "path": "/sites/Enterprise-Accounts/Shared Documents/Customers/Veldra/Veldra account plan 2022.pdf"
+        }
+      ],
+      "reactions": []
+    },
+    {
+      "id": "1790751300000",
+      "replyToId": "1790751000000",
+      "from": {
+        "name": "Sofie Hermans",
+        "email": "sofie.hermans@sdworx.example"
+      },
+      "createdAt": "2026-09-30T08:55:00+02:00",
+      "body": "Hi Elif, welcome! That plan is from 2022. The cut-off is the 18th of the month, it is in annex B of the service agreement that we signed in March 2025. That is the one to use.",
+      "attachments": [
+        {
+          "name": "Service agreement annex B 2025.pdf",
+          "path": "/sites/Enterprise-Accounts/Shared Documents/Customers/Veldra/Contracts/Service agreement annex B 2025.pdf"
+        }
+      ],
+      "reactions": [
+        {
+          "type": "like",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "1790751420000",
+      "replyToId": "1790751000000",
+      "from": {
+        "name": "Sofie Hermans",
+        "email": "sofie.hermans@sdworx.example"
+      },
+      "createdAt": "2026-09-30T08:57:00+02:00",
+      "body": "One thing to know: Mark Janssen asked on 8 September to move it to the 17th from Q4. He raised it again at the quarterly review. Nothing is agreed yet, we still need to check with the Innovapay team if the 17th works for the Laakdal night shifts. So for October it is still the 18th.",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1790751600000",
+      "replyToId": "1790751000000",
+      "from": {
+        "name": "Elif Aydin",
+        "email": "elif.aydin@sdworx.example"
+      },
+      "createdAt": "2026-09-30T09:00:00+02:00",
+      "body": "Great, thanks. Second thing: I emailed Wim Van den Broeck yesterday as escalation contact, because he is on the contact list. I got an auto reply that he changed role.",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1790751780000",
+      "replyToId": "1790751000000",
+      "from": {
+        "name": "Sofie Hermans",
+        "email": "sofie.hermans@sdworx.example"
+      },
+      "createdAt": "2026-09-30T09:03:00+02:00",
+      "body": "Yes, Wim moved to the Innovapay programme office in March 2025. I took over as service delivery manager Benelux then, so escalations for Veldra Belgium and the Netherlands come to me. That list has not been kept up to date, sorry.",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1790751900000",
+      "replyToId": "1790751000000",
+      "from": {
+        "name": "Elif Aydin",
+        "email": "elif.aydin@sdworx.example"
+      },
+      "createdAt": "2026-09-30T09:05:00+02:00",
+      "body": "Noted. Can we have 30 minutes next week to go through the open items with Mark? I would like to reply to his cut-off request before Jonas leaves on the 15th.",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "1790752020000",
+      "replyToId": "1790751000000",
+      "from": {
+        "name": "Sofie Hermans",
+        "email": "sofie.hermans@sdworx.example"
+      },
+      "createdAt": "2026-09-30T09:07:00+02:00",
+      "body": "Sure, I will send an invite for Tuesday.",
+      "attachments": [],
+      "reactions": [
+        {
+          "type": "like",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

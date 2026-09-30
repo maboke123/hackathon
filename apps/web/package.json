@@ -9,7 +9,8 @@
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
     "db:generate": "drizzle-kit generate",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "knowledge:pdf": "node scripts/render-knowledge-pdfs.mts"
   },
   "dependencies": {
     "@electric-sql/pglite": "0.5.8",
@@ -38,6 +39,8 @@
     "drizzle-kit": "0.31.11",
     "eslint": "^9",
     "eslint-config-next": "16.3.7",
+    "marked": "18.0.14",
+    "playwright-chromium": "1.63.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

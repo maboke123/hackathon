@@ -1,0 +1,38 @@
+Call ID: 4c6d18e7-f035-49b2-8a7c-2d91e5b06a3f
+Queue: Direct (Enterprise accounts)
+Direction: Outbound
+Started: 2026-09-29T16:00:52+02:00
+Duration: 00:03:39
+Agent: Elif Aydin <elif.aydin@sdworx.example>
+Caller: +49 211 *** ** 58 (Anja Keller)
+Recording: yes (consent message played)
+Transcript: automatic speech recognition, en
+
+[00:00] Caller: Keller.
+[00:01] Agent: Hello, Mrs Keller, this is Elif Aydin from SD Worx. We had a call planned for four o'clock?
+[00:08] Caller: Ah yes, hello Elif. Anja is fine. Sorry, I was just finishing another meeting.
+[00:15] Agent: No problem. Thanks for making the time. As Jonas probably told you, I'm taking over the Veldra account from him in October, so I'm calling all the country contacts to introduce myself.
+[00:28] Caller: Yes, he mentioned it. He's going to Protime, right?
+[00:33] Agent: That's right, the product team. He's still around until mid October, so the handover is happening now.
+[00:41] Caller: Okay. Well, welcome.
+[00:43] Agent: Thank you. I've been reading up on Germany. I'm looking at the implementation status page for Veldra Deutschland, and it says Innovapay went live on the first of April. So you're about six months in. How has it been so far?
+[01:00] Caller: Hm. No, that's not right. We went live on the first of July.
+[01:05] Agent: Oh. Sorry, the page I have says April.
+[01:09] Caller: April was the plan, yes. But the data migration from our old provider was a mess. The test runs kept showing differences, historical data was missing for some people. So in February Katrin and Jonas decided to move it to July. Katrin sent an email about it at the time.
+[01:29] Agent: I see. I'm sorry, I clearly have an old version. So you've had, what, three payrolls on Innovapay now?
+[01:38] Caller: July, August, and September is running now. July had some corrections, August was much better. Katrin's team did a good job in the end.
+[01:48] Agent: That's good to hear. I'll make sure the status page gets fixed, it's confusing if people read it.
+[01:55] Caller: Yes, please. Can I ask you something while I have you?
+[02:00] Agent: Of course.
+[02:02] Caller: Protime. The time registration. That was supposed to come together with the payroll, and then it was separated. When does it start now? The store managers keep asking me, they still do the hours in Excel.
+[02:16] Agent: Protime for Germany. Honestly, I don't know the current status. I don't have that in my notes yet.
+[02:24] Caller: Okay.
+[02:26] Agent: Is there something blocking it on your side, do you know?
+[02:31] Caller: Well, our Betriebsrat, the works council, needs to agree to any system that records working time. They had questions about what managers can see. As far as I know that is still open. But I don't know what SD Worx is waiting for, or if you are waiting for us.
+[02:51] Agent: Understood. Let me find out. I think Katrin or Ruben from the Protime team will know. I'll come back to you by the end of the week, is that okay?
+[03:03] Caller: That's fine. And Katrin stays our contact for payroll?
+[03:08] Agent: Yes, Katrin stays your contact for Innovapay in Germany. Jonas told me this morning. And for the account in general, from October that's me.
+[03:18] Caller: Good. Then I'll wait for your email on Protime.
+[03:23] Agent: You'll have it by Friday. Thanks, Anja, nice to meet you, even if only by phone.
+[03:30] Caller: Likewise. Maybe we see each other at the next quarterly review. Tschüss.
+[03:36] Agent: Bye.
