@@ -3,7 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { getCurrentColleague, requireUser } from "@/lib/auth/session";
+import { getRepository } from "@/lib/data";
 import type { FormState } from "@/lib/form-state";
+import { createRateLimit } from "@/lib/rate-limit";
 import { enqueueReview } from "@/lib/review";
 
 const checkSchema = z.object({
@@ -41,4 +43,22 @@ export async function requestCheck(input: unknown): Promise<FormState> {
         ? "Asked the owner to check it."
         : "Already in the owner's queue. Marked as urgent.",
   };
+}
+
+const resetsPerUser = createRateLimit("demo-reset", 10, 10 * 60 * 1000);
+
+export async function resetDemoData(): Promise<FormState> {
+  const user = await requireUser();
+  if (resetsPerUser.isLimited(user.id)) {
+    return {
+      status: "error",
+      message: "Too many resets. Wait 10 minutes and try again.",
+    };
+  }
+  resetsPerUser.hit(user.id);
+
+  await getRepository().reset();
+  revalidatePath("/", "layout");
+
+  return { status: "success", message: "Demo data restored." };
 }

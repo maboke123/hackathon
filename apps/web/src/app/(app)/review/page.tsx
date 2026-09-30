@@ -71,6 +71,15 @@ type Context = {
   colleagueOptions: ColleagueOption[];
 };
 
+const labelFieldNames: Record<string, string> = {
+  country: "country",
+  customerId: "customer",
+  teamId: "team",
+  product: "product",
+  jointCommittee: "joint committee",
+  ownerId: "owner",
+};
+
 function dueLabel(dueAt: string, on: string) {
   const days = daysBetween(on, dueAt);
   if (days < 0) {
@@ -193,6 +202,23 @@ function TaskRow({
           <p className="text-muted-foreground max-w-2xl text-sm">
             {review.trigger}
           </p>
+          {review.payload ? (
+            <p className="text-sm">
+              <span className="text-muted-foreground">
+                Suggested{" "}
+                {labelFieldNames[review.payload.field] ?? review.payload.field}
+                :{" "}
+              </span>
+              {context.colleagues.get(review.payload.value)?.name ??
+                review.payload.value}
+              {review.payload.confidence !== null ? (
+                <span className="text-muted-foreground">
+                  {" "}
+                  ({Math.round(review.payload.confidence * 100)}% sure)
+                </span>
+              ) : null}
+            </p>
+          ) : null}
           {related.length > 0 ? (
             <p className="text-sm">
               <span className="text-muted-foreground">

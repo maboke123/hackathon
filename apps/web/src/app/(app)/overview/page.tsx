@@ -19,7 +19,6 @@ import {
   reviewKindLabels,
 } from "@/lib/data";
 import { formatDate } from "@/lib/format";
-import { ResetDemoButton } from "./reset-demo-button";
 
 export const metadata: Metadata = {
   title: "Overview",
@@ -118,17 +117,6 @@ export default async function OverviewPage() {
               description="Every document you own is checked and has no open conflicts."
             />
           )}
-        </PageSection>
-      ) : null}
-
-      {user.role === "knowledge_manager" ? (
-        <PageSection
-          title="Demo data"
-          description="Restore the original corpus before a demo run."
-        >
-          <div>
-            <ResetDemoButton />
-          </div>
         </PageSection>
       ) : null}
     </>

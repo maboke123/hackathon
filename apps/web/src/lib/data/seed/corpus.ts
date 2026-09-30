@@ -16,6 +16,7 @@ import {
 import raw from "./corpus.generated.json";
 import { monthsBefore, REFERENCE_DATE } from "./dates";
 import { seedLinks } from "./links";
+import { seedReviews } from "./reviews";
 
 const FALLBACK_TEAM_ID = "team-knowledge-and-content-operations";
 const STALE_AFTER_MONTHS = 12;
@@ -119,6 +120,31 @@ function buildReviewItems(
       linkId: link.id,
       trigger: link.reason,
       ...route(document),
+    });
+  }
+
+  for (const seed of seedReviews) {
+    const item = items.find((entry) => entry.id === seed.itemId);
+    if (!item) continue;
+    const link = seed.otherItemId
+      ? links.find(
+          (entry) =>
+            entry.fromId === seed.itemId && entry.toId === seed.otherItemId,
+        )
+      : undefined;
+    reviews.push({
+      ...open,
+      kind: seed.kind,
+      source: seed.source,
+      dueAt: addDays(REFERENCE_DATE, dueDays[seed.source]),
+      itemIds: seed.otherItemId ? [item.id, seed.otherItemId] : [item.id],
+      linkId: link?.id ?? null,
+      trigger: seed.trigger,
+      payload: seed.payload ?? null,
+      requestedById: seed.requestedById ?? null,
+      ...(seed.assigneeId
+        ? { assigneeId: seed.assigneeId, assigneeTeamId: null }
+        : route(item)),
     });
   }
 

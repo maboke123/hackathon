@@ -6,16 +6,16 @@ Havenkaai Logistics NV, the fictional Belgian company of the first version of th
 
 ## Database
 
-| Table             | From                                 | What                                                                                                                                                                                                              |
-| ----------------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `teams`           | `people.json`                        | SD Worx teams. Review items without an owner are routed to a team.                                                                                                                                                |
-| `colleagues`      | `people.json`                        | Name, email, job title, team, status (`active`, `left`, `service_account`) and `successorId` for people who left.                                                                                                 |
-| `customers`       | `customers.json`                     | Havenkaai, Veldra and two small customers from the tickets. Contacts and entities per country as JSON.                                                                                                            |
-| `knowledge_items` | All corpus files                     | One row per document, email, call, meeting, chat thread or ticket. File path in the corpus, source system and location, scope (country, customer, team, product, PC), owner, author, dates, status.               |
+| Table             | From                                 | What                                                                                                                                                                                                                                                                                                                            |
+| ----------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `teams`           | `people.json`                        | SD Worx teams. Review items without an owner are routed to a team.                                                                                                                                                                                                                                                              |
+| `colleagues`      | `people.json`                        | Name, email, job title, team, status (`active`, `left`, `service_account`) and `successorId` for people who left.                                                                                                                                                                                                               |
+| `customers`       | `customers.json`                     | Havenkaai, Veldra and two small customers from the tickets. Contacts and entities per country as JSON.                                                                                                                                                                                                                          |
+| `knowledge_items` | All corpus files                     | One row per document, email, call, meeting, chat thread or ticket. File path in the corpus, source system and location, scope (country, customer, team, product, PC), owner, author, dates, status.                                                                                                                             |
 | `knowledge_links` | Parsed from tickets, `seed/links.ts` | Typed links between items: `supersedes`, `contradicts`, `variant_of`, `duplicate_of`, `supports`, `cites`, `based_on`. `evidence` quotes the passage in `fromId`, `toEvidence` the passage in `toId` (set for the seeded conflicts). Status `suggested`, `confirmed` or `rejected`, origin `parsed`, `seed`, `jev` or `person`. |
-| `review_items`    | Computed in `seed/corpus.ts`         | The review queue and its audit trail: conflicts and suggested links, documents without an active owner, documents not checked in 12 months. Each task has a `source` (`schedule`, `usage`, `request`, `conflict_check`, `parent_change`), a `dueAt` date and an optional `requestedById`. |
-| `karma_events`    | Check dates in the corpus            | One row per decision in the review queue: colleague, task kind, document, points, on time or not. Seeded with one on-time check per `lastCheckedAt` of a document with an active owner. |
-| `agent_queries`   | `agent-log.json`                     | What the existing internal assistant returned, for the "before" part of the demo.                                                                                                                                 |
+| `review_items`    | Computed in `seed/corpus.ts`         | The review queue and its audit trail: conflicts and suggested links, documents without an active owner, documents not checked in 12 months. Each task has a `source` (`schedule`, `usage`, `request`, `conflict_check`, `parent_change`), a `dueAt` date and an optional `requestedById`.                                       |
+| `karma_events`    | Check dates in the corpus            | One row per decision in the review queue: colleague, task kind, document, points, on time or not. Seeded with one on-time check per `lastCheckedAt` of a document with an active owner.                                                                                                                                         |
+| `agent_queries`   | `agent-log.json`                     | What the existing internal assistant returned, for the "before" part of the demo.                                                                                                                                                                                                                                               |
 
 `knowledge_items.search` is a generated full text column (`simple` configuration, title weighted above body). `repository.searchItems(query)` uses it.
 
@@ -23,7 +23,8 @@ Havenkaai Logistics NV, the fictional Belgian company of the first version of th
 
 1. `pnpm --filter web knowledge:build` runs `apps/web/scripts/build-knowledge-corpus.mts`. It parses the raw files into `src/lib/data/seed/corpus.generated.json`. It reads only what the source systems carry: front matter, email and call headers, owner lines ("Eigenaar:", "Owner:", "Responsable :"), version tables and "Last reviewed" lines, and the SharePoint site in the path for scope. Commit the JSON after running it.
 2. `seed/links.ts` holds the hand-written links for the demo scenarios.
-3. `seed/corpus.ts` validates the JSON with zod, adds the links and computes the review items. `repository.reset()` loads it on startup when the database is empty.
+3. `seed/reviews.ts` holds review tasks the corpus alone does not produce, so every kind is in the demo: a rule change (doc-06 based on doc-07, still says EUR 8), a check Lotte requested during a call (doc-10, to Bram) and three suggested labels (owner Elif for doc-21, country BE for doc-04, owner Pieter for doc-15 at 58% confidence).
+4. `seed/corpus.ts` validates the JSON with zod, adds the links and computes the review items. `repository.reset()` loads it on startup when the database is empty.
 
 Parsed labels are deliberately incomplete: most documents in the corpus carry no owner or check date, and that is what the demo is about.
 
@@ -51,7 +52,7 @@ Use the repository in Server Components and Server Actions. `@/lib/data` is serv
 
 - On startup the app runs the migrations and loads the corpus when the database is empty.
 - Without `DATABASE_URL` the app uses an in-memory database (PGlite) that starts from the corpus on every restart.
-- With `DATABASE_URL` the data persists. A knowledge manager can restore the original corpus with "Reset demo data" on the overview page. Accounts are kept.
+- With `DATABASE_URL` the data persists. Any signed-in user can restore the starting state with "Reset demo data" in the user menu (top right), rate limited to 10 resets per 10 minutes. Accounts are kept.
 
 To add a field or table: change the zod type in `types.ts`, the table in `schema.ts`, the converter or seed, run `pnpm db:generate` and commit the new file in `apps/web/drizzle`.
 

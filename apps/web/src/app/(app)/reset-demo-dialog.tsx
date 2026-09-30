@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,12 +11,15 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { resetDemoData } from "./actions";
 
-export function ResetDemoButton() {
-  const [open, setOpen] = useState(false);
+type ResetDemoDialogProps = {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+};
+
+export function ResetDemoDialog({ open, onOpenChange }: ResetDemoDialogProps) {
   const [pending, startTransition] = useTransition();
 
   function reset() {
@@ -24,7 +27,7 @@ export function ResetDemoButton() {
       const result = await resetDemoData();
       if (result.status === "success") {
         toast.success(result.message);
-        setOpen(false);
+        onOpenChange(false);
       } else {
         toast.error(result.message);
       }
@@ -32,16 +35,15 @@ export function ResetDemoButton() {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline">Reset demo data</Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Reset demo data?</DialogTitle>
           <DialogDescription>
-            Documents, links and review queues go back to the original corpus.
-            Changes made during the demo are removed. Accounts stay.
+            Documents, links and review queues go back to the start of the demo:
+            open conflicts, a rule change, documents without an owner and
+            suggested labels. Everything changed since is removed. Accounts
+            stay.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
