@@ -1,51 +1,44 @@
-# Build plan: trust graph
+# Game plan: trust graph
 
-The idea is described in [ideas.md](ideas.md#trust-graph). This file is how we build and demo it. All demo content comes from the synthetic knowledge corpus in `apps/web/src/lib/data/seed/knowledge`, described in [sample-data.md](sample-data.md).
+The one document for what we build, how it works, how we demo it and who does what. "Trust graph" is a working name.
 
-## The pitch in one line
+Background lives elsewhere: the event and past decisions in [context.md](context.md), the brief in [challenge-briefing.md](challenge-briefing.md), the corpus in [sample-data.md](sample-data.md). Other ideas we considered are in [ideas.md](ideas.md).
+
+## 1. Problem
+
+SD Worx knowledge is spread over documents, emails, chats, calls and people's heads. Nothing says who owns a source, which country or customer it applies to, or whether it is still correct. When a rule changes, nobody knows which documents repeat the old version.
+
+The brief's second example: a service colleague has a customer on the phone, asks the internal agent and gets three documents (no owner, "edited last week", another country). A colleague emails a fourth. Nobody can tell which one to trust, and the customer waits.
+
+SD Worx does not want another agent or a SharePoint with search. The agent is not the problem. The sources it reads from are.
+
+## 2. Solution in one line
 
 Your agent is only as trustworthy as its sources. We make the sources trustworthy, and every answer says why.
 
-## What the jury must see
+We start from messy, unlabelled data, label it, build a graph of how sources relate, and put a person in charge of every source. Conflicts and changes go to that person's queue. Answers show a trust score with its reasons.
 
-1. One question, one answer, and a list of the documents that were not used with the reason for each.
-2. A conflict the system cannot settle goes to a person instead of being guessed. The owner fixes it in one click and the next answer is right.
-3. The graph is visible through the answer and the document page, not as a hairball.
+## 3. How it works
 
-## From corpus to graph
+### 3.1 Label the messy data
 
-The corpus is raw: files only carry what their source system would carry. We turn it into graph nodes and links when seeding.
+Every document, email, call, meeting, chat and ticket in `apps/web/src/lib/data/seed/knowledge` becomes a knowledge item with labels:
 
-**Nodes.** Every document, email, call, meeting, chat and ticket becomes a knowledge item. Documents can be the answer. Records (emails, calls, meetings, chats, tickets) cannot, but they support or contradict documents and show who knows a topic. Colleagues come from `people.json`, customers from `customers.json`.
+| Label             | Baseline: parser (tonight, no AI)                                                                                  | Labeller (AI, proposals only)                         |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------- |
+| Owner, sub-owners | "Eigenaar:" or "Owner:" line, header table. Missing on most documents, which is the point.                         | Proposes an owner from authors and who answered       |
+| Owner left        | `status` in `people.json` (Annick Wouters and Hilde Maes left)                                                     |                                                       |
+| Last check        | Last review row in the version table, "Laatst nagekeken" or "Last reviewed"                                        |                                                       |
+| Modified          | Front matter. Edits by `svc-template-migration` are ignored: modified is not verified.                             |                                                       |
+| Scope             | SharePoint site in the path (`/sites/Legal-BE`, `/sites/CS-Belgium`, `/sites/Legal-NL`), customer folder, language | Country, customer, product when the path says nothing |
+| Topic, facts      |                                                                                                                    | Topic plus key values ("birth leave BE: 20 days")     |
+| Links             | Seeded by hand in one file for the demo                                                                            | Proposes links between items (see 3.2)                |
 
-**Labels we parse** (script, no AI):
+Everything the labeller produces starts as `suggested` and goes to a review queue. Only confirmed labels and links count. `ground-truth.json` is never loaded as data: a test compares our labels with it, which gives an honest pitch number ("our labels match the answer key on 11 of 13 facts").
 
-| Label      | Where it comes from                                                                                                             |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| Owner      | The "Eigenaar:" or "Owner:" line, or the Owner row in the document header table. Missing on most documents, which is the point. |
-| Owner left | The owner's `status` in `people.json` (Annick Wouters and Hilde Maes have left).                                                |
-| Last check | The last review row in the version table, or a "Laatst nagekeken" or "Last reviewed" line.                                      |
-| Modified   | Front matter. Modifications by `svc-template-migration` are ignored: modified is not verified.                                  |
-| Scope      | SharePoint site in the path (`/sites/Legal-BE`, `/sites/CS-Belgium`, `/sites/Legal-NL`), the customer folder, and language.     |
-| Source     | Front matter `source` and `path` for documents, headers for emails and calls.                                                   |
+### 3.2 Build the graph
 
-**Links.** Tonight we write the links by hand in one seed file, as the output a labeller would produce. The ones scenario 1 needs are seeded as `confirmed` by their owner. The one scenario 2 needs is seeded as `suggested`, so it shows up in the owner's review queue. Stretch for the final: an LLM proposes claims and contradiction links, and every proposal starts as `suggested`.
-
-**Answer key.** `ground-truth.json` is for checking, never shown in the app. A small test compares our parsed labels and links with it. That gives us an honest pitch number (for example "our labels match the answer key on 11 of 13 facts").
-
-## Data model
-
-Follow the schema change steps in `AGENTS.md` (types, schema, seed, repository, `pnpm db:generate`).
-
-| Table             | Fields                                                                                                                                                                                                                                                              |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `colleagues`      | From `people.json`: id (`p-pieter`), name, email, role, team, country, languages, status (`active`, `left`, `service-account`).                                                                                                                                     |
-| `customers`       | From `customers.json`: id (`cus-havenkaai`, `cus-veldra`), name, countries.                                                                                                                                                                                         |
-| `knowledge_items` | id (`doc-05`, `mail-05`), kind (`document`, `email`, `call`, `meeting`, `chat`, `ticket`, `answer`), title, body, source, path, language, country, customerId, team, product, ownerId, createdAt, modifiedAt, modifiedBy, verifiedAt, status (`active`, `retired`). |
-| `knowledge_links` | id, fromId, toId, type, reason, status (`suggested`, `confirmed`, `rejected`), createdBy (colleague id or `system`), createdAt, resolvedBy, resolvedAt.                                                                                                             |
-| `review_items`    | id, kind (`conflict`, `stale`, `suggested_link`, `no_owner`), itemIds, linkId (nullable), assigneeId, status (`open`, `done`), outcome, createdAt, resolvedBy, resolvedAt. This is also the audit trail.                                                            |
-
-Link types. A fixed list makes the ranking rules possible.
+Items are linked to colleagues (`people.json`), customers (`customers.json`), teams and countries, and to each other with a fixed list of link types:
 
 | Type            | Meaning                                                           | Corpus example                                                 |
 | --------------- | ----------------------------------------------------------------- | -------------------------------------------------------------- |
@@ -54,82 +47,135 @@ Link types. A fixed list makes the ranking rules possible.
 | `variant_of`    | Same topic, different scope (country, customer, team or product). | doc-03 (Netherlands) is a variant of doc-05 (Belgium)          |
 | `duplicate_of`  | Same content, not the official copy.                              | doc-04 (OneDrive copy) duplicates doc-05                       |
 | `supports`      | A record confirms or explains a document.                         | chat-01 (Pieter links doc-05), chat-03 explains the cap        |
+| `based_on`      | A applies the rules of a parent source.                           | doc-06 (CS work instruction, meal vouchers) is based on doc-07 |
 | `answered_with` | An answer sent to a customer relied on this document.             | ticket-02 (Havenkaai, 15 days) answered with doc-01 and doc-02 |
 
-Only `confirmed` links decide which document is used. A `suggested` link never decides silently: it is shown as a warning and waits in the owner's queue.
+Only `confirmed` links change which document is used. `answered_with` never makes a document more trusted: an answer shows a customer relies on it, not that it is right.
 
-`answered_with` never changes which document is used: an answer says a customer relies on a document, not that the document is right. Counting it as `supports` would make a wrong document more trusted with every wrong answer given from it. It only feeds living answers: when a new document supersedes an old one, the `answered_with` links on the old one are the customers to notify. Answers are items of kind `answer` (logged by the consultant in one click) or resolved tickets. Resolved tickets get their links from `linkedDocuments` in `tickets.json`. Answer fields that do not fit the table (recipient, answered by, sent at, notified at) go in a small `answers` table keyed by item id.
+### 3.3 Trust score
 
-## Answering a question
+Hard rules first, then a score for what remains. The choice is made by these rules, never by a language model.
 
-The service colleague picks the customer on the phone (Havenkaai or Veldra) and types the question. The customer sets the scope: country and customer. Scope is explicit, not guessed by a model.
+| Rule                                        | Effect              | Reason shown (corpus example)                                                                        |
+| ------------------------------------------- | ------------------- | ---------------------------------------------------------------------------------------------------- |
+| Scope does not match                        | Not used            | doc-03: "Applies to the Netherlands. Havenkaai is a Belgian customer."                               |
+| Superseded by a confirmed link              | Not used            | doc-01: "Replaced by _Geboorteverlof België_. Says 15 days, written in 2021, no owner."              |
+| Duplicate of a confirmed link               | Not used            | doc-04: "Personal copy of _Geboorteverlof België_, sent by email. Use the original."                 |
+| Suggested contradiction with a newer source | No confident answer | doc-08: "A newer legal update (June 2026) disagrees. Pieter De Smedt owns this topic." Opens review. |
+| Parent source changed, not checked yet      | Lower, warning      | doc-06: "The rule it is based on changed on 1 January 2026. Not checked since."                      |
+| Owner has left                              | Lower, warning      | doc-02: "Owner Annick Wouters left in 2024."                                                         |
+| No owner                                    | Lower, warning      | "No owner. Nobody vouches for this document."                                                        |
+| Not checked in the last 12 months           | Lower, warning      | "Last checked 14 months ago."                                                                        |
+| Supported by confirmed records              | Higher              | doc-05: "Pieter confirmed this in the customer service channel."                                     |
 
-1. **Find candidates** with Postgres full text search (`simple` configuration, so Dutch, French and English all work) over every site, not only the colleague's own team site. The right birth leave document lives on the legal site, which is why the existing agent never returned it.
-2. **Apply the graph rules** below. Each rule that removes or lowers a document attaches the reason shown in the UI.
-3. **Pick the answer**: the highest remaining document. Tie-break: customer-specific before country-wide before general, then most recently checked, then search score.
-4. **Show** the passage from the chosen document with its owner, scope and last check date, the records that support it ("Pieter answered this in the customer service channel"), and the "not used" list.
+The score is shown as a label with its reasons ("owner Pieter De Smedt, checked 12 June 2026, Belgium, supported by 1 record"), never as a bare number. Tie-break: customer-specific before country-wide before general, then most recently checked, then search score.
 
-| Rule                                        | Effect              | Reason shown (corpus example)                                                                                    |
-| ------------------------------------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| Scope does not match                        | Not used            | doc-03: "Applies to the Netherlands. Havenkaai is a Belgian customer."                                           |
-| Superseded by a confirmed link              | Not used            | doc-01: "Replaced by _Geboorteverlof België_. Says 15 days, written in 2021, no owner."                          |
-| Owner has left                              | Not used or lower   | doc-02: "Owner Annick Wouters left in 2024. Modified 23 September by the template migration, content from 2022." |
-| Duplicate of a confirmed link               | Not used            | doc-04: "Personal copy of _Geboorteverlof België_, sent by email. Use the original."                             |
-| Suggested contradiction with a newer source | No confident answer | doc-08: "A newer legal update (June 2026) disagrees. Pieter De Smedt owns this topic." Opens review.             |
-| No owner                                    | Lower, warning      | "No owner. Nobody vouches for this document."                                                                    |
-| Not checked in the last 12 months           | Lower, warning      | "Last checked 14 months ago."                                                                                    |
+### 3.4 Answer on a live call
 
-The choice of document is made by these rules, never by a language model. That is the trust argument in the pitch. Tonight the answer text is the passage itself. Stretch: an LLM summary that may only cite the chosen document.
+The colleague picks the customer on the phone, which sets the scope (country and customer), and types the question.
 
-## Review queue
+1. Postgres full text search (`simple` configuration, so Dutch, French and English work) over every site, not only the colleague's team site. The right birth leave document lives on the legal site, which is why the existing agent never found it.
+2. Apply the rules in 3.3.
+3. Show the passage from the best source with owner, scope and last check, the records that support it, and a "not used" list with a reason per source.
+4. If a conflict is still open, do not guess: show who to call and put the conflict in the owner's queue.
 
-Each colleague sees the items assigned to them. Every outcome is one click (see `hr-research.md` section 7: correcting must be as cheap as accepting).
+Tonight the answer text is the passage itself. Stretch: an LLM summary that may only cite the chosen source.
 
-| Kind             | Shown                                                      | Actions                                                                                                                                                                                                                                                                                                                               |
-| ---------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `conflict`       | Both passages side by side, the differing part marked      | Document versus newer record: "Document is right", "Newer source is right, add it to the document" (prefilled passage, sets last check to today), "Retire document". Two documents: "A is correct" (`supersedes`), "Both correct, different scope" (`variant_of`), "Same content" (`duplicate_of`). Always: "Assign to someone else". |
-| `stale`          | Document and its last check date                           | "Still correct" (sets last check), "Outdated" (retire, optionally pick the replacement)                                                                                                                                                                                                                                               |
-| `suggested_link` | Both items and the proposed link type                      | "Confirm", "Reject"                                                                                                                                                                                                                                                                                                                   |
-| `no_owner`       | Document, and colleagues who own or answered related items | Pick an owner. Covers owners who left (doc-02, doc-16).                                                                                                                                                                                                                                                                               |
+### 3.5 Review queues (human in the loop)
 
-Every action is a Server Action that checks the user is the assignee, validates input with zod, writes `resolvedBy` and `resolvedAt`, and revalidates the ask, review and document pages.
+Every colleague sees the items assigned to them. Every outcome is one click: correcting must be as cheap as accepting (`hr-research.md` section 7).
 
-## Pages
+| Kind             | Shown                                                                | Actions                                                                                                                                                                                          |
+| ---------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `conflict`       | Both passages side by side, the differing part marked                | Document versus record: "Document is right", "Newer source is right, add it to the document", "Retire document". Two documents: "A is correct", "Both correct, different scope", "Same content". |
+| `parent_changed` | The change in the parent next to the passages that use the old value | "Still correct", "Accept suggested edit", "Retire"                                                                                                                                               |
+| `stale`          | Document and its last check date                                     | "Still correct" (sets last check), "Outdated" (retire, pick a replacement)                                                                                                                       |
+| `suggested_link` | Both items and the proposed link or label                            | "Confirm", "Reject"                                                                                                                                                                              |
+| `no_owner`       | Document, and colleagues who own or answered related items           | Pick an owner. Covers owners who left (doc-02, doc-16).                                                                                                                                          |
 
-| Route             | What                                                                                                                              | Tonight |
-| ----------------- | --------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `/ask`            | Customer picker, question, answer card, supporting records, "not used" list, "ask this person" when there is no confident answer. | Yes     |
-| `/review`         | The current user's queue.                                                                                                         | Yes     |
-| `/documents/[id]` | Trust panel (owner, scope, last check, source, modified by) and incoming and outgoing links grouped by type.                      | Yes     |
-| `/documents`      | List with a trust summary per team: share with an active owner, share checked in 12 months, open conflicts. Never per person.     | If time |
-| Graph view        | Small neighbourhood of one document.                                                                                              | Stretch |
+Always available: "Assign to someone else". Every action is a Server Action that checks the user is the assignee, validates with zod, writes `resolvedBy` and `resolvedAt` (the audit trail) and revalidates the ask, review and document pages.
 
-## Demo script
+### 3.6 Conflict check on new documents
+
+When a document is added or edited, rule based checks compare it with items on the same topic and scope: same fact, different value (15 versus 20 days, EUR 8 versus EUR 10). A hit creates a `contradicts` link as `suggested` and a `conflict` item in the owner's queue. Semantic matching is a stretch.
+
+### 3.7 Changes flow downstream
+
+When a parent source changes, everything based on it is checked.
+
+1. An owner updates a rule document, for example the meal voucher maximum in doc-07.
+2. The graph follows `based_on` links down, all levels, but only within the scope of the change. A Belgian change does not touch Dutch documents.
+3. Every downstream source gets "needs check", drops in trust and lands in its owner's queue as `parent_changed`.
+4. The review screen shows the change next to the passages that still use the old value, found by matching that value ("EUR 8").
+5. The owner confirms, accepts a suggested edit or retires. We never change a document without its owner.
+
+A coverage line on the parent ("3 of 4 checked") tells its owner when the change has landed everywhere. Stretch, "living answers": the `answered_with` links on a replaced document are the customers who got the old answer. The author can notify them with a message drafted from the new document.
+
+## 4. Data model
+
+Follow the schema steps in `AGENTS.md` (types, schema, seed, repository, `pnpm db:generate`).
+
+| Table             | Fields                                                                                                                                                                                                                                                              |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `colleagues`      | From `people.json`: id (`p-pieter`), name, email, role, team, country, languages, status (`active`, `left`, `service-account`).                                                                                                                                     |
+| `customers`       | From `customers.json`: id (`cus-havenkaai`, `cus-veldra`), name, countries.                                                                                                                                                                                         |
+| `knowledge_items` | id (`doc-05`, `mail-05`), kind (`document`, `email`, `call`, `meeting`, `chat`, `ticket`, `answer`), title, body, source, path, language, country, customerId, team, product, ownerId, createdAt, modifiedAt, modifiedBy, verifiedAt, status (`active`, `retired`). |
+| `knowledge_links` | id, fromId, toId, type, reason, status (`suggested`, `confirmed`, `rejected`), createdBy (colleague id or `system`), createdAt, resolvedBy, resolvedAt.                                                                                                             |
+| `review_items`    | id, kind (`conflict`, `parent_changed`, `stale`, `suggested_link`, `no_owner`), itemIds, linkId (nullable), assigneeId, status (`open`, `done`), outcome, createdAt, resolvedBy, resolvedAt.                                                                        |
+
+Answer fields that do not fit (recipient, answered by, sent at, notified at) go in a small `answers` table keyed by item id. Resolved tickets get their `answered_with` links from `linkedDocuments` in `tickets.json`.
+
+## 5. Pages
+
+| Route             | What                                                                                                                         | Tonight |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `/ask`            | Customer picker, question, answer card with trust label, supporting records, "not used" list, "ask this person" on conflict. | Yes     |
+| `/review`         | The current user's queue.                                                                                                    | Yes     |
+| `/documents/[id]` | Trust panel (owner, scope, last check, source, modified by), links grouped by type, downstream coverage.                     | Yes     |
+| `/documents`      | Trust summary per team: share with an active owner, share checked in 12 months, open conflicts. Never per person.            | If time |
+| Graph view        | Small neighbourhood of one document.                                                                                         | Stretch |
+
+## 6. Demo script
 
 About three minutes. Every step uses corpus items, so the story holds up if the jury asks.
 
-1. **(20 s) Before.** 30 September, 09:14. Inge Claes (HR, Havenkaai) calls Lotte Verhaegen about birth leave for Youssef Benali (call-01). The existing agent returns the brief's three documents: the English quick guide "modified last week", the Dutch document for the Netherlands and the work instruction without an owner (agent-log). Bram emails a fourth, personal copy (mail-01). Lotte answers 15 days (ticket-02). The customer comes back: Youssef read online it is 20 (mail-12).
-2. **(60 s) Same question in our tool.** Answer from _Geboorteverlof België_ (doc-05): 20 days, the first 3 paid by the employer, 17 by the mutualiteit at 82% of capped gross, within 4 months. Owner Pieter De Smedt, last checked 12 June 2026. Pieter also answered this in the customer service channel at 12:10 (chat-01), 22 minutes after the customer's complaint. Under it, the four documents Lotte had, each with its reason (see the rules table).
-3. **(70 s) A conflict, fixed live.** Inge's second question (call-03): will staff above EUR 4,000 be fully indexed in January 2027? The only owned document (doc-08) is from January and says nothing about a cap. The June legal update (mail-05) says only the first EUR 4,000 is indexed. The tool does not pick one. It shows both passages, names Pieter as owner and links his worked example in the legal channel (chat-03). Switch to Pieter: the conflict is first in his queue. One click: "Newer source is right, add it to the document". Back to Lotte, same question: answered from doc-08, checked today, with the example from mail-05 (EUR 5,000 gross: EUR 150.40 instead of EUR 188.00, simulated at the forecast 3.76%).
-4. **(30 s) Document page and trust summary.** The links that made step 2 possible. Per team: documents without an active owner, documents not checked in 12 months, open conflicts.
-5. **(10 s) Close.** This sits under the agent SD Worx already has. One slide on what else the same graph does: Elif taking over Veldra (the Nike example), where the 2022 account plan says the cut-off is the 20th, the signed annex says the 18th, and the customer has asked for the 17th.
+1. **(20 s) Before.** 30 September, 09:14. Inge Claes (HR, Havenkaai) calls Lotte Verhaegen about birth leave for Youssef Benali (call-01). The existing agent returns the quick guide "modified last week", the Dutch document and the work instruction without an owner (agent-log). Bram emails a fourth, personal copy (mail-01). Lotte answers 15 days (ticket-02). The customer comes back: it is 20 (mail-12).
+2. **(50 s) Same question in our tool.** Answer from _Geboorteverlof België_ (doc-05): 20 days, owner Pieter De Smedt, checked 12 June 2026, supported by Pieter's message in the customer service channel (chat-01). Below it, the four documents Lotte had, each with its reason.
+3. **(50 s) A conflict, fixed live.** Inge asks about indexation above EUR 4,000 in January 2027 (call-03). doc-08 says nothing about a cap, the June legal update (mail-05) does. The tool does not pick one, names Pieter and links his example (chat-03). Pieter's queue: one click, "Newer source is right, add it to the document". Same question again: answered from doc-08, checked today.
+4. **(40 s) A change flows down.** Replay the January meal voucher change on doc-07 (EUR 8 to EUR 10). doc-06, the customer service work instruction based on it, lands in its owner's queue with "EUR 8" marked. This is why a Veldra employee was still told EUR 8 in September (call-02). One click, coverage goes to complete.
+5. **(20 s) Trust summary and close.** Per team: no active owner, not checked in 12 months, open conflicts. This sits under the agent SD Worx already has. One slide on the same graph for Elif taking over Veldra (the Nike example).
 
-## Who does what tonight
+## 7. Team split
 
-| Person | Owns                                                                                             |
-| ------ | ------------------------------------------------------------------------------------------------ |
-| 1      | Data: types, schema, migration, corpus import with the label parser, link seed file, repository. |
-| 2      | `/ask`: search, ranking rules with reasons, answer card.                                         |
-| 3      | `/review` and `/documents/[id]`: queue, Server Actions, audit fields.                            |
-| 4      | Pitch: deck, demo script, figure checks at the source, rehearsal. Writes the answer key test.    |
+Four tracks with separate files, so we do not block or overwrite each other. Put your name in the first column.
 
-Person 1 publishes the types and repository interface first, so 2 and 3 can build against them.
+| Who | Track                  | Owns                                                                                                                                                                          | Files                                                                        |
+| --- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+|     | A. Data and labelling  | Types, schema, migration, repository. Corpus import and label parser. Hand-seeded links. AI labeller that writes `suggested` labels and links. Answer key test and its score. | `src/lib/data/**`, `src/lib/db/**`, `apps/web/drizzle`, `apps/web/scripts`   |
+|     | B. Ask and trust score | Search, the rules in 3.3 with reasons, answer card, "not used" list, demo accounts for Lotte and Pieter.                                                                      | `src/app/(app)/ask/**`, `src/lib/trust.ts`                                   |
+|     | C. Review and changes  | Review queue and its Server Actions, conflict check on new documents (3.6), downstream flow (3.7), document page.                                                             | `src/app/(app)/review/**`, `src/app/(app)/documents/**`, `src/lib/review.ts` |
+|     | D. Pitch               | Slides, demo script, figure checks at the source, promo video if time, rehearsals. Keeps this plan up to date.                                                                | `slides/**`, `videos/**`, `docs/**`                                          |
 
-Order: data model and corpus import, then ask page and review queue in parallel, then the demo accounts and the trust summary, then polish and two full rehearsals. Freeze features 45 minutes before the end.
+How we work together:
 
-## Open decisions
+- A publishes the types and the repository interface first (target: within the first hour). B and C build against those and the seed, not against each other.
+- Only A changes `schema.ts` and generates migrations. Others ask A, so we never get two migrations with the same number.
+- Pull with rebase before you start, commit small and push often. Shared files (`AGENTS.md`, this plan, the nav) get short, separate commits.
+- D needs screenshots from B and C by 22:00 and runs the demo script against the real app, not mockups.
 
-1. **Users.** The existing accounts are Havenkaai employees with roles `employee`, `manager` and `hr`. This tool is used by SD Worx colleagues. Proposal: add a `colleagueId` to the user and two one-click demo accounts from `people.json`: Lotte Verhaegen (payroll consultant) and Pieter De Smedt (legal expert, owner). Hide the leave and payslip pages from colleague accounts.
-2. **LLM tonight or not.** Proposal: not tonight. Labels are parsed, links are seeded by hand, and the rules are the product. Add LLM link suggestions and the answer summary for the final on 20 October.
-3. **Joint committee.** In call-03 Inge says Havenkaai's bedienden are in PC 200. The app dataset (`sample-data.md`) puts them in PC 226, and doc-08 is PC 200 only. Proposal: scope on country and customer only tonight, and fix the mismatch in the corpus or the dataset afterwards.
+Timeline (the round ends at 23:00):
+
+| Until | What                                                                                        |
+| ----- | ------------------------------------------------------------------------------------------- |
+| 19:30 | A: types and repository interface. B, C: page skeletons. D: deck outline, figure list.      |
+| 21:00 | A: corpus imported, links seeded. B: answers with reasons. C: queue with one-click actions. |
+| 21:45 | Demo steps 1 to 4 work end to end. A: labeller if the baseline is solid.                    |
+| 22:15 | Feature freeze. Fix bugs, `pnpm lint`, `pnpm typecheck`, Aikido findings.                   |
+| 23:00 | Two full rehearsals with the live app.                                                      |
+
+## 8. Open decisions
+
+1. **Users.** The existing accounts are Havenkaai employees (`employee`, `manager`, `hr`). This tool is for SD Worx colleagues. Proposal: add a `colleagueId` to the user and one-click accounts for Lotte Verhaegen (payroll consultant) and Pieter De Smedt (legal expert, owner). Hide the leave and payslip pages from colleague accounts.
+2. **AI labeller tonight.** Proposal: the parser and hand-seeded links are the baseline, so the demo never depends on a model. The labeller is the second step for track A, and its output only enters through the review queue. Calling a model needs an API key in `.env.local` and a new dependency, which we mention before adding.
+3. **Joint committee.** In call-03 Inge says Havenkaai's bedienden are in PC 200, the app dataset says PC 226. Proposal: scope on country and customer only tonight, fix the mismatch afterwards.
 4. **Name.** "Trust graph" is a working name.

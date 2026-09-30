@@ -455,7 +455,7 @@ The Spanish prorrateo rule is only in a chat (chat-02).
 - Owners confirm in one click, or the document shows a warning in the meeting.
 
 <!--
-From idea.md: "voor de call met de customer dus periodisch aan de owner". Corpus: meet-01 (quarterly service review Q3).
+From our first notes: "voor de call met de customer dus periodisch aan de owner". Corpus: meet-01 (quarterly service review Q3).
 -->
 
 ---

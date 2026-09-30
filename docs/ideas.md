@@ -182,13 +182,13 @@ All six start from the challenge (see [challenge-briefing.md](challenge-briefing
 
 ### Trust graph
 
-Working name. Build plan: [plan.md](plan.md). Rough notes that led to it: `idea.md` in the repository root. It combines the trust label, the conflict detector and change-triggered re-verification above, with typed links between documents as the data structure.
+Working name. Game plan: [plan.md](plan.md). It combines the trust label, the conflict detector and change-triggered re-verification above, with typed links between documents as the data structure.
 
 - Proposed by: team, 30 September 2026.
 - Problem: the second example from the brief. A service colleague has a customer on the phone, asks the internal agent and gets three documents: one without an owner, one edited last week, one from another country. A colleague emails a fourth. Nobody can tell which one to trust, and the customer waits. The agent is not the problem. The sources it retrieves from carry no owner, freshness or scope, and nothing records that one document replaced or contradicts another.
 - Target user: SD Worx service colleague (asks) and document owner (reviews).
 - Solution: a knowledge graph under search and RAG. Documents carry owner, scope (country, customer, team), keywords and the date they were last checked. Typed links between documents record why they are related: `supersedes`, `contradicts`, `variant_of`, `duplicate_of`, `supports` and `answered_with`. A question returns one answer plus every document that was not used and the reason. When the graph cannot tell which of two sources is right, it does not guess: it names the person to call and puts the conflict in the owner's review queue. Resolving it creates a link, so the next answer is right.
-- Demo scenario: see [plan.md](plan.md#demo-script). In short, using the knowledge corpus: (1) the birth leave call from the brief (Havenkaai, Lotte Verhaegen) resolves to _Geboorteverlof België_ (20 days, owner Pieter De Smedt) with a reason for each of the four documents she had, (2) the EUR 4,000 indexation cap in a June legal update contradicts the January indexation document, the tool does not guess, Pieter resolves it in one click and the same question now gets an answer, (3) the trust summary shows open conflicts and documents without an active owner per team.
+- Demo scenario: see [plan.md](plan.md#6-demo-script). In short, using the knowledge corpus: (1) the birth leave call from the brief (Havenkaai, Lotte Verhaegen) resolves to _Geboorteverlof België_ (20 days, owner Pieter De Smedt) with a reason for each of the four documents she had, (2) the EUR 4,000 indexation cap in a June legal update contradicts the January indexation document, the tool does not guess, Pieter resolves it in one click and the same question now gets an answer, (3) the trust summary shows open conflicts and documents without an active owner per team.
 - Data: the synthetic knowledge corpus in `apps/web/src/lib/data/seed/knowledge` (22 documents plus emails, calls, meetings, chats and tickets, see `sample-data.md`). Owner, last check and scope are parsed from the files; links are seeded by hand tonight. `ground-truth.json` is only used to test our labels. New tables: colleagues, customers, knowledge items, links and review items.
 - Human review: the review queue. Conflicts shown side by side with the differing passage highlighted, one click per outcome ("A is correct", "B is correct", "both correct, different scope"). Suggested links are never used until confirmed. Every resolution is logged with who and when.
 - Fit with SD Worx: answers "find, trust and share" directly and uses the brief's own example. It is not another agent: it is the trust layer their existing agent lacks. 64% of employees say AI systems should explain their decisions (SD Worx research, `sd-worx-briefing.md` section 4), and every answer here explains what it used and what it rejected.
@@ -197,7 +197,7 @@ Working name. Build plan: [plan.md](plan.md). Rough notes that led to it: `idea.
   - Pitched as a "global knowledge graph" it sounds like a platform, not a focus problem. Pitch the call scenario, show the graph through the answer.
   - Links maintained by hand go stale. Answer: the system proposes links, owners confirm them, and conflicts come out of normal use.
   - The trust summary must be per topic or team, not a ranking of individual owners (red flag: monitoring individuals).
-  - The existing app is a Havenkaai HR app. This idea is an internal SD Worx tool. See the open decisions in [plan.md](plan.md#open-decisions).
+  - The existing app is a Havenkaai HR app. This idea is an internal SD Worx tool. See the open decisions in [plan.md](plan.md#8-open-decisions).
 
 ### Living answers
 
