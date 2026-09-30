@@ -23,13 +23,13 @@ The team shares context through `docs/`. Read the relevant file before starting 
 
 ## Repository layout
 
-| Path                     | What                                          | Stack                                                           |
-| ------------------------ | --------------------------------------------- | --------------------------------------------------------------- |
-| `apps/web`               | Demo / proof of concept app                   | Next.js (App Router), TypeScript strict, Tailwind v4, shadcn/ui |
-| `packages/design-system` | Shared tokens, fonts, logo assets, guidelines | CSS variables, Tailwind v4 theme                                |
-| `slides`                 | Slide decks                                   | Slidev (Markdown + Vue layouts)                                 |
-| `videos`                 | Promo videos                                  | Remotion (React)                                                |
-| `docs`                   | Context, ideas, decisions                     | Markdown                                                        |
+| Path                     | What                                          | Stack                                                                                               |
+| ------------------------ | --------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `apps/web`               | Demo / proof of concept app                   | Next.js (App Router), TypeScript strict, Tailwind v4, shadcn/ui, Better Auth, Drizzle with Postgres |
+| `packages/design-system` | Shared tokens, fonts, logo assets, guidelines | CSS variables, Tailwind v4 theme                                                                    |
+| `slides`                 | Slide decks                                   | Slidev (Markdown + Vue layouts)                                                                     |
+| `videos`                 | Promo videos                                  | Remotion (React)                                                                                    |
+| `docs`                   | Context, ideas, decisions                     | Markdown                                                                                            |
 
 Package manager is pnpm. Do not use npm or yarn.
 
@@ -45,6 +45,8 @@ pnpm slides:export   # export the deck to PDF
 pnpm lint
 pnpm typecheck
 pnpm format
+pnpm db:generate     # create a migration after changing src/lib/db/schema.ts
+pnpm db:studio       # browse the database (needs DATABASE_URL)
 ```
 
 Run `pnpm lint` and `pnpm typecheck` before declaring work finished.
@@ -66,10 +68,21 @@ Read `packages/design-system/DESIGN.md` before building any UI, slide or video s
 
 The app uses a synthetic dataset for a fictional Belgian company, documented in `docs/sample-data.md`.
 
-- Read and write data only through `getRepository()` from `@/lib/data`. Do not import the seed files directly.
-- The store is in memory and resets on restart. Do not add a database unless `docs/context.md` records that decision.
+- Read and write data only through `getRepository()` from `@/lib/data`. Do not import the seed files directly. `@/lib/data` is server only: client components import labels and types from `@/lib/data/labels` and `@/lib/data/types`.
+- Data lives in Postgres through Drizzle (`src/lib/db`). Without `DATABASE_URL` it runs in memory (PGlite) and resets on restart. Migrations and the seed run automatically on startup.
+- Schema changes: update `types.ts`, `src/lib/db/schema.ts`, the seed and `db-repository.ts`, then run `pnpm db:generate` and commit the new migration in `apps/web/drizzle`. Never edit a migration that is already on `main`.
 - Payroll figures are simplified. Label them as simulated in the UI and in slides.
 - Extend the dataset in `apps/web/src/lib/data` (types, seed, repository) instead of hard coding sample records in components.
+
+## Auth and server code
+
+- Better Auth handles accounts and sessions (`src/lib/auth`). Users have a role (`employee`, `manager`, `hr`) and an `employeeId` linking them to the dataset.
+- Every page that shows user data calls `requireUser()` or `requireRole(...)` from `@/lib/auth/session`. `src/proxy.ts` only redirects visitors without a session cookie and is not a security check.
+- Every Server Action checks the user and validates its input with zod before touching data, even when the UI already hides the action. Return a `FormState` (`src/lib/form-state.ts`) and call `revalidatePath` for the pages that show the changed data.
+- Reads happen in Server Components. Writes go through Server Actions in an `actions.ts` next to the page. Use route handlers only for auth, webhooks or streaming.
+- `src/app/(app)/leave` is the reference feature: page, actions, form with `useActionState`, buttons with toasts and permission checks in `src/lib/leave.ts`.
+- Better Auth only rate limits requests to `/api/auth`. Calls from server actions skip that, so any new action that checks a password or creates accounts uses `createRateLimit` from `@/lib/rate-limit`.
+- The deployed site is public and anyone can log in as HR with the demo buttons. Never add real personal data (real CVs, payslips, contact details). If real data is ever needed, first remove the demo accounts and require a verified email or company login.
 
 ## No AI slop
 

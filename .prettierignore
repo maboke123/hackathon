@@ -5,3 +5,4 @@ dist
 out
 slides/**/*.md
 *.svg
+apps/web/drizzle

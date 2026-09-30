@@ -19,6 +19,7 @@ export type EmployeeFilter = {
 
 export type LeaveRequestFilter = {
   employeeId?: string;
+  managerId?: string;
   status?: LeaveStatus;
   from?: string;
   to?: string;
@@ -34,7 +35,9 @@ export interface DataRepository {
   listDepartments(): Promise<Department[]>;
   listEmployees(filter?: EmployeeFilter): Promise<Employee[]>;
   getEmployee(id: string): Promise<Employee | null>;
+  getEmployeeByEmail(email: string): Promise<Employee | null>;
   listLeaveRequests(filter?: LeaveRequestFilter): Promise<LeaveRequest[]>;
+  getLeaveRequest(id: string): Promise<LeaveRequest | null>;
   listLeaveBalances(employeeId: string): Promise<LeaveBalance[]>;
   createLeaveRequest(input: NewLeaveRequest): Promise<LeaveRequest>;
   decideLeaveRequest(

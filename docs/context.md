@@ -26,3 +26,14 @@ To be decided. Candidate ideas are collected and scored in [ideas.md](ideas.md).
 ## Decisions
 
 Record important decisions here (scope, data sources, APIs, who owns what).
+
+### 30 September 2026: database and authentication
+
+- **Database: Postgres with Drizzle ORM.** Production uses a Postgres database set through `DATABASE_URL`. Without `DATABASE_URL` (local development, preview deploys) the app runs PGlite, an in-memory Postgres, so `pnpm dev` works without installing anything. That database resets on every restart.
+- **Migrations and seed run on startup.** `src/instrumentation.ts` applies the migrations in `apps/web/drizzle`, loads the sample data when the database is empty and creates the demo accounts. Nobody runs database commands by hand.
+- **Auth: Better Auth with email and password.** Sessions are stored in Postgres. There is no email verification and no password reset, because sending email needs a mail provider and a verified domain.
+- **Roles come from the employee record.** When someone signs up, their work email is matched to an employee. HR staff get the `hr` role, people with direct reports get `manager`, everyone else gets `employee`. Emails that are not in the directory get an account without employee data.
+- **Demo accounts** for the jury: HR manager, warehouse manager and one of their warehouse staff. The login page logs in with one click. The shared password is in the README.
+- **Frontend and backend:** Server Components read data through the repository, Server Actions change data (validated with zod), and route handlers are only for auth, the health check and future webhooks. There is no separate API or backend service.
+- **Not now:** Supabase (a second data and auth model next to the repository), Microsoft or Google login (needs redirect URLs per environment, add it only if the idea needs it), sending email.
+- **Security model:** the site is a public demo with synthetic data only. Access rules are enforced on the server in every page and Server Action (tested by calling the actions directly as the wrong role). Login and sign-up are rate limited in `src/lib/rate-limit.ts`, because Better Auth's own limiter only covers its HTTP routes.
