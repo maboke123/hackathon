@@ -8,15 +8,15 @@ This repository belongs to a team of four taking part in a hackathon themed arou
 
 The team shares context through `docs/`. Read the relevant file before starting work.
 
-| File                         | What                                                                    |
-| ---------------------------- | ----------------------------------------------------------------------- |
-| `docs/context.md`            | Challenge, our idea and decisions. Read before feature work.            |
-| `docs/challenge-briefing.md` | The SD Worx challenge brief: summary and transcript of the presentation |
-| `docs/ideas.md`              | Idea backlog and scoring                                                |
-| `docs/sd-worx-briefing.md`   | SD Worx products, strategy, regulation and Belgian payroll vocabulary   |
-| `docs/spott-briefing.md`     | Spott, the prize partner: product, people and how it relates to SD Worx |
-| `docs/hr-research.md`        | Independent HR and payroll research with checked figures for the pitch  |
-| `docs/sample-data.md`        | The synthetic dataset used by the app                                   |
+| File                         | What                                                                           |
+| ---------------------------- | ------------------------------------------------------------------------------ |
+| `docs/context.md`            | Challenge, our idea and decisions. Read before feature work.                   |
+| `docs/challenge-briefing.md` | The SD Worx challenge brief: summary and transcript. Read before feature work. |
+| `docs/ideas.md`              | Idea backlog and scoring                                                       |
+| `docs/sd-worx-briefing.md`   | SD Worx products, strategy, regulation and Belgian payroll vocabulary          |
+| `docs/spott-briefing.md`     | Spott, the prize partner: product, people and how it relates to SD Worx        |
+| `docs/hr-research.md`        | Independent HR and payroll research with checked figures for the pitch         |
+| `docs/sample-data.md`        | The synthetic dataset used by the app                                          |
 
 - Update the docs at least every 3 to 5 prompts, so teammates who pull get the same context: decisions in `context.md`, ideas in `ideas.md`, dataset changes in `sample-data.md`.
 - Every new Markdown file gets a row in this table, or in the repository layout if it lives outside `docs/`.
@@ -118,6 +118,8 @@ Visuals:
 
 ## Git
 
+- Run `git pull --rebase` at the start of every prompt, before reading docs or changing files, so you work on the latest context from the team.
+- Commit and `git push` at the end of every prompt that changed files, so teammates get your changes and doc updates straight away. If the push is rejected, pull with rebase, resolve conflicts and push again.
 - Commit messages are a single short conventional commit line, for example `feat: add payslip overview`.
 - No commit body, no bullet lists and no trailers.
 - No `Co-authored-by`, no session links and no other references to AI tools in commits or pull requests.

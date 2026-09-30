@@ -61,10 +61,97 @@ Score each idea from 1 to 5 per criterion. Replace the criteria with the jury cr
 
 Trust and oversight: a person confirms anything that significantly affects someone, and each output shows its source or reasoning. Proactive ideas (catching a problem before it happens) count under value for SD Worx.
 
-| Idea | Fits the challenge | Value for SD Worx | Trust and oversight | Demo impact | Buildable tonight | Total |
-| ---- | ------------------ | ----------------- | ------------------- | ----------- | ----------------- | ----- |
-|      |                    |                   |                     |             |                   |       |
+| Idea                                        | Fits the challenge | Value for SD Worx | Trust and oversight | Demo impact | Buildable tonight | Total |
+| ------------------------------------------- | ------------------ | ----------------- | ------------------- | ----------- | ----------------- | ----- |
+| Legal rulebook with an owner for every rule | 5                  | 5                 | 5                   | 4           | 4                 | 23    |
+| Trust label on every answer                 | 5                  | 4                 | 5                   | 5           | 4                 | 23    |
+| Change-triggered re-verification            | 4                  | 5                 | 5                   | 4           | 3                 | 21    |
+| Customer knowledge map                      | 4                  | 4                 | 4                   | 4           | 3                 | 19    |
+| Knowledge handover on role change           | 4                  | 4                 | 4                   | 3           | 4                 | 19    |
+| Answer cards from resolved questions        | 3                  | 4                 | 4                   | 3           | 4                 | 18    |
+
+Scores above are a first pass by Roan on 30 September. Change them as a team.
 
 ## Ideas
 
-None yet.
+All six start from the challenge (see [challenge-briefing.md](challenge-briefing.md)). None is a search engine or a chat agent. Each adds the trust signals from the brief (owner, freshness, scope, people) to knowledge SD Worx already has.
+
+**Team direction (Roan, 30 September):** a large part of SD Worx's work is keeping up with legal rules: labour law, tax, social security and sector agreements in more than 30 countries. Customers and their employees only get the right pay and the right answers if that legal knowledge is current. So legal knowledge is our preferred focus: it must be stored in one place, split into small parts, and every part must have a named person responsible for keeping it up to date. The first idea below works this out. Ideas two and three fit inside it.
+
+### Legal rulebook with an owner for every rule
+
+- Proposed by: Roan
+- Problem: legal knowledge (rates, thresholds, deadlines, procedures per country and sector) is spread over documents, emails and people's heads. A document can be half right: one paragraph is current, another is outdated. Ownership per document is too coarse, because nobody feels responsible for a single number inside a 20 page manual. Belgium alone has 98 joint committees and 66 sub-committees with their own rules (hr-research.md, R26), and 60% of payroll leaders say they cannot keep up with changing labour laws (R28).
+- Target user: SD Worx legal and payroll experts (owners), service colleagues and consultants (readers). Indirectly customers and employees in My SD Worx, who get answers based on it.
+- Solution: split legal knowledge into small rule cards, one per rule (for example "meal vouchers, Belgium: maximum face value EUR 10, employer share at most EUR 8.91, since 1 January 2026"). Every card has one named owner, a scope (country, sector or joint committee, product), a valid from date, the legal source and a "last verified" date. Documents and answers link to cards instead of copying the numbers, so a change is made once and shows up everywhere. When a card is not verified in time, or a law changes, the owner gets it in a review queue. Cards without an owner are shown as a red flag.
+- Demo scenario: the service colleague from the brief gets the meal voucher question. The answer shows the rule card: EUR 10, owner Sofie Peeters (legal expert, Belgium), verified 12 days ago, source Royal Decree. Then a change comes in (for example the January 2027 indexation). The affected cards and every document that uses them are flagged, the owner confirms the new value in one click, and the answer is up to date everywhere. An overview shows coverage: how many rules per country have an owner and are verified.
+- Data: 30 to 50 synthetic rule cards for Belgium from sd-worx-briefing.md section 6 (meal vouchers, eco vouchers, RSZ 13.07%, holiday pay, indexation, flexi-jobs, mobility budget), a few for the Netherlands to show scope, a small seed of SD Worx experts as owners (the existing sample data is a customer company, not SD Worx staff) and a handful of documents that reference the cards.
+- Human review: the owner sees the old value, the proposed new value and the legal source side by side, and confirms, corrects or rejects in one click. Nothing changes without the owner.
+- Fit with SD Worx: legal compliance is their core promise and where errors cost the most. Builds on Legal Watch and their 2025 internal winner (legal documents to validation rules). Answers the brief's owner, freshness and scope signals at the level of each rule.
+- Feasibility tonight: rule cards, owners, scope, the review queue and the coverage overview are buildable with seeded data. Linking documents to cards is buildable if we write the documents ourselves. Extracting cards from existing documents automatically is a stretch.
+- Risks and open questions: must not look like a legal database. Lead with ownership and freshness, not with search. How small is a "rule"? Start with one number or one procedure step per card.
+
+### Trust label on every answer
+
+- Proposed by: Roan
+- Problem: a service colleague on the phone gets three or four documents for one question and cannot tell which is right: no owner, "edited last week", wrong country (example 2 in the brief).
+- Target user: SD Worx service colleague answering customer and employee questions.
+- Solution: every document or answer gets a trust label with four fields: owner, last verified (not last edited), scope (country, product, customer) and who else knows this. Results that do not match the caller's scope or have not been verified in a set period are pushed down and marked. We show it as a layer on top of what already exists (their search or internal agent), not as a replacement.
+- Demo scenario: a Belgian employer calls about the new meal voucher maximum. Before: four documents, no way to choose. After: the same four with labels. One is verified by its owner 12 days ago for Belgium, one is for the Netherlands, one has no owner and was last verified in 2023, one still says EUR 8. The colleague answers in seconds and can see who to ask.
+- Data: a synthetic set of 30 to 50 internal knowledge documents (policies, how-tos, checklists) across countries and products, with a small seed of SD Worx experts as owners (the existing sample data is a customer company). To add: document seed with scope, owner, verified date and content.
+- Human review: owners confirm or correct the proposed label (owner, scope) in one click, with the document next to it.
+- Fit with SD Worx: fixes example 2 directly. Makes their existing agent and search more useful instead of competing with them.
+- Feasibility tonight: document list with labels, scope filter and the before and after view are buildable. Automatic scope detection from content is a stretch (can be seeded).
+- Risks and open questions: needs a clear rule for "verified". Must not look like a search engine: lead with the label and the phone scenario, not with a search box.
+
+### Change-triggered re-verification
+
+- Proposed by: Roan
+- Problem: documents go out of date silently when a law, rate or product changes. Nobody knows which documents a change affects. 60% of payroll leaders say they cannot keep up with changing labour laws (hr-research.md, R28).
+- Target user: document owners and knowledge managers at SD Worx.
+- Solution: when a change comes in (for example from Legal Watch: meal voucher maximum from EUR 8 to EUR 10 on 1 January 2026), the tool finds every document that mentions the old rule, marks it "needs check" and puts it in the owner's review queue. The owner sees the change and the affected passage side by side and confirms, updates or retires the document.
+- Demo scenario: publish one change. Seven documents in three countries light up, only the four Belgian ones are flagged. The owner clears the queue in a minute. The trust label (idea above) turns from "needs check" to "verified today".
+- Data: the same document set, plus a short list of real Belgian changes from the briefing (meal voucher EUR 10, indexation 2.21%, centenindex, 2026 absence reform).
+- Human review: the core of the idea. AI proposes which passages are affected; the owner decides.
+- Fit with SD Worx: builds on Legal Watch and on their past winning idea (legal documents to validation rules), which the briefing marks as their line of work. Proactive, which counts under value.
+- Feasibility tonight: matching on known values (EUR 8, 6.91) is easy and reliable for a demo. Semantic matching is a stretch.
+- Risks and open questions: works best combined with the trust label. Could be the "freshness" half of one product.
+
+### Customer knowledge map
+
+- Proposed by: Roan
+- Problem: a new account owner for a large customer in several countries does not know who to call or which document to trust (example 1 in the brief, Nike).
+- Target user: new account owner or customer success manager.
+- Solution: one page per customer with a grid of countries and products. Each cell shows the responsible team and contact person, the key documents with their trust label and open issues. From it we generate an onboarding pack: who to meet in week one and what to read.
+- Demo scenario: a fictional multi-country customer is handed to a new account owner. They open the map, see eight countries and five products, click Belgium and Pay, see the owner and two verified documents, and download the week one plan.
+- Data: a fictional customer with contracts per country and product, a team roster (from sample data) and documents.
+- Human review: the outgoing owner or team leads confirm each cell before the pack is shared.
+- Fit with SD Worx: example 1, multi-country growth, My SD Worx as the front door.
+- Feasibility tonight: the grid and detail views are straightforward with seeded data. The generated pack is a stretch.
+- Risks and open questions: can look like a CRM dashboard. Needs the trust signals to stand out.
+
+### Knowledge handover on role change
+
+- Proposed by: Roan
+- Problem: when someone leaves or changes role, the documents they own lose their owner and what is in their head is lost. The presenter changed roles six times in 16 years.
+- Target user: the person leaving, their manager and the person taking over.
+- Solution: an HR event (leaver or role change in the HR system) starts a handover. The tool lists everything the person owns or is the go-to person for, proposes a new owner for each item and asks the leaver five short questions per topic to capture what is not written down. The successor confirms.
+- Demo scenario: an account manager moves to another team. The handover shows 14 documents and 3 customers they own, reassigns them in a few clicks and turns a short recorded answer into a draft note the successor approves.
+- Data: employee sample data (roles, managers) plus the document set.
+- Human review: the successor and manager approve each reassignment and each captured note.
+- Fit with SD Worx: uses HR data, which is their core business. Also a product they could sell to customers.
+- Feasibility tonight: the reassignment flow is easy. Capturing tacit knowledge well is harder.
+- Risks and open questions: solves a cause, but the jury may find the link to find, trust and share less direct than the first two ideas.
+
+### Answer cards from resolved questions
+
+- Proposed by: Roan
+- Problem: the answer to a tricky question often lives in one email thread or one person's head. The next colleague with the same question starts again.
+- Target user: service colleagues and their team leads.
+- Solution: when a question is resolved, the tool drafts a short answer card from the thread (question, answer, source, scope). A named expert approves it. Cards carry the same trust label and expire unless re-verified.
+- Demo scenario: a resolved email thread becomes a draft card; the expert approves it with one edit; a colleague later gets the approved card first, with owner and date.
+- Data: synthetic support threads plus the document set.
+- Human review: the draft card next to the source thread, approve or edit in one click.
+- Fit with SD Worx: fits the service example. Close to their 2025 runner-up (emails to system actions).
+- Feasibility tonight: buildable with an LLM call and a review screen.
+- Risks and open questions: closest to "another AI agent" and to a past winner. Keep it as a feature of the first idea rather than the main idea.
