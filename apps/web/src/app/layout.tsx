@@ -4,7 +4,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Hackathon SD Worx",
+  title: {
+    default: "Hackathon SD Worx",
+    template: "%s | Hackathon SD Worx",
+  },
   description: "Demo application for the SD Worx hackathon",
 };
 

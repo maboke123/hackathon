@@ -1,4 +1,10 @@
-import type { ContractType, LeaveStatus, LeaveType, Statute } from "./types";
+import type {
+  ContractType,
+  EmploymentStatus,
+  LeaveStatus,
+  LeaveType,
+  Statute,
+} from "./types";
 
 export const statuteLabels: Record<Statute, string> = {
   bediende: "Bediende",
@@ -27,4 +33,10 @@ export const leaveStatusLabels: Record<LeaveStatus, string> = {
   approved: "Goedgekeurd",
   rejected: "Geweigerd",
   cancelled: "Geannuleerd",
+};
+
+export const employmentStatusLabels: Record<EmploymentStatus, string> = {
+  active: "In dienst",
+  on_leave: "Langdurig afwezig",
+  left: "Uit dienst",
 };

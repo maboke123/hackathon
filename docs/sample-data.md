@@ -26,13 +26,29 @@ const employees = await repository.listEmployees({ departmentId: "dep-hr" });
 const payslips = await repository.listPayslips({ period: "2026-09" });
 ```
 
-Use the repository in Server Components, Route Handlers and Server Actions. Dutch display labels for enum values are in `@/lib/data` (`leaveTypeLabels`, `contractTypeLabels` and so on). Every entity has a zod schema in `types.ts`.
+Use the repository in Server Components, Route Handlers and Server Actions. `@/lib/data` is server only. Client components import labels from `@/lib/data/labels` and types from `@/lib/data/types`. Dutch display labels for enum values are in `labels.ts` (`leaveTypeLabels`, `contractTypeLabels`, `employmentStatusLabels` and so on). Every entity has a zod schema in `types.ts`.
 
 ## Storage
 
-The data lives in memory. Writes (creating or deciding a leave request) work during a session and are lost on restart or redeploy, which resets the demo to a clean state. `repository.reset()` does the same on demand.
+The data lives in Postgres, accessed through Drizzle. The tables are defined in `src/lib/db/schema.ts` and mirror the zod types. `db-repository.ts` implements the `DataRepository` interface, so pages and actions never touch SQL directly.
 
-The app only talks to the `DataRepository` interface in `repository.ts`. If an idea needs persistence, add a SQLite implementation of that interface and return it from `getRepository()`. Nothing else has to change.
+- On startup the app runs the migrations and loads this dataset when the database is empty.
+- Without `DATABASE_URL` the app uses an in-memory database (PGlite) that starts from this dataset on every restart.
+- With `DATABASE_URL` the data persists across restarts and deploys. HR can restore the original dataset with "Reset demo data" on the overview page, which calls `repository.reset()`. Accounts are kept.
+
+To add a field or table: change the zod type in `types.ts`, the table in `schema.ts` and the seed, run `pnpm db:generate` and commit the new file in `apps/web/drizzle` with your change.
+
+## Demo accounts
+
+The app creates one account for three employees in the dataset. The password for all three is `havenkaai-demo`.
+
+| Role     | Name           | Email                            |
+| -------- | -------------- | -------------------------------- |
+| HR       | Inge Claes     | inge.claes@havenkaai.example     |
+| Manager  | Julien Lambert | julien.lambert@havenkaai.example |
+| Employee | Youssef Benali | youssef.benali@havenkaai.example |
+
+The accounts are chosen in `src/lib/auth/demo-accounts.ts`: the HR manager, the warehouse manager and a full-time member of the warehouse team. Add an employee id to `employeeIds` there to get another one-click account. Signing up with any other employee email links the new account to that employee.
 
 ## Payroll figures are simplified
 

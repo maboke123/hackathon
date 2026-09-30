@@ -40,6 +40,16 @@ export function addWorkdays(start: string, workdays: number): string {
   return current;
 }
 
+export function countWorkdays(start: string, end: string): number {
+  let count = 0;
+  for (let current = start; current <= end; current = addDays(current, 1)) {
+    if (!isWeekend(current)) {
+      count += 1;
+    }
+  }
+  return count;
+}
+
 export function workdaysInMonth(year: number, month: number): number {
   const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
   let count = 0;

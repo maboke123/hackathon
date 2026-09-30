@@ -1,5 +1,13 @@
+import { sql } from "drizzle-orm";
+import { getDb } from "@/lib/db";
+
 export const dynamic = "force-dynamic";
 
-export function GET() {
-  return Response.json({ status: "ok" });
+export async function GET() {
+  try {
+    await getDb().execute(sql`select 1`);
+    return Response.json({ status: "ok" });
+  } catch {
+    return Response.json({ status: "database unavailable" }, { status: 503 });
+  }
 }
