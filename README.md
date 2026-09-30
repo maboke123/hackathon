@@ -22,11 +22,11 @@ pnpm dev
 
 ## Layout
 
-| Path                     | Contents                                   |
-| ------------------------ | ------------------------------------------ |
-| `apps/web`               | Next.js demo app                           |
-| `packages/design-system` | Tokens, fonts, logo assets and `DESIGN.md` |
-| `slides`                 | Slidev decks                               |
-| `videos`                 | Remotion promo videos                      |
-| `docs/context.md`        | Challenge, idea and decisions              |
-| `AGENTS.md`              | Instructions for AI coding agents          |
+| Path                     | Contents                                           |
+| ------------------------ | -------------------------------------------------- |
+| `apps/web`               | Next.js demo app                                   |
+| `packages/design-system` | Tokens, fonts, logo assets and `DESIGN.md`         |
+| `slides`                 | Slidev decks                                       |
+| `videos`                 | Remotion promo videos                              |
+| `docs`                   | Challenge, ideas, briefings, research, sample data |
+| `AGENTS.md`              | Instructions for AI coding agents                  |

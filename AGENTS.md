@@ -4,9 +4,22 @@
 
 This repository belongs to a team of four taking part in a hackathon themed around SD Worx (HR and payroll). It contains the demo app, the slide decks and the promo videos. Speed matters, but everything we show must look consistent and professional.
 
-The challenge and our idea are described in `docs/context.md`. Read it before starting feature work and keep it up to date when decisions change.
+## Docs
 
-Background on SD Worx (products, strategy, research, regulation, Belgian payroll vocabulary and idea directions) is in `docs/sd-worx-briefing.md`. Use its terminology and figures in copy and demos, and check a figure at its source before it goes on a slide.
+The team shares context through `docs/`. Read the relevant file before starting work.
+
+| File                       | What                                                                    |
+| -------------------------- | ----------------------------------------------------------------------- |
+| `docs/context.md`          | Challenge, our idea and decisions. Read before feature work.            |
+| `docs/ideas.md`            | Idea backlog and scoring                                                |
+| `docs/sd-worx-briefing.md` | SD Worx products, strategy, regulation and Belgian payroll vocabulary   |
+| `docs/spott-briefing.md`   | Spott, the prize partner: product, people and how it relates to SD Worx |
+| `docs/hr-research.md`      | Independent HR and payroll research with checked figures for the pitch  |
+| `docs/sample-data.md`      | The synthetic dataset used by the app                                   |
+
+- Update the docs at least every 3 to 5 prompts, so teammates who pull get the same context: decisions in `context.md`, ideas in `ideas.md`, dataset changes in `sample-data.md`.
+- Every new Markdown file gets a row in this table, or in the repository layout if it lives outside `docs/`.
+- Use the terminology and figures from the briefing, and check a figure at its source before it goes on a slide.
 
 ## Repository layout
 
