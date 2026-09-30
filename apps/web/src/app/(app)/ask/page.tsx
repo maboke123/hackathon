@@ -1,6 +1,7 @@
 import { CheckIcon, TriangleAlertIcon, XIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { cn } from "cn";
 import { EmptyState } from "@/components/empty-state";
 import { InfoButton, InfoSection } from "@/components/info-button";
 import { PageHeader, PageSection } from "@/components/page-header";
@@ -450,57 +451,108 @@ export default async function AskPage({
         description="Pick the customer on the phone and type their question."
       />
 
-      <form
-        method="get"
-        className="flex flex-col gap-4 lg:flex-row lg:items-end"
+      <div
+        className={cn(
+          "flex flex-col",
+          result ? "gap-5" : "min-h-[55vh] justify-center gap-10 pb-10",
+        )}
       >
-        <div className="flex flex-col gap-2">
-          <label htmlFor="customer" className="text-sm font-medium">
-            Customer on the phone
-          </label>
-          <NativeSelect
-            id="customer"
-            name="customer"
-            defaultValue={customer?.id}
-            className="w-full lg:w-64"
-          >
-            {customers.map((entry) => (
-              <NativeSelectOption key={entry.id} value={entry.id}>
-                {entry.name}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-        </div>
-        <div className="flex flex-1 flex-col gap-2">
-          <label htmlFor="q" className="text-sm font-medium">
-            Question
-          </label>
-          <Input
-            id="q"
-            name="q"
-            defaultValue={question}
-            placeholder="Hoeveel dagen geboorteverlof krijgt een vader?"
-            maxLength={500}
-            required
-          />
-        </div>
-        <Button type="submit">Find answer</Button>
-      </form>
+        <form
+          method="get"
+          className={cn(
+            "flex flex-col",
+            result ? "gap-4 lg:flex-row lg:items-end" : "gap-8",
+          )}
+        >
+          <div className="flex flex-col gap-2">
+            <label
+              htmlFor="customer"
+              className={cn("font-medium", result ? "text-sm" : "text-lg")}
+            >
+              Customer on the phone
+            </label>
+            <NativeSelect
+              id="customer"
+              name="customer"
+              defaultValue={customer?.id}
+              className={cn(
+                "w-full",
+                result
+                  ? "lg:w-72 [&_select]:h-11 [&_select]:text-base"
+                  : "sm:w-[28rem] [&_select]:h-14 [&_select]:pl-4 [&_select]:text-lg",
+              )}
+            >
+              {customers.map((entry) => (
+                <NativeSelectOption key={entry.id} value={entry.id}>
+                  {entry.name}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </div>
+          <div className="flex flex-1 flex-col gap-2">
+            <label
+              htmlFor="q"
+              className={cn("font-medium", result ? "text-sm" : "text-lg")}
+            >
+              Question
+            </label>
+            <div
+              className={cn(
+                "flex flex-col gap-3 sm:flex-row",
+                result ? "" : "sm:gap-4",
+              )}
+            >
+              <Input
+                id="q"
+                name="q"
+                defaultValue={question}
+                placeholder="Hoeveel dagen geboorteverlof krijgt een vader?"
+                maxLength={500}
+                required
+                autoFocus={!result}
+                className={
+                  result
+                    ? "h-11 text-base md:text-base"
+                    : "h-16 px-5 text-xl md:text-xl"
+                }
+              />
+              <Button
+                type="submit"
+                className={result ? "h-11 px-5 text-base" : "h-16 px-8 text-lg"}
+              >
+                Find answer
+              </Button>
+            </div>
+          </div>
+        </form>
 
-      <div className="text-muted-foreground mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm">
-        <span>Try:</span>
-        {examples.map((example) => (
-          <Link
-            key={example.question}
-            href={{
-              pathname: "/ask",
-              query: { customer: example.customerId, q: example.question },
-            }}
-            className="text-primary underline-offset-4 hover:underline"
+        <div className="flex flex-col gap-3">
+          <p
+            className={cn(
+              "text-muted-foreground",
+              result ? "text-sm" : "text-base",
+            )}
           >
-            {example.question}
-          </Link>
-        ))}
+            Try one of these
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {examples.map((example) => (
+              <Link
+                key={example.question}
+                href={{
+                  pathname: "/ask",
+                  query: { customer: example.customerId, q: example.question },
+                }}
+                className={cn(
+                  "text-foreground hover:bg-muted hover:border-primary rounded-lg border transition-colors",
+                  result ? "px-3 py-1.5 text-sm" : "px-4 py-3 text-base",
+                )}
+              >
+                {example.question}
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
 
       {result ? (
