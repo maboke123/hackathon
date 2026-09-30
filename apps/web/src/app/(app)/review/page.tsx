@@ -483,17 +483,17 @@ export default async function ReviewPage() {
       <Tabs defaultValue="queue" className="mb-10 mt-10 gap-6">
         <TabsList
           variant="line"
-          className="h-auto w-full justify-start gap-6 border-b pb-2"
+          className="h-auto w-full justify-start gap-6 border-b pb-3"
         >
           <TabsTrigger value="queue" className="flex-none gap-2 px-2 text-base">
             To do
-            <span className="bg-primary text-primary-foreground rounded-md px-2 text-sm font-semibold tabular-nums leading-6">
+            <span className="bg-primary text-primary-foreground rounded px-1.5 text-xs font-semibold tabular-nums leading-5">
               {queue.length}
             </span>
           </TabsTrigger>
           <TabsTrigger value="team" className="flex-none gap-2 px-2 text-base">
             Team inbox
-            <span className="bg-primary text-primary-foreground rounded-md px-2 text-sm font-semibold tabular-nums leading-6">
+            <span className="bg-primary text-primary-foreground rounded px-1.5 text-xs font-semibold tabular-nums leading-5">
               {inbox.length}
             </span>
           </TabsTrigger>
