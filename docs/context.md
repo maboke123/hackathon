@@ -2,7 +2,9 @@
 
 ## What we know
 
-- Event: hackathon organised around SD Worx (HR and payroll services provider, headquartered in Belgium). Probably the Tectonic Hackathon preselection round on 30 September 2026 (to be confirmed, see `sd-worx-briefing.md`).
+- Event: Tectonic Hackathon, SD Worx track (HR and payroll services provider, headquartered in Belgium).
+- Round: preselection on 30 September 2026, 18:00 to 23:00. We attend in Leuven.
+- Next round: 16 teams per track go to the final in Ghent on 20 October 2026. Prize: EUR 10,000.
 - Background reading: `sd-worx-briefing.md`. Sample data: `sample-data.md`.
 - Team: 4 people.
 - Deliverables we expect: a working demo or proof of concept, a pitch deck and possibly a promo video.
