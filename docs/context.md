@@ -53,7 +53,7 @@ Record important decisions here (scope, data sources, APIs, who owns what).
 ### 30 September 2026: pitch deck
 
 - **Opening:** `slides/pitch.md` is now the real deck. It opens with the framing "not another agent, the layer it stands on": sources, then the trust graph, then the existing agent, then the service colleague.
-- **Graph slide:** an animated graph of the synthetic corpus (`slides/components/TrustGraph.vue`, data in `trust-graph-data.ts`) in three clicks: all items look alike, typed links and statuses appear, then the birth leave cluster with doc-05 as the answer. Layout uses d3-force, with the birth leave nodes pinned so the labels never overlap.
+- **Graph slide:** an animated graph of the synthetic corpus (`slides/components/TrustGraph.vue`, data in `trust-graph-data.ts`) in three clicks: all items look alike, typed links and statuses appear, then a zoom into the birth leave cluster with doc-05 as the answer. Text is sized to be read from the back of the room (labels at least 19px on the slide). Layout uses d3-force, with the birth leave nodes pinned so the labels never overlap.
 
 ### 30 September 2026: knowledge graph schema
 

@@ -38,11 +38,11 @@ export const clusterCenters: Record<
   Cluster,
   { x: number; y: number; label: string }
 > = {
-  meal: { x: 160, y: 310, label: "Meal vouchers" },
-  index: { x: 190, y: 470, label: "Indexation PC 200" },
-  birth: { x: 640, y: 385, label: "Birth leave, Belgium" },
-  admin: { x: 990, y: 490, label: "Dimona and ecocheques" },
-  veldra: { x: 980, y: 175, label: "Veldra account" },
+  meal: { x: 170, y: 350, label: "Meal vouchers" },
+  index: { x: 200, y: 475, label: "Indexation PC 200" },
+  birth: { x: 690, y: 405, label: "Birth leave, Belgium" },
+  admin: { x: 990, y: 500, label: "Dimona and ecocheques" },
+  veldra: { x: 970, y: 190, label: "Veldra account" },
 };
 
 const doc = (
@@ -82,16 +82,16 @@ const person = (
 export const nodes: GraphNode[] = [
   doc("doc-01", "outdated", "birth", "Werkinstructie, 15 days"),
   doc("doc-02", "outdated", "birth", "Quick guide, 15 days"),
-  doc("doc-03", "scope", "birth", "Geboorteverlof Nederland"),
-  doc("doc-04", "copy", "birth", "Personal copy on OneDrive"),
+  doc("doc-03", "scope", "birth", "Netherlands version"),
+  doc("doc-04", "copy", "birth", "Personal copy"),
   doc("doc-05", "current", "birth", "Geboorteverlof België"),
   rec("mail-01", "birth"),
   rec("mail-11", "birth"),
   rec("mail-12", "birth"),
-  rec("chat-01", "birth", "Pieter in the service channel"),
+  rec("chat-01", "birth", "Pieter confirms in chat"),
   rec("call-01", "birth"),
   rec("call-04", "birth"),
-  rec("ticket-02", "birth", "Ticket, told 15 days"),
+  rec("ticket-02", "birth", "Ticket: told 15 days"),
   person("p-pieter", "birth", false, "Pieter De Smedt, owner"),
   person("p-annick", "birth", true, "Annick Wouters, left"),
   person("p-sanne", "birth"),
@@ -226,12 +226,12 @@ export const focusLayout: Record<string, { angle: number; distance: number }> =
   {
     "doc-05": { angle: 0, distance: 0 },
     "doc-04": { angle: 10, distance: 140 },
-    "chat-01": { angle: 62, distance: 125 },
-    "p-pieter": { angle: 100, distance: 118 },
+    "chat-01": { angle: 45, distance: 110 },
+    "p-pieter": { angle: 105, distance: 90 },
     "doc-02": { angle: 170, distance: 140 },
-    "p-annick": { angle: 150, distance: 215 },
+    "p-annick": { angle: 160, distance: 200 },
     "doc-01": { angle: 212, distance: 140 },
-    "ticket-02": { angle: 268, distance: 125 },
+    "ticket-02": { angle: 274, distance: 125 },
     "doc-03": { angle: 322, distance: 140 },
     "p-sanne": { angle: 318, distance: 215 },
   };

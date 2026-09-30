@@ -32,10 +32,10 @@ type SimNode = GraphNode &
 type SimLink = SimulationLinkDatum<SimNode> & { type: LinkType };
 
 function radius(node: GraphNode) {
-  if (node.id === "doc-05") return 12;
-  if (node.kind === "document") return 9;
-  if (node.kind === "person") return 7;
-  return 4.5;
+  if (node.id === "doc-05") return 14;
+  if (node.kind === "document") return 11;
+  if (node.kind === "person") return 8;
+  return 5.5;
 }
 
 const simNodes: SimNode[] = nodes.map((node, i) => {
@@ -78,7 +78,7 @@ forceSimulation<SimNode>(simNodes)
   .force("charge", forceManyBody<SimNode>().strength(-45).distanceMax(160))
   .force(
     "collide",
-    forceCollide<SimNode>((node) => node.r + 9),
+    forceCollide<SimNode>((node) => node.r + 8),
   )
   .force(
     "x",
@@ -125,6 +125,11 @@ const drawnLinks = computed(() =>
   }),
 );
 
+const zoom = { scale: 1.4, x: 610, y: 410 };
+const zoomTransform = `translate(${zoom.x - zoom.scale * clusterCenters.birth.x}px, ${
+  zoom.y - zoom.scale * clusterCenters.birth.y
+}px) scale(${zoom.scale})`;
+
 const statusVisible = computed(() => props.step >= 1);
 const focused = computed(() => props.step >= 2);
 
@@ -137,12 +142,12 @@ const labelled = computed(() =>
 function labelPosition(node: SimNode) {
   const center = clusterCenters.birth;
   if (node.id === "p-pieter")
-    return { x: node.x, y: node.y + node.r + 16, anchor: "middle" };
+    return { x: node.x, y: node.y + node.r + 17, anchor: "middle" };
   const right = node.x >= center.x;
   const offset = node.r + 7;
   return {
     x: right ? node.x + offset : node.x - offset,
-    y: node.y + 4,
+    y: node.y + 5,
     anchor: right ? "start" : "end",
   };
 }
@@ -155,7 +160,7 @@ const clusterLabels = Object.entries(clusterCenters).map(([key, center]) => {
     key,
     label: center.label,
     x: (Math.min(...xs) + Math.max(...xs)) / 2,
-    y: top - 22,
+    y: top - 24,
   };
 });
 
@@ -188,100 +193,103 @@ onSlideEnter(() => {
         </marker>
       </defs>
 
-      <g class="cluster-labels">
-        <text
-          v-for="cluster in clusterLabels"
-          :key="cluster.key"
-          :x="cluster.x"
-          :y="cluster.y"
-          text-anchor="middle"
-        >
-          {{ cluster.label }}
-        </text>
-      </g>
-
-      <g class="links">
-        <line
-          v-for="link in drawnLinks"
-          :key="link.key"
-          :class="['link', `link-${link.type}`, { 'link-focus': link.focus }]"
-          :x1="link.x1"
-          :y1="link.y1"
-          :x2="link.x2"
-          :y2="link.y2"
-          pathLength="1"
-          :style="{
-            transitionDelay:
-              statusVisible && !focused ? `${link.delay}ms` : '0ms',
-          }"
-          :marker-end="
-            link.type === 'supersedes' ? 'url(#arrow-supersedes)' : undefined
-          "
-        />
-      </g>
-
-      <g class="nodes">
-        <g
-          v-for="(node, i) in simNodes"
-          :key="node.id"
-          :class="[
-            'node',
-            `node-${node.kind}`,
-            `status-${node.status}`,
-            { 'node-focus': focusIds.has(node.id), hero: node.id === 'doc-05' },
-          ]"
-          :style="{ animationDelay: `${120 + i * 22}ms` }"
-          :transform="`translate(${node.x} ${node.y})`"
-        >
-          <circle v-if="node.id === 'doc-05'" class="halo" :r="node.r + 8" />
-          <circle class="dot" :r="node.r" />
+      <g class="world" :style="{ transform: focused ? zoomTransform : 'none' }">
+        <g class="cluster-labels">
+          <text
+            v-for="cluster in clusterLabels"
+            :key="cluster.key"
+            :x="cluster.x"
+            :y="cluster.y"
+            text-anchor="middle"
+          >
+            {{ cluster.label }}
+          </text>
         </g>
-      </g>
 
-      <g class="labels">
-        <text
-          v-for="node in labelled"
-          :key="node.id"
-          :x="labelPosition(node).x"
-          :y="labelPosition(node).y"
-          :text-anchor="labelPosition(node).anchor"
-          :class="{ hero: node.id === 'doc-05' }"
-        >
-          {{ node.label }}
-        </text>
+        <g class="links">
+          <line
+            v-for="link in drawnLinks"
+            :key="link.key"
+            :class="['link', `link-${link.type}`, { 'link-focus': link.focus }]"
+            :x1="link.x1"
+            :y1="link.y1"
+            :x2="link.x2"
+            :y2="link.y2"
+            pathLength="1"
+            :style="{
+              transitionDelay:
+                statusVisible && !focused ? `${link.delay}ms` : '0ms',
+            }"
+            :marker-end="
+              link.type === 'supersedes' ? 'url(#arrow-supersedes)' : undefined
+            "
+          />
+        </g>
+
+        <g class="nodes">
+          <g
+            v-for="(node, i) in simNodes"
+            :key="node.id"
+            :class="[
+              'node',
+              `node-${node.kind}`,
+              `status-${node.status}`,
+              {
+                'node-focus': focusIds.has(node.id),
+                hero: node.id === 'doc-05',
+              },
+            ]"
+            :style="{ animationDelay: `${120 + i * 22}ms` }"
+            :transform="`translate(${node.x} ${node.y})`"
+          >
+            <circle v-if="node.id === 'doc-05'" class="halo" :r="node.r + 8" />
+            <circle class="dot" :r="node.r" />
+          </g>
+        </g>
+
+        <g class="labels">
+          <text
+            v-for="node in labelled"
+            :key="node.id"
+            :x="labelPosition(node).x"
+            :y="labelPosition(node).y"
+            :text-anchor="labelPosition(node).anchor"
+            :class="{ hero: node.id === 'doc-05' }"
+          >
+            {{ node.label }}
+          </text>
+        </g>
       </g>
     </svg>
 
     <div class="header">
-      <h3>The trust graph</h3>
+      <h3>The trust graph, synthetic data</h3>
       <h1 v-if="step < 1">
-        {{ documentCount }} items. None of them says which one is right.
+        {{ documentCount }} items. None says which one is right.
       </h1>
       <h1 v-else-if="step < 2">Every link says why two items are related.</h1>
       <h1 v-else>The graph already knows the answer.</h1>
 
       <p v-if="step < 1" class="caption">
-        Documents, emails, calls, meetings, chats and tickets from six systems,
-        taken from our synthetic corpus. On disk they all look alike.
+        Documents, emails, calls and chats from six systems. They all look
+        alike.
       </p>
       <p v-else-if="step < 2" class="caption">
-        Links and owners are the trust signals the existing agent never sees.
+        Owners and links: the signals the agent never sees.
       </p>
       <p v-else class="caption">
-        Birth leave in Belgium is 20 days. Owned by Pieter De Smedt, checked 12
-        June 2026. The other four documents are replaced, out of scope or a
-        copy.
+        20 days, owned by Pieter, checked 12 June 2026.
       </p>
     </div>
 
-    <ul v-if="statusVisible" class="legend">
+    <ul v-if="statusVisible && !focused" class="legend">
       <li v-for="item in linkLegend" :key="item.type">
-        <svg width="22" height="10" aria-hidden="true">
+        <svg width="28" height="12" aria-hidden="true">
           <line
             x1="1"
-            y1="5"
-            x2="21"
-            y2="5"
+            y1="6"
+            x2="27"
+            y2="6"
             :class="['link', 'legend-link', `link-${item.type}`]"
           />
         </svg>
@@ -308,17 +316,18 @@ onSlideEnter(() => {
   position: absolute;
   top: 3.5rem;
   left: 4rem;
-  max-width: 36rem;
+  max-width: 34rem;
 }
 
 .header h1 {
-  font-size: 2.25rem;
+  font-size: 2.5rem;
   margin-bottom: 0.75rem;
   animation: fade-up 400ms cubic-bezier(0.2, 0, 0, 1) both;
 }
 
 .caption {
-  font-size: 1rem;
+  font-size: 1.3rem;
+  line-height: 1.4;
   color: var(--muted-foreground);
   margin: 0;
   animation: fade-up 400ms 80ms cubic-bezier(0.2, 0, 0, 1) both;
@@ -330,17 +339,18 @@ onSlideEnter(() => {
   bottom: 3.5rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem 1.1rem;
+  gap: 0.25rem 1.5rem;
   margin: 0;
-  font-size: 0.8rem;
-  color: var(--muted-foreground);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--foreground);
   animation: fade-up 400ms 160ms cubic-bezier(0.2, 0, 0, 1) both;
 }
 
 .legend li {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
   padding: 0;
   margin: 0;
 }
@@ -349,12 +359,15 @@ onSlideEnter(() => {
   display: none;
 }
 
+.world {
+  transition: transform 900ms cubic-bezier(0.2, 0, 0, 1);
+}
+
 .cluster-labels text {
   font-family: var(--ds-font-heading);
-  font-size: 13px;
+  font-size: 19px;
   font-weight: 600;
-  fill: var(--ds-neutral-500);
-  letter-spacing: 0.02em;
+  fill: var(--ds-neutral-700);
   animation: fade-in 600ms 900ms both;
 }
 
@@ -373,8 +386,8 @@ onSlideEnter(() => {
 
 .dot {
   fill: var(--ds-neutral-0);
-  stroke: var(--ds-neutral-400);
-  stroke-width: 1.5;
+  stroke: var(--ds-neutral-500);
+  stroke-width: 2;
   transition:
     fill 400ms cubic-bezier(0.2, 0, 0, 1),
     stroke 400ms cubic-bezier(0.2, 0, 0, 1);
@@ -388,7 +401,7 @@ onSlideEnter(() => {
 .node-person .dot {
   fill: var(--ds-neutral-0);
   stroke: var(--heading);
-  stroke-width: 2;
+  stroke-width: 2.5;
 }
 
 .halo {
@@ -425,8 +438,12 @@ onSlideEnter(() => {
   stroke-dasharray: 2 2;
 }
 
-.focused .node:not(.node-focus) {
-  opacity: 0.12;
+.node > circle {
+  transition: opacity 400ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.focused .node:not(.node-focus) > circle {
+  opacity: 0.08;
 }
 
 .focused .hero .halo {
@@ -438,7 +455,7 @@ onSlideEnter(() => {
 
 .link {
   fill: none;
-  stroke-width: 1.5;
+  stroke-width: 2;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
   opacity: 0;
@@ -453,19 +470,19 @@ onSlideEnter(() => {
 }
 
 .focused .links .link:not(.link-focus) {
-  opacity: 0.08;
+  opacity: 0.05;
 }
 
 .legend-link {
   stroke-dasharray: none;
   stroke-dashoffset: 0;
   opacity: 1;
-  stroke-width: 2;
+  stroke-width: 3;
 }
 
 .link-supersedes {
   stroke: var(--heading);
-  stroke-width: 2;
+  stroke-width: 2.5;
 }
 
 .arrow {
@@ -474,12 +491,12 @@ onSlideEnter(() => {
 
 .link-contradicts {
   stroke: var(--ds-red-500);
-  stroke-width: 2;
+  stroke-width: 2.5;
 }
 
 .link-variant_of {
   stroke: var(--ds-yellow-500);
-  stroke-width: 2;
+  stroke-width: 2.5;
 }
 
 .link-duplicate_of {
@@ -487,28 +504,28 @@ onSlideEnter(() => {
 }
 
 .link-supports {
-  stroke: var(--ds-blue-300);
+  stroke: var(--ds-blue-500);
 }
 
 .link-owns {
-  stroke: var(--ds-neutral-300);
+  stroke: var(--ds-neutral-400);
 }
 
 .labels text {
   font-family: var(--ds-font-body);
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 500;
   fill: var(--foreground);
   paint-order: stroke;
   stroke: var(--background);
   stroke-width: 4px;
   stroke-linejoin: round;
-  animation: fade-in 400ms 300ms both;
+  animation: fade-in 400ms 700ms both;
 }
 
 .labels text.hero {
   font-family: var(--ds-font-heading);
-  font-size: 15px;
+  font-size: 19px;
   font-weight: 600;
   fill: var(--primary);
 }
