@@ -4,6 +4,7 @@ import Link from "next/link";
 import { cn } from "cn";
 import { EmptyState } from "@/components/empty-state";
 import { InfoButton, InfoSection } from "@/components/info-button";
+import { TrustBadge, TrustBreakdown } from "@/components/trust-badge";
 import { PageHeader, PageSection } from "@/components/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -216,6 +217,9 @@ function SourceDetails({
   ];
   return (
     <>
+      <InfoSection title="Trust score">
+        <TrustBreakdown trust={evaluation.trust} />
+      </InfoSection>
       <InfoSection title="Why this source">
         <Reasons reasons={evaluation.reasons} />
       </InfoSection>
@@ -274,6 +278,12 @@ function AnswerCard({
               <ContactLine contact={contact} item={item} view={view} />
             </dd>
           </div>
+          <div className="flex flex-col gap-0.5">
+            <dt className="text-muted-foreground text-sm">Trust</dt>
+            <dd>
+              <TrustBadge trust={evaluation.trust} />
+            </dd>
+          </div>
         </dl>
         <InfoButton
           label="Why this source"
@@ -329,12 +339,20 @@ function BlockedCard({
             className="bg-background flex flex-col gap-4 p-6 sm:p-8"
           >
             <div className="flex items-start justify-between gap-4">
-              <DocumentLink
-                item={side.item}
-                passage={side.passage}
-                view={view}
-              />
+              <div className="flex flex-wrap items-center gap-2">
+                <DocumentLink
+                  item={side.item}
+                  passage={side.passage}
+                  view={view}
+                />
+                {side.item.id === evaluation.item.id ? (
+                  <TrustBadge trust={evaluation.trust} />
+                ) : null}
+              </div>
               <InfoButton label="About this source">
+                {side.item.id === evaluation.item.id ? (
+                  <TrustBreakdown trust={evaluation.trust} />
+                ) : null}
                 <p>{side.detail}</p>
                 <Supports supports={side.supports} />
               </InfoButton>
@@ -395,6 +413,7 @@ function EvaluationList({
                   passage={evaluation.passage}
                   view={view}
                 />
+                <TrustBadge trust={evaluation.trust} />
                 {evaluation.exclusion ? (
                   <Badge variant="destructive">{evaluation.exclusion}</Badge>
                 ) : null}

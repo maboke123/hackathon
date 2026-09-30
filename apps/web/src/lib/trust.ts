@@ -14,7 +14,12 @@ import { countryLabels } from "@/lib/data/labels";
 import { searchTerms } from "@/lib/data/search-terms";
 import { formatDate } from "@/lib/format";
 import { bestPassage, locatePassage, type Passage } from "@/lib/passages";
+<<<<<<< Updated upstream
 import { type SearchHit, searchDocuments } from "@/lib/search";
+=======
+import { searchDocuments } from "@/lib/search";
+import { type TrustScore, trustScore } from "@/lib/trust-score";
+>>>>>>> Stashed changes
 
 const STALE_AFTER_MONTHS = 12;
 const MAX_CANDIDATES = 8;
@@ -57,6 +62,8 @@ export type Evaluation = {
   reasons: Reason[];
   supports: Support[];
   conflict: Conflict | null;
+  trust: TrustScore;
+  /** Ranking: trust plus how well the document matches the question. */
   score: number;
 };
 
@@ -83,6 +90,7 @@ type Context = {
   teams: Map<string, Team>;
   items: Map<string, KnowledgeItem>;
   openReviews: ReviewItem[];
+  ownerRecords: Map<string, { onTime: number; total: number }>;
 };
 
 function contactFor(item: KnowledgeItem, context: Context): Contact | null {
@@ -156,7 +164,8 @@ async function evaluate(
     : null;
   const reasons: Reason[] = [];
   let exclusion: string | null = null;
-  let score = 100 + 60 * relevance;
+  let parentChanged = false;
+  let possiblyReplaced = false;
 
   const { customer } = context;
   if (item.customerId && item.customerId !== customer.id) {
@@ -197,7 +206,7 @@ async function evaluate(
 
   for (const link of links.filter((entry) => entry.status === "suggested")) {
     if (link.type === "supersedes" && link.toId === item.id) {
-      score -= 20;
+      possiblyReplaced = true;
       reasons.push({
         tone: "warning",
         text: `Possibly replaced by ${title(link.fromId)}. Waiting for the owner to confirm.`,
@@ -206,13 +215,11 @@ async function evaluate(
   }
 
   if (!owner) {
-    score -= 30;
     reasons.push({
       tone: "warning",
       text: "No owner. Nobody vouches for this document.",
     });
   } else if (owner.status !== "active") {
-    score -= 25;
     reasons.push({
       tone: "warning",
       text: `Owner ${owner.name} left${owner.endDate ? ` in ${owner.endDate.slice(0, 4)}` : ""}.`,
@@ -226,13 +233,11 @@ async function evaluate(
 
   const staleBefore = monthsBefore(REFERENCE_DATE, STALE_AFTER_MONTHS);
   if (!item.lastCheckedAt) {
-    score -= 20;
     reasons.push({
       tone: "warning",
       text: "Never checked. Modified dates do not count.",
     });
   } else if (item.lastCheckedAt < staleBefore) {
-    score -= 20;
     reasons.push({
       tone: "warning",
       text: `Last checked ${monthsSince(item.lastCheckedAt)} months ago.`,
@@ -257,7 +262,7 @@ async function evaluate(
       parent?.lastCheckedAt &&
       (!item.lastCheckedAt || item.lastCheckedAt < parent.lastCheckedAt)
     ) {
-      score -= 25;
+      parentChanged = true;
       reasons.push({
         tone: "warning",
         text: `The rule it is based on (${parent.title}) changed on ${formatDate(parent.lastCheckedAt)}. Not checked since.`,
@@ -266,7 +271,6 @@ async function evaluate(
   }
 
   if (item.status === "draft") {
-    score -= 40;
     reasons.push({
       tone: "warning",
       text: "Draft. Not approved for customers.",
@@ -275,7 +279,6 @@ async function evaluate(
 
   const supports = supportsFor(item.id, links, context);
   if (supports.length > 0) {
-    score += 10 * Math.min(supports.length, 2);
     reasons.push({
       tone: "good",
       text: `Confirmed in ${supports.length} ${supports.length === 1 ? "record" : "records"}.`,
@@ -323,6 +326,24 @@ async function evaluate(
     }
   }
 
+  const successor = owner?.successorId
+    ? (context.colleagues.get(owner.successorId) ?? null)
+    : null;
+  const trust = trustScore({
+    item,
+    owner,
+    successor,
+    hasTeam: Boolean(item.teamId && context.teams.has(item.teamId)),
+    supportCount: supports.length,
+    parentChanged,
+    possiblyReplaced,
+    openConflict: conflict !== null,
+    ownerRecord: owner ? (context.ownerRecords.get(owner.id) ?? null) : null,
+    monthsSinceCheck: item.lastCheckedAt
+      ? monthsSince(item.lastCheckedAt)
+      : null,
+  });
+
   return {
     item,
     owner,
@@ -332,7 +353,8 @@ async function evaluate(
     reasons,
     supports,
     conflict,
-    score,
+    trust,
+    score: trust.value + 50 * relevance,
   };
 }
 
@@ -381,7 +403,29 @@ export async function askQuestion(
     }
   }
 
+  const ownerIds = [
+    ...new Set(candidates.flatMap((hit) => hit.item.ownerId ?? [])),
+  ];
+  const yearAgo = monthsBefore(REFERENCE_DATE, 12);
+  const ownerRecords = new Map(
+    await Promise.all(
+      ownerIds.map(async (id) => {
+        const events = (await repository.listKarmaEvents(id)).filter(
+          (event) => event.createdAt.slice(0, 10) >= yearAgo,
+        );
+        return [
+          id,
+          {
+            onTime: events.filter((event) => event.onTime).length,
+            total: events.length,
+          },
+        ] as const;
+      }),
+    ),
+  );
+
   const context: Context = {
+    ownerRecords,
     customer,
     terms,
     colleagues: new Map(
