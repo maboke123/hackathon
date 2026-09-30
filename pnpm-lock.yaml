@@ -113,13 +113,13 @@ importers:
   videos:
     dependencies:
       '@remotion/cli':
-        specifier: latest
+        specifier: 4.0.530
         version: 4.0.530(@swc/helpers@0.5.23)(postcss@8.5.28)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@5.9.3)
       '@remotion/tailwind-v4':
-        specifier: latest
+        specifier: 4.0.530
         version: 4.0.530(@remotion/bundler@4.0.530(@swc/helpers@0.5.23)(postcss@8.5.28)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@rspack/core@1.7.11(@swc/helpers@0.5.23))(webpack@5.105.0(postcss@8.5.28))
       '@remotion/transitions':
-        specifier: latest
+        specifier: 4.0.530
         version: 4.0.530(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@repo/design-system':
         specifier: workspace:*
@@ -131,14 +131,14 @@ importers:
         specifier: 19.2.8
         version: 19.2.8(react@19.2.8)
       remotion:
-        specifier: latest
+        specifier: 4.0.530
         version: 4.0.530(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       tailwindcss:
         specifier: ^4
         version: 4.3.3
     devDependencies:
       '@remotion/eslint-config-flat':
-        specifier: latest
+        specifier: 4.0.530
         version: 4.0.530(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)
       '@types/react':
         specifier: ^19
