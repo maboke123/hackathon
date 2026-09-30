@@ -14,7 +14,9 @@ Trust graph makes the sources trustworthy, and every answer says why.
 
 All data is a synthetic corpus of SD Worx documents, emails, chats, calls, meetings and tickets ([docs/sample-data.md](docs/sample-data.md)). Payroll figures are simulated. The full concept and demo script are in [docs/plan.md](docs/plan.md).
 
-To try it: run `pnpm install` and `pnpm dev`, log in as Lotte Verhaegen, pick Havenkaai Logistics and ask "Hoeveel dagen geboorteverlof krijgt een vader?".
+**Live demo: [hackathon-sdworx.de-1.yendric.be](https://hackathon-sdworx.de-1.yendric.be/)**
+
+To try it: log in as Lotte Verhaegen (one click on the login page), pick Havenkaai Logistics and ask "Hoeveel dagen geboorteverlof krijgt een vader?". To run it locally, use `pnpm install` and `pnpm dev`.
 
 The repository also holds the slide deck and promo video, which share one design system with the app.
 
