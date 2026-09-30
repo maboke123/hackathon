@@ -6,7 +6,7 @@ Our entry for the SD Worx hackathon challenge on internal knowledge.
 
 A service colleague has a customer on the phone. The internal assistant returns three documents: one without an owner, one "edited last week", one for another country. Which one is right?
 
-For legal questions a wrong answer costs the most, because the customer acts on it. They pay their employees and approve leave based on what SD Worx tells them. In our sample data, a consultant says 15 days of birth leave instead of 20, and the employee plans five days too few. Labour law, tax and social security rules change every year in more than 30 countries, so an outdated document is easy to miss and gets repeated across many customers.
+For legal questions a wrong answer costs the most, because the customer acts on it. They pay their employees and approve leave based on what SD Worx tells them. Labour law, tax and social security rules change every year in more than 30 countries, so an outdated document is easy to miss and gets repeated across many customers.
 
 The assistant is not the problem. Its sources are.
 
