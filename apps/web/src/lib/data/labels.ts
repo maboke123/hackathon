@@ -1,4 +1,6 @@
 import type {
+  AccessLevel,
+  DocumentType,
   ColleagueStatus,
   ItemKind,
   ItemStatus,
@@ -81,4 +83,20 @@ export const colleagueStatusLabels: Record<ColleagueStatus, string> = {
   active: "Active",
   left: "Left",
   service_account: "Service account",
+};
+
+export const documentTypeLabels: Record<DocumentType, string> = {
+  legal: "Legal",
+  sales: "Sales and accounts",
+  customer_service: "Customer service",
+  implementation: "Implementation",
+  product: "Product",
+  internal: "Internal",
+};
+
+export const accessLevelLabels: Record<AccessLevel, string> = {
+  company: "All SD Worx colleagues",
+  team: "Owning team",
+  restricted: "Named people only",
+  private: "Author only",
 };

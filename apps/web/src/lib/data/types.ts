@@ -39,6 +39,48 @@ export const linkTypeSchema = z.enum([
 ]);
 export const linkStatusSchema = z.enum(["suggested", "confirmed", "rejected"]);
 export const linkOriginSchema = z.enum(["parsed", "seed", "jev", "person"]);
+export const documentTypeSchema = z.enum([
+  "legal",
+  "sales",
+  "customer_service",
+  "implementation",
+  "product",
+  "internal",
+]);
+export const accessLevelSchema = z.enum([
+  "company",
+  "team",
+  "restricted",
+  "private",
+]);
+export const labelStatusSchema = z.enum(["labelled", "partial", "unlabelled"]);
+export const graphNodeTypeSchema = z.enum([
+  "item",
+  "colleague",
+  "team",
+  "customer",
+  "country",
+  "subject",
+  "document_type",
+]);
+export const graphEdgeTypeSchema = z.enum([
+  "owned_by",
+  "authored_by",
+  "maintained_by",
+  "applies_to",
+  "concerns",
+  "about",
+  "typed_as",
+  "accessible_to",
+  "member_of",
+  "supersedes",
+  "contradicts",
+  "variant_of",
+  "duplicate_of",
+  "supports",
+  "based_on",
+  "answered_with",
+]);
 export const reviewKindSchema = z.enum([
   "conflict",
   "parent_changed",
@@ -124,6 +166,26 @@ export const knowledgeItemSchema = z.object({
   status: itemStatusSchema,
   usefulness: z.number().min(0).max(1).nullable(),
   usefulnessScoredAt: timestamp.nullable(),
+  subject: z.string(),
+  documentType: documentTypeSchema,
+  accessLevel: accessLevelSchema,
+  accessTeamIds: z.array(z.string()),
+  labelStatus: labelStatusSchema,
+});
+
+export const graphNodeSchema = z.object({
+  id: z.string(),
+  type: graphNodeTypeSchema,
+  label: z.string(),
+  props: z.record(z.string(), z.unknown()),
+});
+
+export const graphEdgeSchema = z.object({
+  id: z.string(),
+  fromId: z.string(),
+  toId: z.string(),
+  type: graphEdgeTypeSchema,
+  status: linkStatusSchema,
 });
 
 export const knowledgeLinkSchema = z.object({
@@ -259,6 +321,11 @@ export const itemUpdateSchema = knowledgeItemSchema
     status: true,
     usefulness: true,
     usefulnessScoredAt: true,
+    subject: true,
+    documentType: true,
+    accessLevel: true,
+    accessTeamIds: true,
+    labelStatus: true,
   })
   .partial();
 
@@ -290,3 +357,10 @@ export type AgentQuery = z.infer<typeof agentQuerySchema>;
 export type NewLink = z.infer<typeof newLinkSchema>;
 export type NewReviewItem = z.infer<typeof newReviewItemSchema>;
 export type ItemUpdate = z.infer<typeof itemUpdateSchema>;
+export type DocumentType = z.infer<typeof documentTypeSchema>;
+export type AccessLevel = z.infer<typeof accessLevelSchema>;
+export type LabelStatus = z.infer<typeof labelStatusSchema>;
+export type GraphNodeType = z.infer<typeof graphNodeTypeSchema>;
+export type GraphEdgeType = z.infer<typeof graphEdgeTypeSchema>;
+export type GraphNode = z.infer<typeof graphNodeSchema>;
+export type GraphEdge = z.infer<typeof graphEdgeSchema>;

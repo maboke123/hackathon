@@ -15,6 +15,8 @@ import {
 } from "../types";
 import raw from "./corpus.generated.json";
 import { monthsBefore, REFERENCE_DATE } from "./dates";
+import { buildGraph } from "./graph";
+import { labelItem } from "./labels";
 import { seedLinks } from "./links";
 import { seedReviews } from "./reviews";
 
@@ -27,13 +29,21 @@ const corpusSchema = z.object({
   colleagues: z.array(colleagueSchema),
   customers: z.array(customerSchema),
   items: z.array(
-    knowledgeItemSchema.extend({
-      product: knowledgeItemSchema.shape.product.default(null),
-      keywords: knowledgeItemSchema.shape.keywords.default([]),
-      usefulness: knowledgeItemSchema.shape.usefulness.default(null),
-      usefulnessScoredAt:
-        knowledgeItemSchema.shape.usefulnessScoredAt.default(null),
-    }),
+    knowledgeItemSchema
+      .omit({
+        subject: true,
+        documentType: true,
+        accessLevel: true,
+        accessTeamIds: true,
+        labelStatus: true,
+      })
+      .extend({
+        product: knowledgeItemSchema.shape.product.default(null),
+        keywords: knowledgeItemSchema.shape.keywords.default([]),
+        usefulness: knowledgeItemSchema.shape.usefulness.default(null),
+        usefulnessScoredAt:
+          knowledgeItemSchema.shape.usefulnessScoredAt.default(null),
+      }),
   ),
   links: z.array(
     newLinkSchema.pick({ fromId: true, toId: true, type: true, reason: true }),
@@ -236,10 +246,29 @@ function buildKarmaEvents(
 export function buildCorpusSeed() {
   const corpus = corpusSchema.parse(raw);
   const links = buildLinks(corpus.links);
+  const countriesByCustomer = new Map(
+    corpus.customers.map((customer) => [customer.id, customer.countries]),
+  );
+  const unlabelled = {
+    subject: "",
+    documentType: "internal" as const,
+    accessLevel: "team" as const,
+    accessTeamIds: [],
+    labelStatus: "unlabelled" as const,
+  };
+  const items: KnowledgeItem[] = corpus.items.map((item) => {
+    const base = { ...item, ...unlabelled };
+    return {
+      ...base,
+      ...labelItem(base, corpus.colleagues, countriesByCustomer),
+    };
+  });
   return {
     ...corpus,
+    items,
     links,
-    reviewItems: buildReviewItems(corpus.items, corpus.colleagues, links),
-    karmaEvents: buildKarmaEvents(corpus.items, corpus.colleagues),
+    reviewItems: buildReviewItems(items, corpus.colleagues, links),
+    karmaEvents: buildKarmaEvents(items, corpus.colleagues),
+    graph: buildGraph({ ...corpus, items, links }),
   };
 }

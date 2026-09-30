@@ -15,16 +15,23 @@ Havenkaai Logistics NV, the fictional Belgian company of the first version of th
 | `knowledge_links` | Parsed from tickets, `seed/links.ts` | Typed links between items: `supersedes`, `contradicts`, `variant_of`, `duplicate_of`, `supports`, `cites`, `based_on`. `evidence` quotes the passage in `fromId`, `toEvidence` the passage in `toId` (set for the seeded conflicts). Status `suggested`, `confirmed` or `rejected`, origin `parsed`, `seed`, `jev` or `person`. |
 | `review_items`    | Computed in `seed/corpus.ts`         | The review queue and its audit trail: conflicts and suggested links, documents without an active owner, documents not checked in 12 months. Each task has a `source` (`schedule`, `usage`, `request`, `conflict_check`, `parent_change`), a `dueAt` date and an optional `requestedById`.                                       |
 | `karma_events`    | Check dates in the corpus            | One row per decision in the review queue: colleague, task kind, document, points, on time or not. Seeded with one on-time check per `lastCheckedAt` of a document with an active owner.                                                                                                                                         |
+| `graph_nodes`     | Computed in `seed/graph.ts`          | The knowledge graph nodes: one per item, colleague, team, customer, country, subject and document type.                                                                                                                                                                                                                         |
+| `graph_edges`     | Computed in `seed/graph.ts`          | The graph edges: `owned_by`, `authored_by`, `maintained_by`, `applies_to`, `concerns`, `about`, `typed_as`, `accessible_to`, `member_of`, plus every item link (`supersedes`, `contradicts` and so on).                                                                                                                         |
 | `agent_queries`   | `agent-log.json`                     | What the existing internal assistant returned, for the "before" part of the demo.                                                                                                                                                                                                                                               |
 
 `knowledge_items.search` is a generated full text column (`simple` configuration, title weighted above body). `repository.searchItems(query)` uses it.
+
+## Labels
+
+Every `knowledge_items` row carries labels, filled by rules in `seed/labels.ts` (no AI, never the answer key): country, `subject`, `documentType` (`legal`, `sales`, `customer_service`, `implementation`, `product`, `internal`), owner and owning team, `modifiedAt`, `lastCheckedAt`, and access (`accessLevel`: `company`, `team`, `restricted`, `private`, with `accessTeamIds`). `labelStatus` is `labelled`, `partial` or `unlabelled`, so the app works while labelling is incomplete. Items without an owner stay without one on purpose.
 
 ## From corpus to database
 
 1. `pnpm --filter web knowledge:build` runs `apps/web/scripts/build-knowledge-corpus.mts`. It parses the raw files into `src/lib/data/seed/corpus.generated.json`. It reads only what the source systems carry: front matter, email and call headers, owner lines ("Eigenaar:", "Owner:", "Responsable :"), version tables and "Last reviewed" lines, and the SharePoint site in the path for scope. Commit the JSON after running it.
 2. `seed/links.ts` holds the hand-written links for the demo scenarios.
 3. `seed/reviews.ts` holds review tasks the corpus alone does not produce, so every kind is in the demo: a rule change (doc-06 based on doc-07, still says EUR 8), a check Lotte requested during a call (doc-10, to Bram) and three suggested labels (owner Elif for doc-21, country BE for doc-04, owner Pieter for doc-15 at 58% confidence).
-4. `seed/corpus.ts` validates the JSON with zod, adds the links and computes the review items. `repository.reset()` loads it on startup when the database is empty.
+4. `seed/labels.ts` labels every item and `seed/graph.ts` builds the graph from the labels and links.
+5. `seed/corpus.ts` validates the JSON with zod, adds the links and computes the review items. `repository.reset()` loads it on startup when the database is empty.
 
 Parsed labels are deliberately incomplete: most documents in the corpus carry no owner or check date, and that is what the demo is about.
 

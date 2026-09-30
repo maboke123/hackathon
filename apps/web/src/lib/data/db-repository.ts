@@ -18,6 +18,8 @@ import {
   colleagues,
   customers,
   karmaEvents,
+  graphEdges,
+  graphNodes,
   knowledgeItems,
   knowledgeLinks,
   reviewItems,
@@ -310,14 +312,26 @@ export function createDbRepository(db: Database): DataRepository {
       return event;
     },
 
+    async listGraphNodes(type) {
+      return db
+        .select()
+        .from(graphNodes)
+        .where(type ? eq(graphNodes.type, type) : undefined)
+        .orderBy(asc(graphNodes.id));
+    },
+
+    async listGraphEdges() {
+      return db.select().from(graphEdges).orderBy(asc(graphEdges.id));
+    },
+
     async listAgentQueries() {
       return db.select().from(agentQueries).orderBy(asc(agentQueries.askedAt));
     },
 
     async isSeeded() {
       const [row] = await db
-        .select({ id: knowledgeItems.id })
-        .from(knowledgeItems)
+        .select({ id: graphNodes.id })
+        .from(graphNodes)
         .limit(1);
       return row !== undefined;
     },
@@ -327,6 +341,8 @@ export function createDbRepository(db: Database): DataRepository {
 
       await db.transaction(async (tx) => {
         await tx.delete(karmaEvents);
+        await tx.delete(graphEdges);
+        await tx.delete(graphNodes);
         await tx.delete(reviewItems);
         await tx.delete(knowledgeLinks);
         await tx.delete(knowledgeItems);
@@ -343,6 +359,8 @@ export function createDbRepository(db: Database): DataRepository {
         await tx.insert(reviewItems).values(seed.reviewItems);
         await tx.insert(karmaEvents).values(seed.karmaEvents);
         await tx.insert(agentQueries).values(seed.agentQueries);
+        await tx.insert(graphNodes).values(seed.graph.nodes);
+        await tx.insert(graphEdges).values(seed.graph.edges);
       });
     },
   };

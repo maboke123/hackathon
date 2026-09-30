@@ -43,6 +43,13 @@
       "when": 1790795216444,
       "tag": "0005_link_to_evidence",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1790795670603,
+      "tag": "0006_slimy_inhumans",
+      "breakpoints": true
     }
   ]
 }

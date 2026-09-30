@@ -15,6 +15,11 @@ import {
 // drizzle-kit loads this file outside Next.js, so imports are relative.
 import { roles } from "../auth/roles";
 import type {
+  AccessLevel,
+  DocumentType,
+  GraphEdgeType,
+  GraphNodeType,
+  LabelStatus,
   AgentResult,
   ColleagueStatus,
   CustomerContact,
@@ -179,6 +184,14 @@ export const knowledgeItems = pgTable(
     usefulness: real(),
     usefulnessScoredAt: instant(),
     embedding: real().array(),
+    subject: text().notNull().default(""),
+    documentType: text().$type<DocumentType>().notNull().default("internal"),
+    accessLevel: text().$type<AccessLevel>().notNull().default("team"),
+    accessTeamIds: text()
+      .array()
+      .notNull()
+      .default(sql`'{}'::text[]`),
+    labelStatus: text().$type<LabelStatus>().notNull().default("unlabelled"),
     search: tsvector()
       .notNull()
       .generatedAlwaysAs(
@@ -221,6 +234,36 @@ export const knowledgeLinks = pgTable(
       table.type,
     ),
     index("knowledge_links_to_id_idx").on(table.toId),
+  ],
+);
+
+export const graphNodes = pgTable(
+  "graph_nodes",
+  {
+    id: text().primaryKey(),
+    type: text().$type<GraphNodeType>().notNull(),
+    label: text().notNull(),
+    props: jsonb().$type<Record<string, unknown>>().notNull(),
+  },
+  (table) => [index("graph_nodes_type_idx").on(table.type)],
+);
+
+export const graphEdges = pgTable(
+  "graph_edges",
+  {
+    id: text().primaryKey(),
+    fromId: text()
+      .notNull()
+      .references(() => graphNodes.id, { onDelete: "cascade" }),
+    toId: text()
+      .notNull()
+      .references(() => graphNodes.id, { onDelete: "cascade" }),
+    type: text().$type<GraphEdgeType>().notNull(),
+    status: text().$type<LinkStatus>().notNull(),
+  },
+  (table) => [
+    index("graph_edges_from_id_idx").on(table.fromId),
+    index("graph_edges_to_id_idx").on(table.toId),
   ],
 );
 

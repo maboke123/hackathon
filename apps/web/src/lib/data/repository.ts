@@ -2,6 +2,9 @@ import type {
   AgentQuery,
   Colleague,
   Customer,
+  GraphEdge,
+  GraphNode,
+  GraphNodeType,
   ItemKind,
   ItemStatus,
   ItemUpdate,
@@ -95,6 +98,9 @@ export interface DataRepository {
 
   listKarmaEvents(colleagueId: string): Promise<KarmaEvent[]>;
   createKarmaEvent(input: NewKarmaEvent): Promise<KarmaEvent>;
+
+  listGraphNodes(type?: GraphNodeType): Promise<GraphNode[]>;
+  listGraphEdges(): Promise<GraphEdge[]>;
 
   listAgentQueries(): Promise<AgentQuery[]>;
 
