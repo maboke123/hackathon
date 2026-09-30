@@ -266,6 +266,32 @@ export async function runPeriodicCheck(
   return result;
 }
 
+export type DocumentUpdate = {
+  body: string;
+  /** The sentence that is replaced, or null when the new text is added at the end. */
+  before: string | null;
+  after: string;
+};
+
+/** What "update the document" writes: the disputed sentence swapped for the newer one. */
+export function documentUpdate(
+  item: KnowledgeItem,
+  link: KnowledgeLink,
+  other: KnowledgeItem,
+  on: string,
+): DocumentUpdate | null {
+  if (!link.evidence) return null;
+  if (link.toEvidence && item.body.includes(link.toEvidence)) {
+    return {
+      body: item.body.replace(link.toEvidence, link.evidence),
+      before: link.toEvidence,
+      after: link.evidence,
+    };
+  }
+  const after = `Update ${formatDate(on)} (${other.title}): ${link.evidence}`;
+  return { body: `${item.body}\n\n${after}`, before: null, after };
+}
+
 export type Outcome = {
   id: string;
   label: string;
@@ -293,26 +319,30 @@ export function outcomesFor(
       return [checked, retire];
     case "conflict":
       return [
-        {
-          id: "document_right",
-          label: "Document is right",
-          hint: "Rejects the conflict and sets the last check to today.",
-        },
         ...(link?.evidence
           ? [
               {
                 id: "add_to_document",
-                label: "Newer source is right, add it",
-                hint: "Adds the passage from the newer source to the document and marks it checked.",
+                label: "Update the document",
+                hint: "The newer source is right. Its sentence goes into the document and the document is marked checked.",
               },
             ]
           : []),
         {
-          id: "different_scope",
-          label: "Both right, different scope",
-          hint: "They apply to different countries, customers or products.",
+          id: "document_right",
+          label: "Keep the document as it is",
+          hint: "The document is right. The conflict is closed and the document is marked checked.",
         },
-        { ...retire, label: "Newer source is right, retire" },
+        {
+          id: "different_scope",
+          label: "Both are right, for different cases",
+          hint: "They apply to different countries, customers or groups of employees. Nothing changes.",
+        },
+        {
+          ...retire,
+          label: "Retire the document",
+          hint: "The newer source is right and the document is no longer worth keeping. It stops being used in answers.",
+        },
       ];
     case "no_owner":
       return [
@@ -323,6 +353,42 @@ export function outcomesFor(
         },
       ];
     case "suggested_link":
+      if (link?.type === "supersedes") {
+        return [
+          {
+            id: "confirm",
+            label: "Yes, the newer one replaces it",
+            hint: "Your document is no longer used in answers. The newer source is used instead.",
+          },
+          {
+            id: "reject",
+            label: "No, my document is still right",
+            hint: "Both stay in use. The suggestion is dropped.",
+          },
+        ];
+      }
+      if (link?.type === "duplicate_of") {
+        return [
+          {
+            id: "confirm",
+            label: "Yes, it is a copy",
+            hint: "The copy points to your document and is not used in answers.",
+          },
+          {
+            id: "reject",
+            label: "No, they are different",
+            hint: "Both stay in use. The suggestion is dropped.",
+          },
+        ];
+      }
+      return [
+        {
+          id: "confirm",
+          label: "Confirm",
+          hint: "The suggestion counts from now on.",
+        },
+        { id: "reject", label: "Reject", hint: "The suggestion is dropped." },
+      ];
     case "suggested_label":
       return [
         {
@@ -380,19 +446,20 @@ async function applyOutcome(
             link.fromId === item.id ? link.toId : link.fromId,
           )
         : null;
-      if (!link?.evidence || !other) {
+      const update =
+        link && other ? documentUpdate(item, link, other, on) : null;
+      if (!link || !other || !update) {
         throw new Error("There is no passage to add.");
       }
-      await repository.updateItem(item.id, {
-        body: `${item.body}\n\nUpdate ${formatDate(on)} (${other.title}): ${link.evidence}`,
-      });
+      await repository.updateItem(item.id, { body: update.body });
       await repository.resolveLink(link.id, "rejected", actor.id);
       await repository.createLink({
         fromId: other.id,
         toId: item.id,
         type: "supports",
-        reason: `${actor.name} added this passage to the document.`,
+        reason: `${actor.name} updated the document with this passage.`,
         evidence: link.evidence,
+        toEvidence: update.after,
         status: "confirmed",
         origin: "person",
         confidence: null,

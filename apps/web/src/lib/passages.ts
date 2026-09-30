@@ -27,33 +27,57 @@ function tableCells(line: string): string[] {
     .map((cell) => cleanInline(cell));
 }
 
+const listItem = /^\s*([-*]|\d+\.)\s+/;
+
+function lineKind(line: string): "heading" | "list" | "text" {
+  if (/^#{1,6}\s+/.test(line)) return "heading";
+  return listItem.test(line) ? "list" : "text";
+}
+
 export function parseBlocks(body: string): Block[] {
   const blocks: Block[] = [];
   for (const raw of body.split(/\n\s*\n/)) {
     const chunk = raw.trim();
     if (!chunk || /^(---|WEBVTT)$/.test(chunk)) continue;
     const lines = chunk.split("\n");
-    const heading = chunk.match(/^(#{1,6})\s+(.*)$/);
-    if (heading && lines.length === 1) {
-      blocks.push({
-        kind: "heading",
-        level: heading[1]?.length ?? 1,
-        text: cleanInline(heading[2] ?? ""),
-      });
-    } else if (lines.every((line) => line.trim().startsWith("|"))) {
+    if (lines.every((line) => line.trim().startsWith("|"))) {
       blocks.push({
         kind: "table",
         rows: lines.filter((line) => !isSeparatorRow(line)).map(tableCells),
       });
-    } else if (lines.every((line) => /^\s*([-*]|\d+\.)\s+/.test(line))) {
-      blocks.push({
-        kind: "list",
-        items: lines.map((line) =>
-          cleanInline(line.replace(/^\s*([-*]|\d+\.)\s+/, "")),
-        ),
-      });
-    } else {
-      blocks.push({ kind: "text", text: cleanInline(chunk) });
+      continue;
+    }
+    // A paragraph can mix a lead-in line, list items and a heading.
+    const runs: { kind: "heading" | "list" | "text"; lines: string[] }[] = [];
+    for (const line of lines) {
+      const kind = lineKind(line);
+      const last = runs.at(-1);
+      if (last && kind !== "heading" && last.kind === kind) {
+        last.lines.push(line);
+      } else if (last?.kind === "list" && /^\s+\S/.test(line)) {
+        last.lines[last.lines.length - 1] += ` ${line.trim()}`;
+      } else {
+        runs.push({ kind, lines: [line] });
+      }
+    }
+    for (const run of runs) {
+      if (run.kind === "heading") {
+        const heading = run.lines[0]?.match(/^(#{1,6})\s+(.*)$/);
+        blocks.push({
+          kind: "heading",
+          level: heading?.[1]?.length ?? 1,
+          text: cleanInline(heading?.[2] ?? ""),
+        });
+      } else if (run.kind === "list") {
+        blocks.push({
+          kind: "list",
+          items: run.lines.map((line) =>
+            cleanInline(line.replace(listItem, "")),
+          ),
+        });
+      } else {
+        blocks.push({ kind: "text", text: cleanInline(run.lines.join(" ")) });
+      }
     }
   }
   return blocks;

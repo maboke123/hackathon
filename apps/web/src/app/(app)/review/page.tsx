@@ -1,8 +1,10 @@
+import { FileTextIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { EmptyState } from "@/components/empty-state";
 import { PageHeader, PageSection } from "@/components/page-header";
 import { Stat, Stats } from "@/components/stats";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
   Table,
@@ -16,15 +18,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getCurrentColleague, requireUser } from "@/lib/auth/session";
 import {
   type Colleague,
+  type Customer,
   getRepository,
   type KarmaEvent,
   type KnowledgeItem,
   type KnowledgeLink,
+  type LinkType,
   type ReviewItem,
   reviewKindLabels,
   reviewKindSchema,
   reviewSourceLabels,
-  sourceSystemLabels,
 } from "@/lib/data";
 import { formatDate } from "@/lib/format";
 import {
@@ -35,19 +38,23 @@ import {
   summarizeKarma,
   today,
 } from "@/lib/karma";
-import { outcomesFor } from "@/lib/review";
+import { personTarget, toSheetDocument } from "@/lib/document-view";
+import { cleanInline, locatePassage } from "@/lib/passages";
+import { documentUpdate, outcomesFor } from "@/lib/review";
+import { isReadableDiff, wordDiff } from "@/lib/word-diff";
 import { cn } from "@/lib/utils";
 import {
   type DocumentOption,
   PeriodicCheckButton,
   RequestReviewDialog,
 } from "./queue-tools";
+import { DocumentSheet } from "../document-sheet";
+import { PersonMenu } from "../person-menu";
+import { type Comparison, CompareSheet } from "./compare-sheet";
 import {
   type ColleagueOption,
-  DocumentsSheet,
   PickUpButton,
   TaskActions,
-  type TaskDocument,
 } from "./task-actions";
 
 export const metadata: Metadata = {
@@ -56,6 +63,8 @@ export const metadata: Metadata = {
 
 type Context = {
   on: string;
+  viewerId: string;
+  customers: Customer[];
   items: Map<string, KnowledgeItem>;
   links: Map<string, KnowledgeLink>;
   colleagues: Map<string, Colleague>;
@@ -77,37 +86,59 @@ function dueLabel(dueAt: string, on: string) {
   return { text: `Due ${formatDate(dueAt)}`, tone: "normal" as const };
 }
 
-function toDocument(
+const otherLabels: Partial<Record<LinkType, string>> = {
+  contradicts: "The newer source says",
+  supersedes: "The suggested replacement says",
+  duplicate_of: "The possible copy says",
+};
+
+function readableDiff(before: string | null, after: string | null) {
+  if (!before || !after) return null;
+  const parts = wordDiff(before, after);
+  return isReadableDiff(parts) ? parts : null;
+}
+
+function comparisonFor(
+  review: ReviewItem,
   item: KnowledgeItem,
+  other: KnowledgeItem,
+  link: KnowledgeLink | null,
   context: Context,
-  highlight: string | null,
-): TaskDocument {
-  const owner = item.ownerId ? context.colleagues.get(item.ownerId) : null;
+): Comparison {
+  const sheet = (entry: KnowledgeItem, quote: string | null | undefined) =>
+    toSheetDocument(entry, {
+      colleagues: context.colleagues,
+      customers: context.customers,
+      passage: quote ? locatePassage(entry.body, quote) : null,
+      viewerId: context.viewerId,
+    });
+  const mineQuote = link?.fromId === item.id ? link.evidence : link?.toEvidence;
+  const otherQuote =
+    link?.fromId === item.id ? link.toEvidence : link?.evidence;
+  const mineSentence = mineQuote ? cleanInline(mineQuote) : null;
+  const otherSentence = otherQuote ? cleanInline(otherQuote) : null;
+  const update = link ? documentUpdate(item, link, other, context.on) : null;
   return {
-    id: item.id,
-    title: item.title,
-    highlight,
-    body: item.body,
-    facts: [
-      {
-        label: "Owner",
-        value: owner
-          ? `${owner.name}${owner.status === "active" ? "" : " (left)"}`
-          : "None",
-      },
-      {
-        label: "Last checked",
-        value: item.lastCheckedAt ? formatDate(item.lastCheckedAt) : "Never",
-      },
-      {
-        label: "Where",
-        value: `${sourceSystemLabels[item.sourceSystem]}, ${item.location}`,
-      },
-      {
-        label: "Modified",
-        value: formatDate(item.modifiedAt.slice(0, 10)),
-      },
-    ],
+    reviewId: review.id,
+    kindLabel: reviewKindLabels[review.kind],
+    reason: link?.reason ?? review.trigger,
+    otherLabel: (link && otherLabels[link.type]) ?? "The other source says",
+    mine: sheet(item, mineQuote),
+    other: sheet(other, otherQuote),
+    diff: readableDiff(mineSentence, otherSentence),
+    mineSentence,
+    otherSentence,
+    update: update
+      ? {
+          before: update.before ? cleanInline(update.before) : null,
+          after: cleanInline(update.after),
+          diff: update.before
+            ? readableDiff(mineSentence, cleanInline(update.after))
+            : null,
+        }
+      : null,
+    outcomes: outcomesFor(review, link),
+    points: rewardFor(review, context.on).points,
   };
 }
 
@@ -137,12 +168,10 @@ function TaskRow({
   const due = dueLabel(review.dueAt, context.on);
   const reward = rewardFor(review, context.on);
   const bonus = reward.onTimeBonus + reward.requestBonus;
-  const documents = [
-    toDocument(item, context, null),
-    ...related.map((entry) =>
-      toDocument(entry, context, link?.evidence ?? null),
-    ),
-  ];
+  const [other] = related;
+  const comparison = other
+    ? comparisonFor(review, item, other, link, context)
+    : null;
 
   return (
     <li className="flex flex-col gap-4 p-5">
@@ -156,8 +185,9 @@ function TaskRow({
             </Badge>
             <span className="text-muted-foreground">
               {reviewSourceLabels[review.source]}
-              {requester ? ` by ${requester.name}` : ""}
+              {requester ? " by " : ""}
             </span>
+            {requester ? <PersonMenu person={personTarget(requester)} /> : null}
           </div>
           <h3 className="text-lg leading-snug">{item.title}</h3>
           <p className="text-muted-foreground max-w-2xl text-sm">
@@ -193,16 +223,37 @@ function TaskRow({
         </div>
       </div>
       <div className="flex flex-wrap items-center gap-2">
+        {comparison ? (
+          <CompareSheet
+            comparison={comparison}
+            canDecide={mode === "mine"}
+            colleagueId={colleagueId}
+          />
+        ) : null}
         {mode === "mine" ? (
           <TaskActions
             reviewId={review.id}
-            outcomes={outcomesFor(review, link)}
+            outcomes={comparison ? [] : outcomesFor(review, link)}
             colleagues={context.colleagueOptions}
           />
-        ) : (
+        ) : comparison ? null : (
           <PickUpButton reviewId={review.id} colleagueId={colleagueId} />
         )}
-        <DocumentsSheet title={item.title} documents={documents} />
+        {comparison ? null : (
+          <DocumentSheet
+            document={toSheetDocument(item, {
+              colleagues: context.colleagues,
+              customers: context.customers,
+              viewerId: context.viewerId,
+            })}
+            trigger={
+              <Button variant="ghost">
+                <FileTextIcon strokeWidth={1.5} data-icon="inline-start" />
+                Read document
+              </Button>
+            }
+          />
+        )}
       </div>
     </li>
   );
@@ -323,23 +374,25 @@ export default async function ReviewPage() {
   }
 
   const repository = getRepository();
-  const [items, links, colleagues, mine, teamInbox, events] = await Promise.all(
-    [
+  const [items, links, colleagues, customers, mine, teamInbox, events] =
+    await Promise.all([
       repository.listItems(),
       repository.listLinks(),
       repository.listColleagues(),
+      repository.listCustomers(),
       repository.listReviewItems({ assigneeId: colleague.id, status: "open" }),
       repository.listReviewItems({
         assigneeTeamId: colleague.teamId,
         status: "open",
       }),
       repository.listKarmaEvents(colleague.id),
-    ],
-  );
+    ]);
 
   const on = today();
   const context: Context = {
     on,
+    viewerId: colleague.id,
+    customers,
     items: new Map(items.map((item) => [item.id, item])),
     links: new Map(links.map((link) => [link.id, link])),
     colleagues: new Map(colleagues.map((person) => [person.id, person])),

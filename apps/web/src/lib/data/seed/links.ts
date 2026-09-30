@@ -2,7 +2,9 @@ import type { NewLink } from "../types";
 
 // The links a labeller would produce for the demo scenarios (docs/plan.md).
 // Confirmed links decide answers. Suggested links wait in the owner's queue.
-export const seedLinks: NewLink[] = [
+export const seedLinks: (Omit<NewLink, "toEvidence"> & {
+  toEvidence?: string;
+})[] = [
   {
     fromId: "doc-05",
     toId: "doc-01",
@@ -93,6 +95,7 @@ export const seedLinks: NewLink[] = [
       "The June 2026 legal update caps indexation at the first EUR 4,000 gross. The document indexes the full salary.",
     evidence:
       "Vanaf nu wordt bij een indexering alleen het deel van het brutoloon tot EUR 4.000 geïndexeerd.",
+    toEvidence: "Het percentage wordt op het volledige brutoloon toegepast.",
     status: "suggested",
     origin: "seed",
     confidence: null,
@@ -115,7 +118,10 @@ export const seedLinks: NewLink[] = [
     type: "contradicts",
     reason:
       "Belgium missed the 7 June 2026 deadline. The draft says the law applies from that date.",
-    evidence: null,
+    evidence:
+      "De Europese richtlijn over loontransparantie (2023/970) moest tegen 7 juni 2026 omgezet zijn. België heeft die deadline gemist en heeft de Europese Commissie om zes maanden extra gevraagd.",
+    toEvidence:
+      "Yes. The Belgian law transposing the directive applies from **7 June 2026** to all employers in the private sector, whatever their size.",
     status: "suggested",
     origin: "seed",
     confidence: null,
@@ -129,6 +135,7 @@ export const seedLinks: NewLink[] = [
       "The signed 2025 annex sets the cut-off on the 18th and names Sofie Hermans for escalation. The 2022 plan says the 20th and Wim Van den Broeck.",
     evidence:
       "Input cut-off (variable data, new hires, leavers, absences): 18th of the month, 17:00",
+    toEvidence: "Monthly payroll input cut-off: the 20th of the month, 17:00.",
     status: "suggested",
     origin: "seed",
     confidence: null,
@@ -140,7 +147,10 @@ export const seedLinks: NewLink[] = [
     type: "contradicts",
     reason:
       "The go-live moved to 1 July 2026. The status page still says 1 April 2026.",
-    evidence: null,
+    evidence:
+      "The go-live of Innovapay for Veldra Deutschland GmbH moves from 1 April 2026 to 1 July 2026.",
+    toEvidence:
+      "Go-live payroll (Innovapay): 1 April 2026 (first live payroll: April 2026)",
     status: "suggested",
     origin: "seed",
     confidence: null,
@@ -152,7 +162,10 @@ export const seedLinks: NewLink[] = [
     type: "contradicts",
     reason:
       "Store staff get the two extra payments prorated monthly since the 2025 store agreement. The instruction does not mention it.",
-    evidence: null,
+    evidence:
+      "The new collective agreement for their stores says the two pagas extra are prorated for store staff (prorrateo). So they get 1/6 of the extra payments every month, 12 payslips instead of 14.",
+    toEvidence:
+      "All employees, office and stores, receive the pagas extra with the June and December payroll.",
     status: "suggested",
     origin: "seed",
     confidence: null,

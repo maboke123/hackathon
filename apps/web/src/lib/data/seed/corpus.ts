@@ -48,12 +48,19 @@ function buildLinks(
   const parsedLinks = parsed.map((link) => ({
     ...link,
     evidence: null,
+    toEvidence: null,
     status: "confirmed" as const,
     origin: "parsed" as const,
     confidence: null,
     createdBy: "system",
   }));
-  return [...seedLinks, ...parsedLinks].map((link, index) => ({
+  return [
+    ...seedLinks.map((link) => ({
+      ...link,
+      toEvidence: link.toEvidence ?? null,
+    })),
+    ...parsedLinks,
+  ].map((link, index) => ({
     ...link,
     id: `link-${pad(index + 1)}`,
     createdAt: SEEDED_AT,

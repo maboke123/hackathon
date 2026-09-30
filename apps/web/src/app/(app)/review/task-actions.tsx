@@ -1,6 +1,6 @@
 "use client";
 
-import { EllipsisIcon, FileTextIcon } from "lucide-react";
+import { EllipsisIcon } from "lucide-react";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -24,103 +24,40 @@ import {
   NativeSelectOption,
 } from "@/components/ui/native-select";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { assignReview, decideReview } from "./actions";
 
-export type TaskDocument = {
-  id: string;
-  title: string;
-  facts: { label: string; value: string }[];
-  body: string;
-  highlight: string | null;
-};
-
 export type TaskOutcome = { id: string; label: string; hint: string };
 
 export type ColleagueOption = { id: string; name: string; jobTitle: string };
 
-function Highlighted({
-  body,
-  highlight,
-}: {
-  body: string;
-  highlight: string | null;
-}) {
-  const at = highlight ? body.indexOf(highlight) : -1;
-  if (!highlight || at === -1) {
-    return <>{body}</>;
-  }
-  return (
-    <>
-      {body.slice(0, at)}
-      <mark className="bg-warning/30 text-foreground rounded-sm">
-        {highlight}
-      </mark>
-      {body.slice(at + highlight.length)}
-    </>
-  );
-}
+/** Runs a decision and shows the karma it earned. */
+export function useDecide(reviewId: string, onDone?: () => void) {
+  const [pending, startTransition] = useTransition();
+  const [chosen, setChosen] = useState<string | null>(null);
 
-export function DocumentsSheet({
-  title,
-  documents,
-}: {
-  title: string;
-  documents: TaskDocument[];
-}) {
-  return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button variant="ghost">
-          <FileTextIcon strokeWidth={1.5} data-icon="inline-start" />
-          {documents.length > 1 ? "Compare sources" : "Read document"}
-        </Button>
-      </SheetTrigger>
-      <SheetContent className="w-full gap-0 overflow-y-auto data-[side=right]:sm:max-w-2xl">
-        <SheetHeader className="border-b">
-          <SheetTitle>{title}</SheetTitle>
-          <SheetDescription>
-            {documents.length > 1
-              ? "Both sources as they are stored. The passage that disagrees is marked."
-              : "The document as it is stored today."}
-          </SheetDescription>
-        </SheetHeader>
-        {documents.map((document) => (
-          <section
-            key={document.id}
-            className="flex flex-col gap-4 border-b p-4"
-          >
-            <h3 className="text-base">{document.title}</h3>
-            <dl className="grid grid-cols-[7rem_1fr] gap-x-4 gap-y-1 text-sm">
-              {document.facts.map((fact) => (
-                <div key={fact.label} className="contents">
-                  <dt className="text-muted-foreground">{fact.label}</dt>
-                  <dd className="break-all">{fact.value}</dd>
-                </div>
-              ))}
-            </dl>
-            <div className="bg-muted/50 max-h-96 overflow-y-auto whitespace-pre-wrap rounded-lg border p-4 text-sm leading-relaxed">
-              <Highlighted
-                body={document.body}
-                highlight={document.highlight}
-              />
-            </div>
-          </section>
-        ))}
-      </SheetContent>
-    </Sheet>
-  );
+  function decide(outcomeId: string) {
+    setChosen(outcomeId);
+    startTransition(async () => {
+      const result = await decideReview({ reviewId, outcome: outcomeId });
+      if (result.status === "success") {
+        toast.success(`+${result.points ?? 0} karma`, {
+          description: result.bonus
+            ? `${result.message} ${result.bonus} of it for deciding on time.`
+            : result.message,
+        });
+        onDone?.();
+      } else {
+        toast.error(result.message);
+      }
+      setChosen(null);
+    });
+  }
+
+  return { decide, pending, chosen };
 }
 
 function AssignDialog({
@@ -199,26 +136,8 @@ export function TaskActions({
   outcomes: TaskOutcome[];
   colleagues: ColleagueOption[];
 }) {
-  const [pending, startTransition] = useTransition();
-  const [chosen, setChosen] = useState<string | null>(null);
+  const { decide, pending, chosen } = useDecide(reviewId);
   const [assigning, setAssigning] = useState(false);
-
-  function decide(outcome: TaskOutcome) {
-    setChosen(outcome.id);
-    startTransition(async () => {
-      const result = await decideReview({ reviewId, outcome: outcome.id });
-      if (result.status === "success") {
-        toast.success(`+${result.points ?? 0} karma`, {
-          description: result.bonus
-            ? `${result.message} ${result.bonus} of it for deciding on time.`
-            : result.message,
-        });
-      } else {
-        toast.error(result.message);
-      }
-      setChosen(null);
-    });
-  }
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -228,7 +147,7 @@ export function TaskActions({
             <Button
               variant={index === 0 ? "default" : "outline"}
               disabled={pending}
-              onClick={() => decide(outcome)}
+              onClick={() => decide(outcome.id)}
             >
               {pending && chosen === outcome.id ? "Saving" : outcome.label}
             </Button>

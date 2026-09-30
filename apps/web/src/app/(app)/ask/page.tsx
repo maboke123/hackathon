@@ -10,16 +10,16 @@ import {
   NativeSelect,
   NativeSelectOption,
 } from "@/components/ui/native-select";
-import { requireUser } from "@/lib/auth/session";
+import { getCurrentColleague, requireUser } from "@/lib/auth/session";
 import {
   type Colleague,
   type Customer,
   getRepository,
-  itemKindLabels,
   type KnowledgeItem,
   sourceSystemLabels,
 } from "@/lib/data";
 import { formatDate } from "@/lib/format";
+import { scopeLabel, toSheetDocument } from "@/lib/document-view";
 import type { Passage } from "@/lib/passages";
 import {
   askQuestion,
@@ -29,8 +29,8 @@ import {
   type Reason,
   type Support,
 } from "@/lib/trust";
-import { type DocumentFact, DocumentSheet } from "./document-sheet";
-import { PersonMenu } from "./person-menu";
+import { DocumentSheet } from "../document-sheet";
+import { PersonMenu } from "../person-menu";
 import { SendToOwnerButton } from "./send-to-owner-button";
 
 export const metadata: Metadata = {
@@ -56,6 +56,8 @@ const examples = [
 
 type View = {
   customers: Customer[];
+  colleagues: Map<string, Colleague>;
+  viewerId: string | null;
   terms: string[];
   question: string;
 };
@@ -84,70 +86,31 @@ function Reasons({ reasons }: { reasons: Reason[] }) {
   );
 }
 
-function scopeLabel(item: KnowledgeItem, customers: Customer[]): string {
-  const customer = customers.find((entry) => entry.id === item.customerId);
-  return [
-    item.country ?? "All countries",
-    customer?.name ?? "All customers",
-    item.jointCommittee ? `PC ${item.jointCommittee}` : null,
-  ]
-    .filter((label): label is string => label !== null)
-    .join(", ");
-}
-
 function ownerLabel(owner: Colleague | null): string {
   if (!owner) return "None";
   return owner.status === "active" ? owner.name : `${owner.name} (left)`;
 }
 
-function documentFacts(
-  item: KnowledgeItem,
-  owner: Colleague | null,
-  customers: Customer[],
-): DocumentFact[] {
-  const facts: DocumentFact[] = [
-    { label: "Kind", value: itemKindLabels[item.kind] },
-    {
-      label: "Where",
-      value: `${sourceSystemLabels[item.sourceSystem]}, ${item.location}`,
-    },
-    { label: "Scope", value: scopeLabel(item, customers) },
-  ];
-  if (item.kind === "document") {
-    facts.push(
-      { label: "Owner", value: ownerLabel(owner) },
-      {
-        label: "Last checked",
-        value: item.lastCheckedAt ? formatDate(item.lastCheckedAt) : "Never",
-      },
-    );
-  } else {
-    facts.push({
-      label: "Date",
-      value: formatDate(item.createdAt.slice(0, 10)),
-    });
-  }
-  return facts;
-}
-
 function DocumentLink({
   item,
-  owner = null,
   passage,
   view,
 }: {
   item: KnowledgeItem;
-  owner?: Colleague | null;
   passage: Passage | null;
   view: View;
 }) {
   return (
     <DocumentSheet
-      title={item.title}
-      body={item.body}
-      facts={documentFacts(item, owner, view.customers)}
-      passage={passage}
+      document={toSheetDocument(item, {
+        colleagues: view.colleagues,
+        customers: view.customers,
+        passage,
+        viewerId: view.viewerId,
+      })}
+      note="The highlighted part is what the answer is based on. Question words are marked."
       terms={view.terms}
+      question={view.question}
     />
   );
 }
@@ -230,9 +193,7 @@ function SourceFacts({
   const rows: { label: string; value: React.ReactNode }[] = [
     {
       label: "Source",
-      value: (
-        <DocumentLink item={item} owner={owner} passage={passage} view={view} />
-      ),
+      value: <DocumentLink item={item} passage={passage} view={view} />,
     },
     {
       label: "Owner",
@@ -353,7 +314,6 @@ function BlockedCard({
             <div className="flex flex-col gap-0.5">
               <DocumentLink
                 item={side.item}
-                owner={side.owner}
                 passage={side.passage}
                 view={view}
               />
@@ -408,7 +368,6 @@ function EvaluationList({
           <div className="flex flex-col items-start gap-1.5">
             <DocumentLink
               item={evaluation.item}
-              owner={evaluation.owner}
               passage={evaluation.passage}
               view={view}
             />
@@ -447,7 +406,11 @@ export default async function AskPage({
   await requireUser();
   const params = await searchParams;
   const question = typeof params.q === "string" ? params.q.trim() : "";
-  const customers = await getRepository().listCustomers();
+  const [customers, colleagues, colleague] = await Promise.all([
+    getRepository().listCustomers(),
+    getRepository().listColleagues(),
+    getCurrentColleague(),
+  ]);
   const customer =
     customers.find((entry) => entry.id === params.customer) ??
     customers.find((entry) => entry.id === DEFAULT_CUSTOMER_ID) ??
@@ -457,6 +420,8 @@ export default async function AskPage({
     question && customer ? await askQuestion(question, customer) : null;
   const view: View = {
     customers,
+    colleagues: new Map(colleagues.map((person) => [person.id, person])),
+    viewerId: colleague?.id ?? null,
     terms: result?.terms ?? [],
     question,
   };

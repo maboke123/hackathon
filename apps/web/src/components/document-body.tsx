@@ -1,18 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { cn } from "@/lib/utils";
 import { type Passage, parseBlocks } from "@/lib/passages";
-
-export type DocumentFact = { label: string; value: string };
+import { cn } from "@/lib/utils";
 
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -39,26 +29,39 @@ function Marked({ text, terms }: { text: string; terms: string[] }) {
   );
 }
 
-function DocumentBody({
+const headingSizes: Record<number, string> = {
+  1: "text-2xl pt-2",
+  2: "text-lg pt-4",
+};
+
+/** Renders a corpus body (Markdown, email or transcript) and scrolls to the passage. */
+export function DocumentBody({
   body,
   passage,
-  terms,
+  terms = [],
+  scrollToPassage = true,
 }: {
   body: string;
   passage: Passage | null;
-  terms: string[];
+  terms?: string[];
+  scrollToPassage?: boolean;
 }) {
   const highlightRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    highlightRef.current?.scrollIntoView({ block: "center" });
-  }, []);
+    if (scrollToPassage) {
+      highlightRef.current?.scrollIntoView({ block: "center" });
+    }
+  }, [scrollToPassage]);
 
   const at = passage?.at ?? null;
   const highlight = "bg-accent border-primary border-l-2";
+  const setHighlight = (node: HTMLElement | null) => {
+    highlightRef.current = node;
+  };
 
   return (
-    <div className="flex flex-col gap-4 leading-relaxed">
+    <div className="flex max-w-[72ch] flex-col gap-4 text-[0.9375rem] leading-7">
       {parseBlocks(body).map((block, index) => {
         const isHit = at?.block === index;
         const key = `${block.kind}-${index}`;
@@ -68,30 +71,40 @@ function DocumentBody({
               <h3
                 key={key}
                 className={cn(
-                  "font-heading pt-2",
-                  block.level <= 1 ? "text-xl" : "text-base",
+                  "font-heading leading-tight",
+                  headingSizes[block.level] ?? "pt-2 text-base",
                 )}
               >
                 {block.text}
               </h3>
             );
-          case "table":
+          case "table": {
+            const [header, ...rows] = block.rows;
             return (
               <div key={key} className="overflow-x-auto rounded-lg border">
-                <table className="w-full text-sm">
+                <table className="w-full text-sm leading-6">
+                  {header ? (
+                    <thead className="bg-muted/60 border-b text-left">
+                      <tr>
+                        {header.map((cell, column) => (
+                          <th
+                            key={`${key}-head-${column}`}
+                            className="whitespace-nowrap px-3 py-2 font-medium"
+                          >
+                            {cell}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                  ) : null}
                   <tbody className="divide-y">
-                    {block.rows.map((cells, row) => {
+                    {rows.map((cells, index) => {
+                      const row = index + 1;
                       const rowHit = isHit && at?.row === row;
                       return (
                         <tr
                           key={`${key}-${row}`}
-                          ref={
-                            rowHit
-                              ? (node) => {
-                                  highlightRef.current = node;
-                                }
-                              : undefined
-                          }
+                          ref={rowHit ? setHighlight : undefined}
                           className={cn(rowHit && highlight)}
                         >
                           {cells.map((cell, column) => (
@@ -109,24 +122,19 @@ function DocumentBody({
                 </table>
               </div>
             );
+          }
           case "list":
             return (
               <ul
                 key={key}
-                ref={
-                  isHit
-                    ? (node) => {
-                        highlightRef.current = node;
-                      }
-                    : undefined
-                }
+                ref={isHit ? setHighlight : undefined}
                 className={cn(
-                  "flex list-disc flex-col gap-1 pl-5",
+                  "marker:text-muted-foreground flex list-disc flex-col gap-1.5 pl-5",
                   isHit && `${highlight} rounded-r-md py-2`,
                 )}
               >
                 {block.items.map((item) => (
-                  <li key={item}>
+                  <li key={item} className="pl-1">
                     <Marked text={item} terms={terms} />
                   </li>
                 ))}
@@ -136,13 +144,7 @@ function DocumentBody({
             return (
               <p
                 key={key}
-                ref={
-                  isHit
-                    ? (node) => {
-                        highlightRef.current = node;
-                      }
-                    : undefined
-                }
+                ref={isHit ? setHighlight : undefined}
                 className={cn(isHit && `${highlight} rounded-r-md px-3 py-2`)}
               >
                 <Marked text={block.text} terms={terms} />
@@ -151,47 +153,5 @@ function DocumentBody({
         }
       })}
     </div>
-  );
-}
-
-export function DocumentSheet({
-  title,
-  body,
-  facts,
-  passage,
-  terms,
-}: {
-  title: string;
-  body: string;
-  facts: DocumentFact[];
-  passage: Passage | null;
-  terms: string[];
-}) {
-  return (
-    <Sheet>
-      <SheetTrigger className="hover:text-primary text-left font-medium underline-offset-4 hover:underline">
-        {title}
-      </SheetTrigger>
-      <SheetContent className="w-full gap-0 sm:max-w-2xl data-[side=right]:sm:max-w-2xl">
-        <SheetHeader className="border-b p-6 pr-12">
-          <SheetTitle className="text-xl">{title}</SheetTitle>
-          <SheetDescription>
-            The highlighted part is what the answer is based on. Question words
-            are marked.
-          </SheetDescription>
-          <dl className="mt-4 grid gap-x-6 gap-y-1.5 text-sm sm:grid-cols-[7rem_1fr]">
-            {facts.map((fact) => (
-              <div key={fact.label} className="contents">
-                <dt className="text-muted-foreground">{fact.label}</dt>
-                <dd className="break-words">{fact.value}</dd>
-              </div>
-            ))}
-          </dl>
-        </SheetHeader>
-        <div className="overflow-y-auto p-6">
-          <DocumentBody body={body} passage={passage} terms={terms} />
-        </div>
-      </SheetContent>
-    </Sheet>
   );
 }

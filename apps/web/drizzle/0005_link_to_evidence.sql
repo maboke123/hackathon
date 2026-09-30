@@ -1,0 +1,1 @@
+ALTER TABLE "knowledge_links" ADD COLUMN "to_evidence" text;

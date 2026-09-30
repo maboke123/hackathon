@@ -205,6 +205,7 @@ export const knowledgeLinks = pgTable(
     type: text().$type<LinkType>().notNull(),
     reason: text().notNull(),
     evidence: text(),
+    toEvidence: text(),
     status: text().$type<LinkStatus>().notNull(),
     origin: text().$type<LinkOrigin>().notNull(),
     confidence: real(),

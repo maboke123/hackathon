@@ -11,13 +11,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import type { PersonTarget } from "@/lib/document-view";
 import { requestCheck } from "./actions";
-
-export type PersonMenuTarget = {
-  name: string;
-  detail: string;
-  email: string | null;
-};
 
 export function PersonMenu({
   person,
@@ -25,7 +20,7 @@ export function PersonMenu({
   itemTitle,
   question,
 }: {
-  person: PersonMenuTarget;
+  person: PersonTarget;
   itemId?: string;
   itemTitle?: string;
   question?: string;
@@ -46,7 +41,7 @@ export function PersonMenu({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="text-primary font-medium underline-offset-4 hover:underline">
+      <DropdownMenuTrigger className="text-primary text-left font-medium underline-offset-4 hover:underline">
         {person.name}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-72">
