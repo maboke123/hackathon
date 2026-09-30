@@ -568,23 +568,32 @@ export default async function AskPage({
             />
           )}
 
-          {result.notUsed.length > 0 ? (
-            <PageSection
-              title="Found, but set aside"
-              description="On topic, but not safe to use for this customer."
-            >
+          <PageSection
+            title="Found, but set aside"
+            description="On topic, but not safe to use for this customer."
+          >
+            {result.notUsed.length > 0 ? (
               <EvaluationList evaluations={result.notUsed} view={view} />
-            </PageSection>
-          ) : null}
+            ) : (
+              <p className="text-muted-foreground rounded-lg border p-5">
+                Nothing set aside. No replaced versions, copies or documents for
+                another customer came up.
+              </p>
+            )}
+          </PageSection>
 
-          {result.alsoFound.length > 0 ? (
-            <PageSection
-              title="Less related"
-              description="Usable, but a weaker match than the answer."
-            >
+          <PageSection
+            title="Less related"
+            description="Usable, but a weaker match than the answer."
+          >
+            {result.alsoFound.length > 0 ? (
               <EvaluationList evaluations={result.alsoFound} view={view} />
-            </PageSection>
-          ) : null}
+            ) : (
+              <p className="text-muted-foreground rounded-lg border p-5">
+                No other usable documents match this question.
+              </p>
+            )}
+          </PageSection>
         </div>
       ) : null}
     </>

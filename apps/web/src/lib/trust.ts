@@ -14,10 +14,12 @@ import { countryLabels } from "@/lib/data/labels";
 import { searchTerms } from "@/lib/data/search-terms";
 import { formatDate } from "@/lib/format";
 import { bestPassage, locatePassage, type Passage } from "@/lib/passages";
-import { searchDocuments } from "@/lib/search";
+import { type SearchHit, searchDocuments } from "@/lib/search";
 
 const STALE_AFTER_MONTHS = 12;
 const MAX_CANDIDATES = 8;
+const EXTRA_CANDIDATES = 16;
+const FILL_COUNT = 3;
 const RELATED_LINK_TYPES = new Set([
   "supersedes",
   "duplicate_of",
@@ -403,21 +405,70 @@ export async function askQuestion(
     }),
   );
 
-  const usable = evaluations
+  const [best, ...rest] = evaluations
     .filter((evaluation) => !evaluation.exclusion)
-    .sort(
-      (a, b) =>
-        b.score - a.score ||
-        specificity(b.item) - specificity(a.item) ||
-        (b.item.lastCheckedAt ?? "").localeCompare(a.item.lastCheckedAt ?? ""),
-    );
-  const [best, ...rest] = usable;
+    .sort(byTrust);
+  let alsoFound = rest;
+  let notUsed = evaluations.filter((evaluation) => evaluation.exclusion);
+
+  // Both lists are part of the demo, so fill an empty one from weaker matches.
+  // The answer is still picked from the top candidates only.
+  if (alsoFound.length === 0 || notUsed.length === 0) {
+    const extra = await weakerMatches(hits, candidates, context);
+    if (alsoFound.length === 0) {
+      alsoFound = extra
+        .filter((evaluation) => !evaluation.exclusion)
+        .sort(byTrust)
+        .slice(0, FILL_COUNT);
+    }
+    if (notUsed.length === 0) {
+      notUsed = extra
+        .filter((evaluation) => evaluation.exclusion)
+        .slice(0, FILL_COUNT);
+    }
+  }
 
   return {
     terms,
     answer: best && !best.conflict ? best : null,
     blocked: best?.conflict ? best : null,
-    alsoFound: rest,
-    notUsed: evaluations.filter((evaluation) => evaluation.exclusion),
+    alsoFound,
+    notUsed,
   };
+}
+
+/** Remaining search hits, then other documents on the same subject. */
+async function weakerMatches(
+  hits: SearchHit[],
+  candidates: SearchHit[],
+  context: Context,
+): Promise<Evaluation[]> {
+  const documents = await getRepository().listItems({ kind: "document" });
+  const subjects = new Set(
+    candidates.slice(0, 3).map((hit) => hit.item.subject),
+  );
+  const relevance = new Map(hits.map((hit) => [hit.item.id, hit.relevance]));
+  const seen = new Set(candidates.map((hit) => hit.item.id));
+  const pool = [
+    ...hits.map((hit) => hit.item),
+    ...documents.filter((item) => subjects.has(item.subject)),
+  ]
+    .filter((item) => {
+      if (seen.has(item.id)) return false;
+      seen.add(item.id);
+      return true;
+    })
+    .slice(0, EXTRA_CANDIDATES);
+  for (const item of pool) context.items.set(item.id, item);
+  return Promise.all(
+    pool.map((item) => evaluate(item, relevance.get(item.id) ?? 0, context)),
+  );
+}
+
+function byTrust(a: Evaluation, b: Evaluation): number {
+  return (
+    b.score - a.score ||
+    specificity(b.item) - specificity(a.item) ||
+    (b.item.lastCheckedAt ?? "").localeCompare(a.item.lastCheckedAt ?? "")
+  );
 }
