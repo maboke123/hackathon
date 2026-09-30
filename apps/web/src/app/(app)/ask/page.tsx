@@ -93,28 +93,6 @@ function firstSentence(text: string): string {
   return text.match(/^(.+?\.)(\s|$)/)?.[1] ?? text;
 }
 
-function TrustSummary({ reasons }: { reasons: Reason[] }) {
-  const concerns = reasons.filter((reason) => reason.tone !== "good");
-  if (concerns.length === 0) {
-    return (
-      <p className="flex items-center gap-2 font-medium">
-        {toneIcons.good}
-        Safe to share: owned, checked and confirmed.
-      </p>
-    );
-  }
-  return (
-    <ul className="flex flex-col gap-1.5">
-      {concerns.map((reason) => (
-        <li key={reason.text} className="flex items-start gap-2 font-medium">
-          <span className="mt-0.5 shrink-0">{toneIcons[reason.tone]}</span>
-          {reason.text}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 function ownerLabel(owner: Colleague | null): string {
   if (!owner) return "None";
   return owner.status === "active" ? owner.name : `${owner.name} (left)`;
@@ -263,34 +241,45 @@ function AnswerCard({
   evaluation: Evaluation;
   view: View;
 }) {
-  const { item } = evaluation;
+  const { item, contact, owner } = evaluation;
+  const contactIsOwner =
+    contact?.kind === "colleague" && contact.colleague.id === owner?.id;
+  const hasConcerns = evaluation.reasons.some(
+    (reason) => reason.tone !== "good",
+  );
   return (
     <section className="flex flex-col rounded-lg border">
       <div className="bg-accent flex flex-col gap-4 rounded-t-lg border-b p-6 sm:p-8">
         <p className="text-primary text-sm font-medium">Answer</p>
         <p className="text-xl leading-relaxed">{evaluation.passage.text}</p>
       </div>
-      <div className="flex flex-col gap-5 p-6 sm:p-8">
-        <div className="flex items-start justify-between gap-4">
-          <TrustSummary reasons={evaluation.reasons} />
-          <InfoButton label="Why this source">
-            <SourceDetails evaluation={evaluation} view={view} />
-          </InfoButton>
-        </div>
-        <dl className="grid gap-x-6 gap-y-3 sm:grid-cols-[8rem_1fr]">
-          <dt className="text-muted-foreground">Source</dt>
-          <dd>
-            <DocumentLink
-              item={item}
-              passage={evaluation.passage}
-              view={view}
-            />
-          </dd>
-          <dt className="text-muted-foreground">Ask</dt>
-          <dd>
-            <ContactLine contact={evaluation.contact} item={item} view={view} />
-          </dd>
+      <div className="flex items-start justify-between gap-4 px-6 py-5 sm:px-8">
+        <dl className="flex flex-col gap-x-10 gap-y-3 sm:flex-row">
+          <div className="flex flex-col gap-0.5">
+            <dt className="text-muted-foreground text-sm">Source</dt>
+            <dd>
+              <DocumentLink
+                item={item}
+                passage={evaluation.passage}
+                view={view}
+              />
+            </dd>
+          </div>
+          <div className="flex flex-col gap-0.5">
+            <dt className="text-muted-foreground text-sm">
+              {contactIsOwner ? "Owner" : "Contact"}
+            </dt>
+            <dd>
+              <ContactLine contact={contact} item={item} view={view} />
+            </dd>
+          </div>
         </dl>
+        <InfoButton
+          label="Why this source"
+          tone={hasConcerns ? "warning" : "default"}
+        >
+          <SourceDetails evaluation={evaluation} view={view} />
+        </InfoButton>
       </div>
     </section>
   );

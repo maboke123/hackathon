@@ -1,4 +1,4 @@
-import { InfoIcon } from "lucide-react";
+import { InfoIcon, TriangleAlertIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -8,9 +8,11 @@ import {
 
 export function InfoButton({
   label,
+  tone = "default",
   children,
 }: {
   label: string;
+  tone?: "default" | "warning";
   children: React.ReactNode;
 }) {
   return (
@@ -20,9 +22,17 @@ export function InfoButton({
           variant="ghost"
           size="icon-sm"
           aria-label={label}
-          className="text-muted-foreground hover:text-foreground shrink-0"
+          className={
+            tone === "warning"
+              ? "text-warning-foreground shrink-0"
+              : "text-muted-foreground hover:text-foreground shrink-0"
+          }
         >
-          <InfoIcon strokeWidth={1.5} />
+          {tone === "warning" ? (
+            <TriangleAlertIcon strokeWidth={1.5} />
+          ) : (
+            <InfoIcon strokeWidth={1.5} />
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent
