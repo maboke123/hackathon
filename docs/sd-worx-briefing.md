@@ -94,6 +94,18 @@ Takeaway for ideas: SD Worx has grown by buying many local payroll firms. Integr
 - Quote, Ninia Daelman (Brand and Marketing Director): SD Worx "has evolved by transforming complexity into confidence. It was time for our brand to catch up."
 - Use the three words **HR, Pay and Time** in the pitch. That is how they name their portfolio now.
 
+**Values (2026 brand)** [S72]
+
+| Value                                     | What it means for our pitch                                                          |
+| ----------------------------------------- | ------------------------------------------------------------------------------------ |
+| "We start with the customer. Always."     | Open with a concrete user and their problem, not with the technology.                |
+| "We stay proactive, always working ahead" | Prevent a problem (catch an error before payday) instead of reacting to it.          |
+| "We build on our expertise."              | Take compliance and correctness seriously. Show the rule or source behind a result.  |
+| "We think European, act local."           | Show the idea can handle more than one country's rules, even if the demo is Belgian. |
+| "We own how work works."                  | Own the impact on people: every payslip affects someone's income.                    |
+
+Some country sites still show the older values under "be a spark" (Commitment drives us forward, One for all all for one, Dear Customer, We believe in each other, The road is open). [S73] Use the 2026 set.
+
 **AI initiatives**
 
 | Date          | Initiative                 | Details                                                                                                                                                                                                                                                                                                                           | Source |
@@ -106,6 +118,8 @@ Takeaway for ideas: SD Worx has grown by buying many local payroll firms. Integr
 | Ongoing       | AI page                    | Four domains: agentic operations, agentic coding, agentic implementations, knowledge AI.                                                                                                                                                                                                                                          | [S29]  |
 
 Consistent message in every release: AI plus human expertise, human in the loop, governance, compliance. CEO quote: "a people company combining AI, technology and human expertise". [S7]
+
+The clearest statement of the principle is in the Legal Watch release: AI handles scale and speed, human experts provide judgement. Experts review, validate and refine what the AI flags before it reaches customers. [S10] The agentic payroll model works the same way: humans validate outcomes where it matters, and governance sets clear boundaries between automation and human oversight. [S11] So AI is not banned from acting on its own (a 2025 support agent resolved tickets autonomously), but results that affect someone's pay or legal position get a human check.
 
 **Other news**
 
@@ -226,6 +240,7 @@ Demo implications: keep a human approval step, log what the AI did and why, show
 - Number of SD Worx employees and customers in Belgium alone: not found.
 - Flexi-job rule changes of 1 July 2026, the exact tax-free amount for 2026 and the CO2 contribution minimum are from secondary sources that partly disagree. Verify before quoting.
 - The 2025 support agent figures (40% autonomous resolution) and which product they belong to were not fully clear in the source summary.
+- Not verified, keep off slides: the top HR concerns from the 2025 survey (AI removing the human side of HR 37%, lack of expertise 35%, data privacy 34%) and "half of employers want well-being handled entirely by humans".
 
 ## Sources
 
@@ -300,3 +315,5 @@ Demo implications: keep a human approval step, log what the AI did and why, show
 - [S69] https://www.rva.be/werkgevers/loopbaanonderbreking-tijdskrediet-en-thematische-verloven/tijdskrediet-met-motief and https://werk.belgie.be/nl/themas/feestdagen-en-verloven/het-tijdskrediet-cao-nr-103/tijdskrediet-met-motief
 - [S70] https://github.com/welovedatascience/hack-sdworx
 - [S71] https://github.com/albert-kevin/sdworxHRhackathon2021
+- [S72] https://www.sdworx.ie/en-ie/about-sd-worx
+- [S73] https://www.sdworx.se/sv-se/preboarding/core-values
