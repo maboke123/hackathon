@@ -5,7 +5,7 @@
 - Event: Tectonic Hackathon, SD Worx track (HR and payroll services provider, headquartered in Belgium).
 - Round: preselection on 30 September 2026, 18:00 to 23:00. We attend in Leuven.
 - Next round: 16 teams per track go to the final in Ghent on 20 October 2026. Prize: EUR 10,000.
-- Background reading: `sd-worx-briefing.md` (track owner) and `spott-briefing.md` (prize partner). Independent HR figures for the pitch: `hr-research.md`. Sample data: `sample-data.md`.
+- Background reading: `challenge-briefing.md` (the challenge as presented), `sd-worx-briefing.md` (track owner) and `spott-briefing.md` (prize partner). Independent HR figures for the pitch: `hr-research.md`. Sample data: `sample-data.md`.
 - Team: 4 people.
 - Deliverables we expect: a working demo or proof of concept, a pitch deck and possibly a promo video.
 
@@ -17,7 +17,9 @@ Spott builds an AI-native ATS and CRM for recruitment agencies. Its product stop
 
 ## Challenge
 
-Not announced yet. Fill in once known.
+Announced on 30 September 2026. Full brief and transcript: [challenge-briefing.md](challenge-briefing.md).
+
+Build a proof of concept that turns fragmented organisational knowledge into a trusted, shared resource: make it easier to find, trust and share information. Pick one focus problem. SD Worx explicitly does not want a SharePoint with search or another AI agent, because it already has both. The two examples in the brief are onboarding to a large multi-country customer (Nike) and answering an urgent employee question when the internal agent returns conflicting documents without owner, date or country context.
 
 ## Our idea
 
