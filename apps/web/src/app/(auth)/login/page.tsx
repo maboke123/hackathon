@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 
 export default async function LoginPage() {
   if (await getSession()) {
-    redirect("/overview");
+    redirect("/ask");
   }
 
   const demoAccounts = await getDemoAccounts();

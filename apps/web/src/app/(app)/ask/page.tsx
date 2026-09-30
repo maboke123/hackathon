@@ -420,7 +420,7 @@ export default async function AskPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  await requireUser();
+  const user = await requireUser();
   const params = await searchParams;
   const question = typeof params.q === "string" ? params.q.trim() : "";
   const [customers, colleagues, colleague] = await Promise.all([
@@ -447,7 +447,7 @@ export default async function AskPage({
     <>
       <PageHeader
         eyebrow="Live call"
-        title="Ask"
+        title={`Welcome, ${colleague?.name ?? user.name}`}
         description="Pick the customer on the phone and type their question."
       />
 

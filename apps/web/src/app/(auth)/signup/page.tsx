@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default async function SignupPage() {
   if (await getSession()) {
-    redirect("/overview");
+    redirect("/ask");
   }
 
   const [colleagues, demoAccounts] = await Promise.all([

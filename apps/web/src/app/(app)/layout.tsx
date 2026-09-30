@@ -7,8 +7,8 @@ import { MainNav, type NavItem } from "./main-nav";
 import { UserMenu } from "./user-menu";
 
 const navItems: (NavItem & { roles?: Role[] })[] = [
-  { href: "/overview", label: "Overview" },
   { href: "/ask", label: "Ask" },
+  { href: "/overview", label: "Overview" },
   { href: "/review", label: "Review" },
   { href: "/documents", label: "Documents" },
 ];
@@ -38,7 +38,7 @@ export default async function AppLayout({
     <div className="flex flex-1 flex-col">
       <header className="border-b">
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-8 px-6">
-          <Link href="/overview" className="shrink-0">
+          <Link href="/ask" className="shrink-0">
             <Logo className="h-7" />
           </Link>
           <MainNav items={items} />

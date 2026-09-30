@@ -81,7 +81,7 @@ export default async function OverviewPage() {
     <>
       <PageHeader
         eyebrow="SD Worx knowledge"
-        title={`Welcome, ${colleague?.name ?? user.name}`}
+        title="Overview"
         description={
           colleague
             ? `${colleague.jobTitle}. Figures as of ${formatDate(REFERENCE_DATE)}.`

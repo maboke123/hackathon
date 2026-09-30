@@ -14,7 +14,7 @@ export default function NotFound() {
           This page does not exist, or your role has no access to it.
         </h1>
         <Button asChild className="mt-4 self-start">
-          <Link href="/overview">Go to overview</Link>
+          <Link href="/ask">Go to ask</Link>
         </Button>
       </div>
     </main>

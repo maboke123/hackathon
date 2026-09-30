@@ -9,7 +9,7 @@ export default function AppNotFound() {
       title="This page does not exist, or your role has no access to it."
     >
       <Button asChild variant="outline">
-        <Link href="/overview">Go to overview</Link>
+        <Link href="/ask">Go to ask</Link>
       </Button>
     </PageHeader>
   );

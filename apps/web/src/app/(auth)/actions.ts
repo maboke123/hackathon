@@ -73,7 +73,7 @@ export async function signIn(
   }
 
   failedSignInsPerEmail.reset(email);
-  redirect("/overview");
+  redirect("/ask");
 }
 
 export async function signUp(
@@ -117,7 +117,7 @@ export async function signUp(
     throw error;
   }
 
-  redirect("/overview");
+  redirect("/ask");
 }
 
 export async function signInAsDemo(colleagueId: unknown): Promise<void> {
@@ -135,7 +135,7 @@ export async function signInAsDemo(colleagueId: unknown): Promise<void> {
     headers: await headers(),
   });
 
-  redirect("/overview");
+  redirect("/ask");
 }
 
 export async function signOut(): Promise<void> {

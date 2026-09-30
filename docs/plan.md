@@ -238,7 +238,7 @@ Also not built yet, for track A to add when B or C need them: the `knowledge_gap
 
 | Route             | What                                                                                                                                         | Tonight |
 | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `/ask`            | Customer picker, question, answer card with trust label, supporting records, "not used" list, who knows this, "ask this person" on conflict. | Yes     |
+| `/ask`            | Landing page after login and first nav item, with the welcome heading. Customer picker, question, answer card (source and owner, details behind an info button), "Found, but set aside" and "Less related" always shown, "ask this person" on conflict. | Yes     |
 | After-call panel  | On `/ask` when the call ends: the steps of 3.8 lighting up one by one, the flagged sources, earlier answers to correct, the knowledge gap.   | Yes     |
 | `/review`         | The current user's queue, team inbox and karma (3.5, 3.11). Built.                                                                           | Yes     |
 | `/review/quick`   | Swipe through the simple yes or no tasks, ownership first, with a karma animation (3.5). Built.                                              | Yes     |
