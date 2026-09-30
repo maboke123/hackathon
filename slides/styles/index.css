@@ -307,3 +307,60 @@
 .slidev-layout .caption {
   margin-top: 1.25rem;
 }
+
+.mock.ask {
+  font-size: 1.05rem;
+}
+
+.mock-row.answer {
+  padding: 1rem 1.25rem;
+  font-size: 1.3rem;
+  line-height: 1.45;
+  color: var(--heading);
+}
+
+.mock-row .eyebrow {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--primary);
+}
+
+.mock-row .field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  margin-right: 2rem;
+}
+
+.mock-row .field .muted {
+  font-size: 0.8rem;
+}
+
+.mock .link {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.mock-row .info-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 1.5px solid var(--muted-foreground);
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted-foreground);
+}
+
+.slidev-layout .section-label {
+  margin: 1.25rem 0 0.5rem;
+  font-family: var(--ds-font-heading);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--heading);
+}
