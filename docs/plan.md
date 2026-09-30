@@ -155,6 +155,14 @@ Deadlines by source: request 2 days, conflict check 5, parent change 7, usage 7,
 
 When a document is added or edited, rule based checks compare it with items on the same topic and scope: same fact, different value (15 versus 20 days, EUR 8 versus EUR 10). A hit creates a `contradicts` link as `suggested` and a `conflict` item in the owner's queue. Semantic matching is a stretch.
 
+**Built: upload a document (30 September).** "Add a document" on `/documents` runs three steps:
+
+1. `/documents/new`: drop a `.md` or `.txt` file, paste text or use the sample (`public/samples/werkinstructie-geboorteverlof-2026.md`). It is stored as a draft (next `doc-NN` id) with labels from `labelItem`: owner and team from the uploader, country, topic, type, customer, language.
+2. `/documents/[id]/publish`: the uploader checks the labels, then decides every conflict and says how each related document relates (same topic, or search relevance of 0.6 and up). Conflicts come from `src/lib/facts.ts`: two similar sentences with a different amount (days, weeks, months, EUR, %), or for the same topic the value each document puts in bold, and only when the other document never states our value. Other scope is suggested as `variant_of`, a legal source with the same values as `based_on`, a conflict as `supersedes`. For a conflict the choices are "Mine is right, it replaces this one", "Both right, different scope" or "Not sure, ask the owner" (a suggested `contradicts` link and a `conflict` task for the owner or successor). Publishing makes the document active, checked today.
+3. `/documents/[id]/notify` (only after a `supersedes`): living answers below.
+
+The sample upload as Lotte finds exactly two conflicts, doc-01 (15 dagen) and doc-02 (15 days), and suggests `based_on` doc-05. doc-02 is seeded as `based_on` doc-01 (the quick guide points to the work instruction), so replacing doc-01 also shows a dependent document.
+
 ### 3.7 Changes flow downstream
 
 When a parent source changes, everything based on it is checked.
@@ -169,7 +177,7 @@ A coverage line on the parent ("3 of 4 checked") tells its owner when the change
 
 The same flow starts from a **legal change**. A legal update (mail-04, mail-05) is a parent source: the June 2026 update caps indexation at EUR 4,000, so every document about indexation in its scope goes to its owner with the old passage next to the new rule. This builds on SD Worx Legal Watch (from a legal change to every affected document), it does not replace it.
 
-**Living answers** (Yarne). A fixed document does not fix the answers already sent from it. When a consultant answers a customer, they confirm in one click which document the answer came from (`answered_with`, suggested by the tool). When a new document supersedes that one, the tool lists every customer who got an answer from the old one. The author chooses to notify all, a selection or nobody, and checks a message drafted from the new document. It goes out in the name of the consultant who answered. Tonight: the list, from `linkedDocuments` in `tickets.json`. Stretch: the drafted message.
+**Living answers** (Yarne). A fixed document does not fix the answers already sent from it. When a consultant answers a customer, they confirm in one click which document the answer came from (`answered_with`, suggested by the tool). When a new document supersedes that one, the tool lists every customer who got an answer from the old one. The author chooses to notify all, a selection or nobody, and checks a message drafted from the new document. It goes out in the name of the consultant who answered. Built: after an upload replaces a document, `/documents/[id]/notify` lists every answer that relied on it (what the customer was told, the old value marked, who answered) with a correction drafted from the new document in the ticket's language, and every document `based_on` it with its owner. The author picks all, some or none of each. A sent correction is stored as an `answer` item (`fix-<ticket>-<doc>`) with an `answered_with` link to the new document. Nothing is emailed. Each selected owner gets a `parent_changed` task with the old and new value.
 
 ### 3.8 After the call, the graph updates itself
 
@@ -220,7 +228,7 @@ Built on 30 September. Details and usage in [sample-data.md](sample-data.md#data
 | `karma_events`    | id, colleagueId, reviewId, kind, itemId, points, onTime, reason, createdAt. One row per decision in the queue (3.11).                                                                                                                                                                                                                                                                                                                  |
 | `agent_queries`   | From `agent-log.json`: what the existing assistant returned, for demo step 1.                                                                                                                                                                                                                                                                                                                                                         |
 
-Not built yet: the `answers` table (recipient, answered by, sent at, notified at) for living answers. Resolved tickets already get `answered_with` links from `linkedDocuments` in `tickets.json`. Tickets use their service desk number as id: the answer key's "ticket-02" is `SR-2026-048213`.
+Corrections to customers are `answer` items, not a separate table (3.7). Resolved tickets already get `answered_with` links from `linkedDocuments` in `tickets.json`. Tickets use their service desk number as id: the answer key's "ticket-02" is `SR-2026-048213`.
 
 Also not built yet, for track A to add when B or C need them: the `knowledge_gap` review kind (3.8), confirmed facts with versions for birth leave, meal vouchers and the indexation cap (3.3), and the stored AI output for call-01 and call-03 (3.8).
 
@@ -231,6 +239,7 @@ Also not built yet, for track A to add when B or C need them: the `knowledge_gap
 | `/ask`            | Customer picker, question, answer card with trust label, supporting records, "not used" list, who knows this, "ask this person" on conflict. | Yes     |
 | After-call panel  | On `/ask` when the call ends: the steps of 3.8 lighting up one by one, the flagged sources, earlier answers to correct, the knowledge gap.   | Yes     |
 | `/review`         | The current user's queue, team inbox and karma (3.5, 3.11). Built.                                                                           | Yes     |
+| `/documents/new`  | Upload a document: labels, conflicts, links to related documents, then who to tell (3.6, 3.7). Built.                                       | Yes     |
 | `/documents/[id]` | Trust panel (owner, scope, last check, next review, source, modified by), links grouped by type, downstream coverage.                       | Yes     |
 | `/documents`      | Trust summary per team: share with an active owner, share checked in 12 months, open conflicts. Recurring questions. Never per person.      | If time |
 | Graph view        | Small neighbourhood of one document or fact, with the versions each document states.                                                        | Stretch |
