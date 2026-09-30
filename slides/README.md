@@ -10,3 +10,8 @@ pnpm slides:export   # PDF export
 Each deck is a Markdown file in this folder. To add a deck, copy `pitch.md` and run `pnpm --filter slides exec slidev <file>.md`.
 
 Layouts: `cover`, `default`, `section`, `statement`, `two-cols`. An `h3` above the `h1` renders as an eyebrow label.
+
+| Deck        | What                                                                    |
+| ----------- | ----------------------------------------------------------------------- |
+| `pitch.md`  | The pitch deck                                                          |
+| `ideas.md`  | Slide bank: every trust graph idea as a candidate slide, to pick from   |
