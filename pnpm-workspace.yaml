@@ -1,0 +1,11 @@
+packages:
+  - apps/*
+  - packages/*
+  - slides
+  - videos
+
+onlyBuiltDependencies:
+  - sharp
+  - unrs-resolver
+  - esbuild
+  - playwright-chromium

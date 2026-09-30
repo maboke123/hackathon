@@ -1,0 +1,96 @@
+@import "./fonts.css";
+@import "./tokens.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-heading: var(--heading);
+  --color-inverse: var(--inverse);
+  --color-inverse-foreground: var(--inverse-foreground);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-brand-blue: var(--ds-blue-600);
+  --color-brand-red: var(--ds-red-500);
+  --color-brand-yellow: var(--ds-yellow-400);
+  --color-brand-navy: var(--ds-blue-900);
+
+  --color-blue-50: var(--ds-blue-50);
+  --color-blue-100: var(--ds-blue-100);
+  --color-blue-300: var(--ds-blue-300);
+  --color-blue-500: var(--ds-blue-500);
+  --color-blue-600: var(--ds-blue-600);
+  --color-blue-700: var(--ds-blue-700);
+  --color-blue-900: var(--ds-blue-900);
+  --color-blue-950: var(--ds-blue-950);
+
+  --font-sans: var(--ds-font-body);
+  --font-heading: var(--ds-font-heading);
+  --font-mono: var(--ds-font-mono);
+
+  --radius-sm: 0.125rem;
+  --radius-md: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+
+  --shadow-raised: var(--ds-shadow-raised);
+  --shadow-overlay: var(--ds-shadow-overlay);
+
+  --ease-standard: var(--ds-ease);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+    outline-color: color-mix(in oklab, var(--ring) 50%, transparent);
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--ds-font-body);
+    font-feature-settings: "cv11", "ss03";
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--ds-font-heading);
+    color: var(--heading);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+}

@@ -1,0 +1,139 @@
+:root {
+  --ds-blue-50: #effaff;
+  --ds-blue-100: #d9f1ff;
+  --ds-blue-300: #9ed2ff;
+  --ds-blue-500: #0087f3;
+  --ds-blue-600: #006dd8;
+  --ds-blue-700: #005bbf;
+  --ds-blue-900: #001c52;
+  --ds-blue-950: #000d3a;
+
+  --ds-red-50: #fff3f4;
+  --ds-red-100: #ffe3e3;
+  --ds-red-300: #ff979d;
+  --ds-red-500: #f1002f;
+  --ds-red-600: #cf0038;
+  --ds-red-900: #75001c;
+
+  --ds-yellow-50: #fff7ea;
+  --ds-yellow-200: #ffcf77;
+  --ds-yellow-400: #ffbe00;
+  --ds-yellow-500: #f3b01d;
+  --ds-yellow-900: #533300;
+
+  --ds-green-50: #f1fcf0;
+  --ds-green-100: #d6fad6;
+  --ds-green-300: #75d87a;
+  --ds-green-600: #007900;
+  --ds-green-900: #004b00;
+
+  --ds-neutral-0: #ffffff;
+  --ds-neutral-50: #fbfcfc;
+  --ds-neutral-100: #f4f5f6;
+  --ds-neutral-200: #eaebed;
+  --ds-neutral-300: #d9dbdd;
+  --ds-neutral-400: #88898b;
+  --ds-neutral-500: #737476;
+  --ds-neutral-600: #5a5b5c;
+  --ds-neutral-700: #444547;
+  --ds-neutral-800: #323334;
+  --ds-neutral-900: #212223;
+  --ds-neutral-950: #131415;
+
+  --ds-font-heading:
+    "Hanken Grotesk Variable", "Inter Variable", system-ui, sans-serif;
+  --ds-font-body:
+    "Inter Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ds-font-mono: "JetBrains Mono Variable", ui-monospace, Consolas, monospace;
+
+  --ds-ease: cubic-bezier(0.2, 0, 0, 1);
+  --ds-duration-fast: 120ms;
+  --ds-duration: 200ms;
+
+  --ds-shadow-raised:
+    0 1px 2px rgb(0 13 58 / 0.06), 0 1px 1px rgb(0 13 58 / 0.04);
+  --ds-shadow-overlay:
+    0 8px 24px rgb(0 13 58 / 0.12), 0 2px 6px rgb(0 13 58 / 0.06);
+
+  --radius: 0.5rem;
+
+  --background: var(--ds-neutral-0);
+  --foreground: var(--ds-neutral-900);
+  --card: var(--ds-neutral-0);
+  --card-foreground: var(--ds-neutral-900);
+  --popover: var(--ds-neutral-0);
+  --popover-foreground: var(--ds-neutral-900);
+  --primary: var(--ds-blue-600);
+  --primary-foreground: var(--ds-neutral-0);
+  --secondary: var(--ds-blue-50);
+  --secondary-foreground: var(--ds-blue-900);
+  --muted: var(--ds-neutral-100);
+  --muted-foreground: var(--ds-neutral-600);
+  --accent: var(--ds-blue-100);
+  --accent-foreground: var(--ds-blue-900);
+  --destructive: var(--ds-red-600);
+  --success: var(--ds-green-600);
+  --warning: var(--ds-yellow-500);
+  --border: var(--ds-neutral-300);
+  --input: var(--ds-neutral-300);
+  --ring: var(--ds-blue-500);
+  --heading: var(--ds-blue-900);
+  --inverse: var(--ds-blue-950);
+  --inverse-foreground: var(--ds-neutral-0);
+
+  --chart-1: var(--ds-blue-600);
+  --chart-2: var(--ds-red-500);
+  --chart-3: var(--ds-yellow-400);
+  --chart-4: var(--ds-blue-900);
+  --chart-5: var(--ds-blue-300);
+
+  --sidebar: var(--ds-neutral-50);
+  --sidebar-foreground: var(--ds-neutral-900);
+  --sidebar-primary: var(--ds-blue-600);
+  --sidebar-primary-foreground: var(--ds-neutral-0);
+  --sidebar-accent: var(--ds-blue-50);
+  --sidebar-accent-foreground: var(--ds-blue-900);
+  --sidebar-border: var(--ds-neutral-200);
+  --sidebar-ring: var(--ds-blue-500);
+}
+
+.dark {
+  --background: var(--ds-neutral-950);
+  --foreground: var(--ds-neutral-100);
+  --card: var(--ds-neutral-900);
+  --card-foreground: var(--ds-neutral-100);
+  --popover: var(--ds-neutral-900);
+  --popover-foreground: var(--ds-neutral-100);
+  --primary: var(--ds-blue-300);
+  --primary-foreground: var(--ds-blue-950);
+  --secondary: var(--ds-blue-900);
+  --secondary-foreground: var(--ds-blue-100);
+  --muted: var(--ds-neutral-800);
+  --muted-foreground: var(--ds-neutral-300);
+  --accent: var(--ds-blue-900);
+  --accent-foreground: var(--ds-blue-100);
+  --destructive: var(--ds-red-300);
+  --success: var(--ds-green-300);
+  --warning: var(--ds-yellow-500);
+  --border: var(--ds-neutral-700);
+  --input: var(--ds-neutral-700);
+  --ring: var(--ds-blue-500);
+  --heading: var(--ds-neutral-0);
+  --inverse: var(--ds-neutral-0);
+  --inverse-foreground: var(--ds-blue-950);
+
+  --chart-1: var(--ds-blue-300);
+  --chart-2: var(--ds-red-300);
+  --chart-3: var(--ds-yellow-400);
+  --chart-4: var(--ds-blue-500);
+  --chart-5: var(--ds-neutral-300);
+
+  --sidebar: var(--ds-neutral-900);
+  --sidebar-foreground: var(--ds-neutral-100);
+  --sidebar-primary: var(--ds-blue-300);
+  --sidebar-primary-foreground: var(--ds-blue-950);
+  --sidebar-accent: var(--ds-neutral-800);
+  --sidebar-accent-foreground: var(--ds-neutral-100);
+  --sidebar-border: var(--ds-neutral-700);
+  --sidebar-ring: var(--ds-blue-500);
+}

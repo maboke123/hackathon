@@ -1,0 +1,19 @@
+{
+  "name": "slides",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "slidev pitch.md --open",
+    "build": "slidev build pitch.md",
+    "export": "slidev export pitch.md --output pitch-export.pdf"
+  },
+  "dependencies": {
+    "@repo/design-system": "workspace:*",
+    "@slidev/cli": "^53.0.0",
+    "vue": "^3"
+  },
+  "devDependencies": {
+    "playwright-chromium": "^1.63.0"
+  }
+}

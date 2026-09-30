@@ -1,0 +1,24 @@
+{
+  "name": "hackathon-sdworx",
+  "private": true,
+  "packageManager": "pnpm@10.30.2",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "build": "pnpm --filter web build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "slides": "pnpm --filter slides dev",
+    "slides:export": "pnpm --filter slides export",
+    "videos": "pnpm --filter videos dev",
+    "videos:render": "pnpm --filter videos render"
+  },
+  "devDependencies": {
+    "prettier": "^3",
+    "prettier-plugin-tailwindcss": "^0.6"
+  }
+}
