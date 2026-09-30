@@ -74,6 +74,7 @@
   --destructive: var(--ds-red-600);
   --success: var(--ds-green-600);
   --warning: var(--ds-yellow-500);
+  --warning-foreground: var(--ds-yellow-900);
   --border: var(--ds-neutral-300);
   --input: var(--ds-neutral-300);
   --ring: var(--ds-blue-500);
@@ -115,6 +116,7 @@
   --destructive: var(--ds-red-300);
   --success: var(--ds-green-300);
   --warning: var(--ds-yellow-500);
+  --warning-foreground: var(--ds-yellow-200);
   --border: var(--ds-neutral-700);
   --input: var(--ds-neutral-700);
   --ring: var(--ds-blue-500);

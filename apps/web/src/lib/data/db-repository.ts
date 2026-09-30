@@ -21,6 +21,7 @@ import {
   teams,
 } from "@/lib/db/schema";
 import type { DataRepository, ItemFilter } from "./repository";
+import { searchTerms } from "./search-terms";
 import { buildCorpusSeed } from "./seed/corpus";
 import { itemUpdateSchema, newLinkSchema, newReviewItemSchema } from "./types";
 
@@ -40,13 +41,8 @@ function itemConditions(filter: ItemFilter): (SQL | undefined)[] {
 }
 
 function toTsQuery(query: string): string | null {
-  const words = query
-    .toLowerCase()
-    .split(/[^\p{L}\p{N}]+/u)
-    .filter((word) => word.length > 1);
-  return words.length > 0
-    ? [...new Set(words)].map((word) => `${word}:*`).join(" | ")
-    : null;
+  const words = searchTerms(query);
+  return words.length > 0 ? words.map((word) => `${word}:*`).join(" | ") : null;
 }
 
 const newId = (prefix: string) =>
