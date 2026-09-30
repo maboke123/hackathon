@@ -483,21 +483,21 @@ export default async function ReviewPage() {
       <Tabs defaultValue="queue" className="mb-10 mt-10 gap-6">
         <TabsList
           variant="line"
-          className="w-full justify-start gap-4 border-b pb-1"
+          className="h-auto w-full justify-start gap-6 border-b pb-2"
         >
-          <TabsTrigger value="queue" className="flex-none">
+          <TabsTrigger value="queue" className="flex-none gap-2 px-2 text-base">
             To do
-            <span className="text-muted-foreground tabular-nums">
+            <span className="bg-primary text-primary-foreground rounded-md px-2 text-sm font-semibold tabular-nums leading-6">
               {queue.length}
             </span>
           </TabsTrigger>
-          <TabsTrigger value="team" className="flex-none">
+          <TabsTrigger value="team" className="flex-none gap-2 px-2 text-base">
             Team inbox
-            <span className="text-muted-foreground tabular-nums">
+            <span className="bg-primary text-primary-foreground rounded-md px-2 text-sm font-semibold tabular-nums leading-6">
               {inbox.length}
             </span>
           </TabsTrigger>
-          <TabsTrigger value="history" className="flex-none">
+          <TabsTrigger value="history" className="flex-none px-2 text-base">
             History
           </TabsTrigger>
         </TabsList>

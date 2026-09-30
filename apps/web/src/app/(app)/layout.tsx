@@ -21,18 +21,27 @@ export default async function AppLayout({
 }) {
   const user = await requireUser();
   const colleague = await getCurrentColleague();
-  const openReviews = colleague
-    ? await getRepository().listReviewItems({
-        assigneeId: colleague.id,
-        status: "open",
-      })
-    : [];
+  const repository = getRepository();
+  const [mine, teamInbox] = colleague
+    ? await Promise.all([
+        repository.listReviewItems({
+          assigneeId: colleague.id,
+          status: "open",
+        }),
+        repository.listReviewItems({
+          assigneeTeamId: colleague.teamId,
+          status: "open",
+        }),
+      ])
+    : [[], []];
+  const reviewCount =
+    mine.length + teamInbox.filter((review) => !review.assigneeId).length;
   const items = navItems
     .filter((item) => !item.roles || item.roles.includes(user.role))
     .map(({ href, label }) => ({
       href,
       label,
-      count: href === "/review" ? openReviews.length : undefined,
+      count: href === "/review" ? reviewCount : undefined,
     }));
 
   return (
