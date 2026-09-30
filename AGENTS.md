@@ -6,20 +6,20 @@ This repository belongs to a team of four taking part in a hackathon themed arou
 
 ## Docs
 
-The team shares context through `docs/`. Read the relevant file before starting work.
+The team shares context through `docs/`. Start with [docs/plan.md](docs/plan.md): it is the single game plan for what we build, the demo and which track each person owns. Read the relevant file before starting work.
 
 | File                         | What                                                                            |
 | ---------------------------- | ------------------------------------------------------------------------------- |
+| `docs/plan.md`               | Game plan: our solution, data model, demo script and who does what. Start here. |
 | `docs/context.md`            | Challenge, our idea and decisions. Read before feature work.                    |
 | `docs/challenge-briefing.md` | The SD Worx challenge brief: summary and transcript. Read before feature work.  |
 | `docs/ideas.md`              | Idea backlog and scoring                                                        |
-| `docs/plan.md`               | Game plan: our solution, data model, demo script and who does what. Start here. |
 | `docs/sd-worx-briefing.md`   | SD Worx products, strategy, regulation and Belgian payroll vocabulary           |
 | `docs/spott-briefing.md`     | Spott, the prize partner: product, people and how it relates to SD Worx         |
 | `docs/hr-research.md`        | Independent HR and payroll research with checked figures for the pitch          |
 | `docs/sample-data.md`        | The synthetic dataset used by the app                                           |
 
-- Update the docs at least every 3 to 5 prompts, so teammates who pull get the same context: decisions in `context.md`, ideas in `ideas.md`, dataset changes in `sample-data.md`.
+- Update the docs at least every 3 to 5 prompts, so teammates who pull get the same context: the solution and team split in `plan.md`, decisions in `context.md`, ideas in `ideas.md`, dataset changes in `sample-data.md`.
 - Every new Markdown file gets a row in this table, or in the repository layout if it lives outside `docs/`.
 - Use the terminology and figures from the briefing, and check a figure at its source before it goes on a slide.
 
