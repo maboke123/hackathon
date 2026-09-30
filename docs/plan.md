@@ -37,25 +37,28 @@ The corpus is raw: files only carry what their source system would carry. We tur
 
 Follow the schema change steps in `AGENTS.md` (types, schema, seed, repository, `pnpm db:generate`).
 
-| Table             | Fields                                                                                                                                                                                                                                                    |
-| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `colleagues`      | From `people.json`: id (`p-pieter`), name, email, role, team, country, languages, status (`active`, `left`, `service-account`).                                                                                                                           |
-| `customers`       | From `customers.json`: id (`cus-havenkaai`, `cus-veldra`), name, countries.                                                                                                                                                                               |
-| `knowledge_items` | id (`doc-05`, `mail-05`), kind (`document`, `email`, `call`, `meeting`, `chat`, `ticket`), title, body, source, path, language, country, customerId, team, product, ownerId, createdAt, modifiedAt, modifiedBy, verifiedAt, status (`active`, `retired`). |
-| `knowledge_links` | id, fromId, toId, type, reason, status (`suggested`, `confirmed`, `rejected`), createdBy (colleague id or `system`), createdAt, resolvedBy, resolvedAt.                                                                                                   |
-| `review_items`    | id, kind (`conflict`, `stale`, `suggested_link`, `no_owner`), itemIds, linkId (nullable), assigneeId, status (`open`, `done`), outcome, createdAt, resolvedBy, resolvedAt. This is also the audit trail.                                                  |
+| Table             | Fields                                                                                                                                                                                                                                                              |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `colleagues`      | From `people.json`: id (`p-pieter`), name, email, role, team, country, languages, status (`active`, `left`, `service-account`).                                                                                                                                     |
+| `customers`       | From `customers.json`: id (`cus-havenkaai`, `cus-veldra`), name, countries.                                                                                                                                                                                         |
+| `knowledge_items` | id (`doc-05`, `mail-05`), kind (`document`, `email`, `call`, `meeting`, `chat`, `ticket`, `answer`), title, body, source, path, language, country, customerId, team, product, ownerId, createdAt, modifiedAt, modifiedBy, verifiedAt, status (`active`, `retired`). |
+| `knowledge_links` | id, fromId, toId, type, reason, status (`suggested`, `confirmed`, `rejected`), createdBy (colleague id or `system`), createdAt, resolvedBy, resolvedAt.                                                                                                             |
+| `review_items`    | id, kind (`conflict`, `stale`, `suggested_link`, `no_owner`), itemIds, linkId (nullable), assigneeId, status (`open`, `done`), outcome, createdAt, resolvedBy, resolvedAt. This is also the audit trail.                                                            |
 
 Link types. A fixed list makes the ranking rules possible.
 
-| Type           | Meaning                                                           | Corpus example                                          |
-| -------------- | ----------------------------------------------------------------- | ------------------------------------------------------- |
-| `supersedes`   | A replaces B.                                                     | doc-05 (20 days) supersedes doc-01 and doc-02 (15 days) |
-| `contradicts`  | A and B disagree and nobody has decided yet.                      | mail-05 (EUR 4,000 cap) contradicts doc-08              |
-| `variant_of`   | Same topic, different scope (country, customer, team or product). | doc-03 (Netherlands) is a variant of doc-05 (Belgium)   |
-| `duplicate_of` | Same content, not the official copy.                              | doc-04 (OneDrive copy) duplicates doc-05                |
-| `supports`     | A record confirms or explains a document.                         | chat-01 (Pieter links doc-05), chat-03 explains the cap |
+| Type            | Meaning                                                           | Corpus example                                                 |
+| --------------- | ----------------------------------------------------------------- | -------------------------------------------------------------- |
+| `supersedes`    | A replaces B.                                                     | doc-05 (20 days) supersedes doc-01 and doc-02 (15 days)        |
+| `contradicts`   | A and B disagree and nobody has decided yet.                      | mail-05 (EUR 4,000 cap) contradicts doc-08                     |
+| `variant_of`    | Same topic, different scope (country, customer, team or product). | doc-03 (Netherlands) is a variant of doc-05 (Belgium)          |
+| `duplicate_of`  | Same content, not the official copy.                              | doc-04 (OneDrive copy) duplicates doc-05                       |
+| `supports`      | A record confirms or explains a document.                         | chat-01 (Pieter links doc-05), chat-03 explains the cap        |
+| `answered_with` | An answer sent to a customer relied on this document.             | ticket-02 (Havenkaai, 15 days) answered with doc-01 and doc-02 |
 
 Only `confirmed` links decide which document is used. A `suggested` link never decides silently: it is shown as a warning and waits in the owner's queue.
+
+`answered_with` never changes which document is used: an answer says a customer relies on a document, not that the document is right. Counting it as `supports` would make a wrong document more trusted with every wrong answer given from it. It only feeds living answers: when a new document supersedes an old one, the `answered_with` links on the old one are the customers to notify. Answers are items of kind `answer` (logged by the consultant in one click) or resolved tickets. Resolved tickets get their links from `linkedDocuments` in `tickets.json`. Answer fields that do not fit the table (recipient, answered by, sent at, notified at) go in a small `answers` table keyed by item id.
 
 ## Answering a question
 

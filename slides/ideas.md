@@ -162,7 +162,7 @@ Corpus: doc-05, chat-01. Labels are parsed from the documents themselves tonight
 
 ### Typed links
 
-# The graph records why two documents are related
+# The graph records why two items are related
 
 | Link           | Meaning                              | Corpus example                                   |
 | -------------- | ------------------------------------ | ------------------------------------------------ |
@@ -171,9 +171,12 @@ Corpus: doc-05, chat-01. Labels are parsed from the documents themselves tonight
 | `variant_of`   | Same topic, other scope              | Netherlands version of birth leave               |
 | `duplicate_of` | Same content, not the official copy  | OneDrive copy that was emailed around            |
 | `supports`     | A chat, call or email confirms it    | Pieter's answer in the service channel           |
+| `answered_with` | An answer to a customer relied on it | Havenkaai was told 15 days from the old instruction |
 
 <!--
 Only confirmed links decide which document is used. Suggested links wait in the owner's queue.
+answered_with never changes the ranking. It is not evidence that a document is right, only that a customer relies on it. It drives living answers.
+Corpus: ticket-02 (SR-2026-048213) linkedDocuments.
 -->
 
 ---
@@ -665,7 +668,7 @@ Corpus: in September 2026 Stijn still told a Veldra employee the meal voucher ma
 
 <!--
 The source is suggested from the documents the consultant opened or the graph ranked first. The consultant only confirms.
-The answer becomes a record in the graph with a link to its source document.
+The answer becomes an item in the graph with an answered_with link to its source document. It is not a supports link: an answer does not prove the document is right.
 Mark Janssen is Veldra's payroll manager Benelux in tickets.json. The date is illustrative. EUR 8 was correct in March 2025.
 -->
 
