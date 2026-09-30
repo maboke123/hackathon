@@ -12,6 +12,7 @@ import {
 } from "@/lib/data";
 import { searchTerms } from "@/lib/data/search-terms";
 import { formatDate } from "@/lib/format";
+import { bestPassage, locatePassage, type Passage } from "@/lib/passages";
 import { searchDocuments } from "@/lib/search";
 
 const STALE_AFTER_MONTHS = 12;
@@ -44,7 +45,7 @@ export type Support = { record: KnowledgeItem; reason: string };
 export type Conflict = {
   link: KnowledgeLink;
   other: KnowledgeItem;
-  otherPassage: string;
+  otherPassage: Passage;
   otherSupports: Support[];
   review: ReviewItem | null;
   reviewer: Contact | null;
@@ -54,7 +55,7 @@ export type Evaluation = {
   item: KnowledgeItem;
   owner: Colleague | null;
   contact: Contact | null;
-  passage: string;
+  passage: Passage;
   /** Short label for why it is not used, null when it can be used. */
   exclusion: string | null;
   reasons: Reason[];
@@ -64,6 +65,7 @@ export type Evaluation = {
 };
 
 export type AskResult = {
+  terms: string[];
   answer: Evaluation | null;
   blocked: Evaluation | null;
   alsoFound: Evaluation[];
@@ -76,63 +78,6 @@ function monthsSince(isoDate: string): number {
   return (
     (refYear ?? 0) * 12 + (refMonth ?? 0) - ((year ?? 0) * 12 + (month ?? 0))
   );
-}
-
-function cleanMarkdown(text: string): string {
-  return text
-    .replace(/\*\*|__|`/g, "")
-    .replace(/^[-*]\s+/gm, "")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function passageBlocks(body: string): string[] {
-  return body
-    .split(/\n\s*\n/)
-    .flatMap((block) => {
-      const trimmed = block.trim();
-      if (!trimmed.startsWith("|")) return [trimmed];
-      return trimmed
-        .split("\n")
-        .filter((row) => !/^\|[\s|:-]+\|?$/.test(row.trim()))
-        .map((row) =>
-          row
-            .split("|")
-            .map((cell) => cell.trim())
-            .filter(Boolean)
-            .join(": "),
-        );
-    })
-    .filter(
-      (block) => block.length > 30 && !/^(#|---|WEBVTT|NOTE)/.test(block),
-    );
-}
-
-/** The paragraph or table row that best matches the question, rare terms count more. */
-export function bestPassage(body: string, terms: string[]): string {
-  const blocks = passageBlocks(body);
-  const lowered = blocks.map((block) => block.toLowerCase());
-  const weight = new Map(
-    terms.map((term) => [
-      term,
-      1 / Math.max(1, lowered.filter((block) => block.includes(term)).length),
-    ]),
-  );
-  let best = blocks[0] ?? body;
-  let bestScore = -1;
-  lowered.forEach((block, index) => {
-    const score = terms.reduce(
-      (total, term) =>
-        total + (block.includes(term) ? (weight.get(term) ?? 0) : 0),
-      0,
-    );
-    if (score > bestScore) {
-      best = blocks[index] ?? best;
-      bestScore = score;
-    }
-  });
-  const clean = cleanMarkdown(best);
-  return clean.length > 600 ? `${clean.slice(0, 597)}...` : clean;
 }
 
 type Context = {
@@ -366,8 +311,9 @@ async function evaluate(
       conflict = {
         link: contradiction,
         other,
-        otherPassage:
-          contradiction.evidence ?? bestPassage(other.body, context.terms),
+        otherPassage: contradiction.evidence
+          ? locatePassage(other.body, contradiction.evidence)
+          : bestPassage(other.body, context.terms),
         otherSupports: supportsFor(other.id, otherLinks, context),
         review,
         reviewer: assignee
@@ -474,6 +420,7 @@ export async function askQuestion(
   const [best, ...rest] = usable;
 
   return {
+    terms,
     answer: best && !best.conflict ? best : null,
     blocked: best?.conflict ? best : null,
     alsoFound: rest,

@@ -11,8 +11,16 @@ import {
   NativeSelectOption,
 } from "@/components/ui/native-select";
 import { requireUser } from "@/lib/auth/session";
-import { type Customer, getRepository, sourceSystemLabels } from "@/lib/data";
+import {
+  type Colleague,
+  type Customer,
+  getRepository,
+  itemKindLabels,
+  type KnowledgeItem,
+  sourceSystemLabels,
+} from "@/lib/data";
 import { formatDate } from "@/lib/format";
+import type { Passage } from "@/lib/passages";
 import {
   askQuestion,
   type Contact,
@@ -21,6 +29,8 @@ import {
   type Reason,
   type Support,
 } from "@/lib/trust";
+import { type DocumentFact, DocumentSheet } from "./document-sheet";
+import { PersonMenu } from "./person-menu";
 import { SendToOwnerButton } from "./send-to-owner-button";
 
 export const metadata: Metadata = {
@@ -43,6 +53,12 @@ const examples = [
     question: "What is the payroll cut-off for Veldra Belgium?",
   },
 ];
+
+type View = {
+  customers: Customer[];
+  terms: string[];
+  question: string;
+};
 
 const toneIcons = {
   good: <CheckIcon strokeWidth={1.5} className="text-success size-4" />,
@@ -68,29 +84,125 @@ function Reasons({ reasons }: { reasons: Reason[] }) {
   );
 }
 
-function ContactLine({ contact }: { contact: Contact | null }) {
+function scopeLabel(item: KnowledgeItem, customers: Customer[]): string {
+  const customer = customers.find((entry) => entry.id === item.customerId);
+  return [
+    item.country ?? "All countries",
+    customer?.name ?? "All customers",
+    item.jointCommittee ? `PC ${item.jointCommittee}` : null,
+  ]
+    .filter((label): label is string => label !== null)
+    .join(", ");
+}
+
+function ownerLabel(owner: Colleague | null): string {
+  if (!owner) return "None";
+  return owner.status === "active" ? owner.name : `${owner.name} (left)`;
+}
+
+function documentFacts(
+  item: KnowledgeItem,
+  owner: Colleague | null,
+  customers: Customer[],
+): DocumentFact[] {
+  const facts: DocumentFact[] = [
+    { label: "Kind", value: itemKindLabels[item.kind] },
+    {
+      label: "Where",
+      value: `${sourceSystemLabels[item.sourceSystem]}, ${item.location}`,
+    },
+    { label: "Scope", value: scopeLabel(item, customers) },
+  ];
+  if (item.kind === "document") {
+    facts.push(
+      { label: "Owner", value: ownerLabel(owner) },
+      {
+        label: "Last checked",
+        value: item.lastCheckedAt ? formatDate(item.lastCheckedAt) : "Never",
+      },
+    );
+  } else {
+    facts.push({
+      label: "Date",
+      value: formatDate(item.createdAt.slice(0, 10)),
+    });
+  }
+  return facts;
+}
+
+function DocumentLink({
+  item,
+  owner = null,
+  passage,
+  view,
+}: {
+  item: KnowledgeItem;
+  owner?: Colleague | null;
+  passage: Passage | null;
+  view: View;
+}) {
+  return (
+    <DocumentSheet
+      title={item.title}
+      body={item.body}
+      facts={documentFacts(item, owner, view.customers)}
+      passage={passage}
+      terms={view.terms}
+    />
+  );
+}
+
+function ContactLine({
+  contact,
+  item,
+  view,
+}: {
+  contact: Contact | null;
+  item: KnowledgeItem;
+  view: View;
+}) {
   if (!contact) {
     return <span>Knowledge and content operations</span>;
   }
   if (contact.kind === "team") {
-    return <span>{contact.team.name} (no owner, the team picks it up)</span>;
+    return (
+      <span>
+        <PersonMenu
+          person={{
+            name: contact.team.name,
+            detail: "No owner. The team picks it up.",
+            email: null,
+          }}
+          itemId={item.id}
+          itemTitle={item.title}
+          question={view.question}
+        />{" "}
+        <span className="text-muted-foreground">(no owner)</span>
+      </span>
+    );
   }
   const { colleague, note } = contact;
   return (
     <span>
-      {colleague.name}, {colleague.jobTitle}.{" "}
-      <a
-        href={`mailto:${colleague.email}`}
-        className="text-primary underline-offset-4 hover:underline"
-      >
-        {colleague.email}
-      </a>
-      {note ? <span className="text-muted-foreground"> ({note})</span> : null}
+      <PersonMenu
+        person={{
+          name: colleague.name,
+          detail: colleague.jobTitle,
+          email: colleague.email,
+        }}
+        itemId={item.id}
+        itemTitle={item.title}
+        question={view.question}
+      />
+      <span className="text-muted-foreground">
+        , {colleague.jobTitle}
+        {note ? ` (${note})` : ""}
+      </span>
     </span>
   );
 }
 
-function Supports({ supports }: { supports: Support[] }) {
+function Supports({ supports, view }: { supports: Support[]; view: View }) {
   if (supports.length === 0) return null;
   return (
     <div className="flex flex-col gap-2">
@@ -98,7 +210,7 @@ function Supports({ supports }: { supports: Support[] }) {
       <ul className="text-muted-foreground flex flex-col gap-1 text-sm">
         {supports.map(({ record, reason }) => (
           <li key={record.id}>
-            <span className="text-foreground">{record.title}</span>,{" "}
+            <DocumentLink item={record} passage={null} view={view} />,{" "}
             {formatDate(record.createdAt.slice(0, 10))}. {reason}
           </li>
         ))}
@@ -107,37 +219,44 @@ function Supports({ supports }: { supports: Support[] }) {
   );
 }
 
-function scopeLabels(evaluation: Evaluation, customers: Customer[]) {
-  const { item } = evaluation;
-  const customer = customers.find((entry) => entry.id === item.customerId);
-  return [
-    item.country ?? "All countries",
-    customer?.name ?? "All customers",
-    item.jointCommittee ? `PC ${item.jointCommittee}` : null,
-  ].filter((label): label is string => label !== null);
-}
-
 function SourceFacts({
   evaluation,
-  customers,
+  view,
 }: {
   evaluation: Evaluation;
-  customers: Customer[];
+  view: View;
 }) {
-  const { item, owner } = evaluation;
-  const facts = [
-    { label: "Source", value: item.title },
+  const { item, owner, passage } = evaluation;
+  const rows: { label: string; value: React.ReactNode }[] = [
+    {
+      label: "Source",
+      value: (
+        <DocumentLink item={item} owner={owner} passage={passage} view={view} />
+      ),
+    },
     {
       label: "Owner",
-      value: owner
-        ? `${owner.name}${owner.status === "active" ? "" : " (left)"}`
-        : "None",
+      value:
+        owner?.status === "active" ? (
+          <PersonMenu
+            person={{
+              name: owner.name,
+              detail: owner.jobTitle,
+              email: owner.email,
+            }}
+            itemId={item.id}
+            itemTitle={item.title}
+            question={view.question}
+          />
+        ) : (
+          ownerLabel(owner)
+        ),
     },
     {
       label: "Last checked",
       value: item.lastCheckedAt ? formatDate(item.lastCheckedAt) : "Never",
     },
-    { label: "Scope", value: scopeLabels(evaluation, customers).join(", ") },
+    { label: "Scope", value: scopeLabel(item, view.customers) },
     {
       label: "Where",
       value: `${sourceSystemLabels[item.sourceSystem]}, ${item.location}`,
@@ -145,10 +264,10 @@ function SourceFacts({
   ];
   return (
     <dl className="grid gap-x-6 gap-y-2 text-sm sm:grid-cols-[8rem_1fr]">
-      {facts.map((fact) => (
-        <div key={fact.label} className="contents">
-          <dt className="text-muted-foreground">{fact.label}</dt>
-          <dd className="break-words">{fact.value}</dd>
+      {rows.map((row) => (
+        <div key={row.label} className="contents">
+          <dt className="text-muted-foreground">{row.label}</dt>
+          <dd className="break-words">{row.value}</dd>
         </div>
       ))}
     </dl>
@@ -157,25 +276,29 @@ function SourceFacts({
 
 function AnswerCard({
   evaluation,
-  customers,
+  view,
 }: {
   evaluation: Evaluation;
-  customers: Customer[];
+  view: View;
 }) {
   return (
     <section className="flex flex-col rounded-lg border">
       <div className="bg-accent flex flex-col gap-3 rounded-t-lg border-b p-6">
         <p className="text-primary text-sm font-medium">Answer</p>
-        <p className="text-lg leading-relaxed">{evaluation.passage}</p>
+        <p className="text-lg leading-relaxed">{evaluation.passage.text}</p>
       </div>
       <div className="grid gap-8 p-6 lg:grid-cols-2">
-        <SourceFacts evaluation={evaluation} customers={customers} />
+        <SourceFacts evaluation={evaluation} view={view} />
         <div className="flex flex-col gap-6">
           <Reasons reasons={evaluation.reasons} />
-          <Supports supports={evaluation.supports} />
+          <Supports supports={evaluation.supports} view={view} />
           <p className="text-sm">
             <span className="text-muted-foreground">Questions about it: </span>
-            <ContactLine contact={evaluation.contact} />
+            <ContactLine
+              contact={evaluation.contact}
+              item={evaluation.item}
+              view={view}
+            />
           </p>
         </div>
       </div>
@@ -185,13 +308,14 @@ function AnswerCard({
 
 function BlockedCard({
   evaluation,
-  question,
+  view,
 }: {
   evaluation: Evaluation;
-  question: string;
+  view: View;
 }) {
   const { conflict } = evaluation;
   if (!conflict) return null;
+  const reviewerName = contactName(conflict.reviewer);
   return (
     <section className="flex flex-col rounded-lg border">
       <div className="flex flex-col gap-2 border-b p-6">
@@ -200,13 +324,14 @@ function BlockedCard({
         </p>
         <p className="text-lg">
           Two sources disagree and nobody has decided yet. Do not guess: ask{" "}
-          {contactName(conflict.reviewer)}.
+          {reviewerName}.
         </p>
       </div>
       <div className="bg-border grid gap-px sm:grid-cols-2">
         {[
           {
-            title: evaluation.item.title,
+            item: evaluation.item,
+            owner: evaluation.owner,
             detail: evaluation.item.lastCheckedAt
               ? `Document, checked ${formatDate(evaluation.item.lastCheckedAt)}`
               : "Document, never checked",
@@ -214,44 +339,65 @@ function BlockedCard({
             supports: evaluation.supports,
           },
           {
-            title: conflict.other.title,
+            item: conflict.other,
+            owner: null,
             detail: `${sourceSystemLabels[conflict.other.sourceSystem]}, ${formatDate(conflict.other.createdAt.slice(0, 10))}`,
             passage: conflict.otherPassage,
             supports: conflict.otherSupports,
           },
         ].map((side) => (
           <div
-            key={side.title}
+            key={side.item.id}
             className="bg-background flex flex-col gap-3 p-6"
           >
             <div className="flex flex-col gap-0.5">
-              <h3 className="font-medium">{side.title}</h3>
+              <DocumentLink
+                item={side.item}
+                owner={side.owner}
+                passage={side.passage}
+                view={view}
+              />
               <p className="text-muted-foreground text-sm">{side.detail}</p>
             </div>
-            <blockquote className="border-l-2 pl-4">{side.passage}</blockquote>
-            <Supports supports={side.supports} />
+            <blockquote className="border-l-2 pl-4">
+              {side.passage.text}
+            </blockquote>
+            <Supports supports={side.supports} view={view} />
           </div>
         ))}
       </div>
       <div className="flex flex-col gap-4 border-t p-6 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm">
           <span className="text-muted-foreground">Ask: </span>
-          <ContactLine contact={conflict.reviewer} />
+          <ContactLine
+            contact={conflict.reviewer}
+            item={evaluation.item}
+            view={view}
+          />
         </p>
         {conflict.review ? (
           <Badge variant="secondary">
-            In {contactName(conflict.reviewer)}&apos;s queue since{" "}
+            In {reviewerName}&apos;s queue since{" "}
             {formatDate(conflict.review.createdAt.slice(0, 10))}
           </Badge>
         ) : (
-          <SendToOwnerButton linkId={conflict.link.id} question={question} />
+          <SendToOwnerButton
+            linkId={conflict.link.id}
+            question={view.question}
+          />
         )}
       </div>
     </section>
   );
 }
 
-function EvaluationList({ evaluations }: { evaluations: Evaluation[] }) {
+function EvaluationList({
+  evaluations,
+  view,
+}: {
+  evaluations: Evaluation[];
+  view: View;
+}) {
   return (
     <ul className="divide-y rounded-lg border">
       {evaluations.map((evaluation) => (
@@ -260,16 +406,33 @@ function EvaluationList({ evaluations }: { evaluations: Evaluation[] }) {
           className="grid gap-3 p-4 sm:grid-cols-[16rem_1fr]"
         >
           <div className="flex flex-col items-start gap-1.5">
-            <span className="font-medium">{evaluation.item.title}</span>
+            <DocumentLink
+              item={evaluation.item}
+              owner={evaluation.owner}
+              passage={evaluation.passage}
+              view={view}
+            />
             {evaluation.exclusion ? (
               <Badge variant="destructive">{evaluation.exclusion}</Badge>
             ) : null}
           </div>
-          <Reasons
-            reasons={evaluation.reasons.filter(
-              (reason) => reason.tone !== "good",
-            )}
-          />
+          <div className="flex flex-col gap-3">
+            <Reasons
+              reasons={evaluation.reasons.filter(
+                (reason) => reason.tone !== "good",
+              )}
+            />
+            {evaluation.contact ? (
+              <p className="text-sm">
+                <span className="text-muted-foreground">Contact: </span>
+                <ContactLine
+                  contact={evaluation.contact}
+                  item={evaluation.item}
+                  view={view}
+                />
+              </p>
+            ) : null}
+          </div>
         </li>
       ))}
     </ul>
@@ -292,6 +455,11 @@ export default async function AskPage({
 
   const result =
     question && customer ? await askQuestion(question, customer) : null;
+  const view: View = {
+    customers,
+    terms: result?.terms ?? [],
+    question,
+  };
 
   return (
     <>
@@ -357,9 +525,9 @@ export default async function AskPage({
       {result ? (
         <div className="mt-10 flex flex-col">
           {result.answer ? (
-            <AnswerCard evaluation={result.answer} customers={customers} />
+            <AnswerCard evaluation={result.answer} view={view} />
           ) : result.blocked ? (
-            <BlockedCard evaluation={result.blocked} question={question} />
+            <BlockedCard evaluation={result.blocked} view={view} />
           ) : (
             <EmptyState
               title="No usable source"
@@ -369,19 +537,19 @@ export default async function AskPage({
 
           {result.notUsed.length > 0 ? (
             <PageSection
-              title="Not used"
-              description="Found by the search, but the graph says not to use them."
+              title="Found, but set aside"
+              description="On topic, but replaced, a copy, or for another country or customer. Shown so you know why not to use them."
             >
-              <EvaluationList evaluations={result.notUsed} />
+              <EvaluationList evaluations={result.notUsed} view={view} />
             </PageSection>
           ) : null}
 
           {result.alsoFound.length > 0 ? (
             <PageSection
-              title="Also found"
-              description="Usable, but less relevant or less trusted than the answer."
+              title="Less related"
+              description="Could be used, but a weaker match or less trusted than the answer."
             >
-              <EvaluationList evaluations={result.alsoFound} />
+              <EvaluationList evaluations={result.alsoFound} view={view} />
             </PageSection>
           ) : null}
         </div>
