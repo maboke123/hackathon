@@ -37,3 +37,11 @@ Record important decisions here (scope, data sources, APIs, who owns what).
 - **Frontend and backend:** Server Components read data through the repository, Server Actions change data (validated with zod), and route handlers are only for auth, the health check and future webhooks. There is no separate API or backend service.
 - **Not now:** Supabase (a second data and auth model next to the repository), Microsoft or Google login (needs redirect URLs per environment, add it only if the idea needs it), sending email.
 - **Security model:** the site is a public demo with synthetic data only. Access rules are enforced on the server in every page and Server Action (tested by calling the actions directly as the wrong role). Login and sign-up are rate limited in `src/lib/rate-limit.ts`, because Better Auth's own limiter only covers its HTTP routes.
+
+### 30 September 2026: security scanning
+
+- **Scoring:** 10% of the points go to security. Aikido scans the repository at the end, and the score depends on how many of its findings we fixed. Aikido is connected to the repository, so check its dashboard and fix new findings as they appear.
+- **CI (`.github/workflows/security.yml`)** runs on every pull request, on `main` and daily: `pnpm audit` (fails on high or critical), Aikido Safe Chain (blocks malware during `pnpm install`), Gitleaks (secrets in the full git history) and zizmor (weaknesses in the workflows themselves).
+- **Dependabot (`.github/dependabot.yml`)** opens pull requests for security fixes only, plus weekly updates for GitHub Actions and the Docker base image.
+- **Vulnerable transitive dependencies** are pinned to patched versions with `overrides` in `pnpm-workspace.yaml`. Remove an override once the parent package ships the fix.
+- **Not available:** CodeQL and GitHub secret scanning are paid features for private repositories.
