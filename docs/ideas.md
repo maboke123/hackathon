@@ -65,12 +65,13 @@ Trust and oversight: a person confirms anything that significantly affects someo
 | ------------------------------------------- | ------------------ | ----------------- | ------------------- | ----------- | ----------------- | ----- |
 | Legal rulebook with an owner for every rule | 5                  | 5                 | 5                   | 4           | 4                 | 23    |
 | Trust label on every answer                 | 5                  | 4                 | 5                   | 5           | 4                 | 23    |
+| Trust graph                                 | 5                  | 4                 | 5                   | 4           | 4                 | 22    |
 | Change-triggered re-verification            | 4                  | 5                 | 5                   | 4           | 3                 | 21    |
 | Customer knowledge map                      | 4                  | 4                 | 4                   | 4           | 3                 | 19    |
 | Knowledge handover on role change           | 4                  | 4                 | 4                   | 3           | 4                 | 19    |
 | Answer cards from resolved questions        | 3                  | 4                 | 4                   | 3           | 4                 | 18    |
 
-Scores above are a first pass by Roan on 30 September. Change them as a team.
+Scores above are a first pass by Roan on 30 September. Trust graph scores are a first proposal. Change them as a team.
 
 ## Ideas
 
@@ -178,3 +179,22 @@ All six start from the challenge (see [challenge-briefing.md](challenge-briefing
 - Proposed by: Yendric (not scored yet)
 - Problem: "right title, wrong country".
 - Solution: AI proposes country, customer and product tags on existing documents, a person confirms them in a fast review screen.
+
+### Trust graph
+
+Working name. Build plan: [plan.md](plan.md). Rough notes that led to it: `idea.md` in the repository root. It combines the trust label, the conflict detector and change-triggered re-verification above, with typed links between documents as the data structure.
+
+- Proposed by: team, 30 September 2026.
+- Problem: the second example from the brief. A service colleague has a customer on the phone, asks the internal agent and gets three documents: one without an owner, one edited last week, one from another country. A colleague emails a fourth. Nobody can tell which one to trust, and the customer waits. The agent is not the problem. The sources it retrieves from carry no owner, freshness or scope, and nothing records that one document replaced or contradicts another.
+- Target user: SD Worx service colleague (asks) and document owner (reviews).
+- Solution: a knowledge graph under search and RAG. Documents carry owner, scope (country, customer, joint committee), keywords and the date they were last checked. Typed links between documents record why they are related: `supersedes`, `contradicts`, `variant_of` and `based_on`. A question returns one answer plus every document that was not used and the reason. When the graph cannot tell which of two sources is right, it does not guess: it names the person to call and puts the conflict in the owner's review queue. Resolving it creates a link, so the next answer is right.
+- Demo scenario: see [plan.md](plan.md#demo-script). In short: (1) the brief's four documents resolve to one answer with a reason for each rejected document, (2) a real conflict is escalated, the owner resolves it in one click, the same question now gets an answer, (3) the trust summary shows open conflicts and unchecked documents per topic.
+- Data: new tables for SD Worx colleagues, documents, document links and review items. Havenkaai Logistics becomes the customer on the phone, and the caller's employee record sets the scope (country, customer, PC). Figures in the seed documents come from `sd-worx-briefing.md` section 6.
+- Human review: the review queue. Conflicts shown side by side with the differing passage highlighted, one click per outcome ("A is correct", "B is correct", "both correct, different scope"). Suggested links are never used until confirmed. Every resolution is logged with who and when.
+- Fit with SD Worx: answers "find, trust and share" directly and uses the brief's own example. It is not another agent: it is the trust layer their existing agent lacks. 64% of employees say AI systems should explain their decisions (SD Worx research, `sd-worx-briefing.md` section 4), and every answer here explains what it used and what it rejected.
+- Feasibility tonight: data model, seed, ask page with rule-based ranking and the review queue are buildable. The answer text can be the passage from the chosen document, so no LLM is needed tonight. Stretch: LLM summary of the chosen document, LLM-suggested links on upload, graph view, change impact via `based_on`.
+- Risks and open questions:
+  - Pitched as a "global knowledge graph" it sounds like a platform, not a focus problem. Pitch the call scenario, show the graph through the answer.
+  - Links maintained by hand go stale. Answer: the system proposes links, owners confirm them, and conflicts come out of normal use.
+  - The trust summary must be per topic or team, not a ranking of individual owners (red flag: monitoring individuals).
+  - The existing app is a Havenkaai HR app. This idea is an internal SD Worx tool. See the open decisions in [plan.md](plan.md#open-decisions).

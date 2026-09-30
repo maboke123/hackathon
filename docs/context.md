@@ -23,7 +23,12 @@ Build a proof of concept that turns fragmented organisational knowledge into a t
 
 ## Our idea
 
-To be decided. Candidate ideas are collected and scored in [ideas.md](ideas.md). Once we pick one, describe the problem, the target user, the solution and the demo scenario here.
+Proposed, not yet confirmed by the whole team: the **trust graph** (working name). Full entry in [ideas.md](ideas.md#trust-graph), build plan and demo script in [plan.md](plan.md).
+
+- **Problem:** the brief's second example. The agent returns documents without owner, freshness or scope, and nothing records that one replaced or contradicts another.
+- **Target user:** SD Worx service colleague answering a customer's employee, and the document owners.
+- **Solution:** a knowledge graph under search. Documents carry owner, scope and last check date. Typed links (`supersedes`, `contradicts`, `variant_of`, `based_on`) explain why documents are related. Every answer lists the documents it did not use and why. Conflicts the graph cannot settle go to the owner's review queue instead of being guessed.
+- **Not:** another agent, or a SharePoint with search. It is the trust layer under the agent SD Worx already has.
 
 ## Decisions
 

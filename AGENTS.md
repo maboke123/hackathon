@@ -13,6 +13,7 @@ The team shares context through `docs/`. Read the relevant file before starting 
 | `docs/context.md`            | Challenge, our idea and decisions. Read before feature work.                   |
 | `docs/challenge-briefing.md` | The SD Worx challenge brief: summary and transcript. Read before feature work. |
 | `docs/ideas.md`              | Idea backlog and scoring                                                       |
+| `docs/plan.md`               | Build plan, data model and demo script for the chosen idea                     |
 | `docs/sd-worx-briefing.md`   | SD Worx products, strategy, regulation and Belgian payroll vocabulary          |
 | `docs/spott-briefing.md`     | Spott, the prize partner: product, people and how it relates to SD Worx        |
 | `docs/hr-research.md`        | Independent HR and payroll research with checked figures for the pitch         |
