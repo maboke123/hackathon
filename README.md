@@ -1,6 +1,22 @@
-# Hackathon SD Worx
+# Trust graph
 
-Demo app, slide decks and promo videos for the SD Worx hackathon, all sharing one design system.
+Our entry for the SD Worx hackathon challenge on internal knowledge.
+
+## What we made
+
+A service colleague has a customer on the phone. The internal assistant returns three documents: one without an owner, one "edited last week", one for another country. Which one is right? The assistant is not the problem. Its sources are.
+
+Trust graph makes the sources trustworthy, and every answer says why.
+
+- **Ask** (`/ask`): pick the customer on the phone and type the question. Fixed rules pick the source, not a language model. The answer shows the owner, the scope and the last check, and it opens the document at the highlighted passage. Every source that was not used gets a reason: other country, replaced, copy, owner left.
+- **Review** (`/review`, `/review/quick`): every source has an owner. Conflicts, outdated documents and sources without an owner go to that person's queue. Most tasks are a single yes or no.
+- **Documents** (`/documents`): trust per team, and an upload that checks a new document against existing ones and tells the people who relied on the old version.
+
+All data is a synthetic corpus of SD Worx documents, emails, chats, calls, meetings and tickets ([docs/sample-data.md](docs/sample-data.md)). Payroll figures are simulated. The full concept and demo script are in [docs/plan.md](docs/plan.md).
+
+To try it: run `pnpm install` and `pnpm dev`, log in as Lotte Verhaegen, pick Havenkaai Logistics and ask "Hoeveel dagen geboorteverlof krijgt een vader?".
+
+The repository also holds the slide deck and promo video, which share one design system with the app.
 
 ## Getting started
 
