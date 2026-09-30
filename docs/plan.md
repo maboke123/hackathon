@@ -153,12 +153,12 @@ About three minutes. Every step uses corpus items, so the story holds up if the 
 
 Four tracks with separate files, so we do not block or overwrite each other. Put your name in the first column.
 
-| Who | Track                  | Owns                                                                                                                                                                          | Files                                                                        |
-| --- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-|     | A. Data and labelling  | Types, schema, migration, repository. Corpus import and label parser. Hand-seeded links. AI labeller that writes `suggested` labels and links. Answer key test and its score. | `src/lib/data/**`, `src/lib/db/**`, `apps/web/drizzle`, `apps/web/scripts`   |
-|     | B. Ask and trust score | Search, the rules in 3.3 with reasons, answer card, "not used" list, demo accounts for Lotte and Pieter.                                                                      | `src/app/(app)/ask/**`, `src/lib/trust.ts`                                   |
-|     | C. Review and changes  | Review queue and its Server Actions, conflict check on new documents (3.6), downstream flow (3.7), document page.                                                             | `src/app/(app)/review/**`, `src/app/(app)/documents/**`, `src/lib/review.ts` |
-|     | D. Pitch               | Slides, demo script, figure checks at the source, promo video if time, rehearsals. Keeps this plan up to date.                                                                | `slides/**`, `videos/**`, `docs/**`                                          |
+| Who     | Track                  | Owns                                                                                                                                                                          | Files                                                                        |
+| ------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+|         | A. Data and labelling  | Types, schema, migration, repository. Corpus import and label parser. Hand-seeded links. AI labeller that writes `suggested` labels and links. Answer key test and its score. | `src/lib/data/**`, `src/lib/db/**`, `apps/web/drizzle`, `apps/web/scripts`   |
+| Yendric | B. Ask and trust score | Search, the rules in 3.3 with reasons, answer card, "not used" list, demo accounts for Lotte and Pieter.                                                                      | `src/app/(app)/ask/**`, `src/lib/trust.ts`                                   |
+|         | C. Review and changes  | Review queue and its Server Actions, conflict check on new documents (3.6), downstream flow (3.7), document page.                                                             | `src/app/(app)/review/**`, `src/app/(app)/documents/**`, `src/lib/review.ts` |
+|         | D. Pitch               | Slides, demo script, figure checks at the source, promo video if time, rehearsals. Keeps this plan up to date.                                                                | `slides/**`, `videos/**`, `docs/**`                                          |
 
 How we work together:
 
