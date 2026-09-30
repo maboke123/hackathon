@@ -6,6 +6,8 @@ This repository belongs to a team of four taking part in a hackathon themed arou
 
 The challenge and our idea are described in `docs/context.md`. Read it before starting feature work and keep it up to date when decisions change.
 
+Background on SD Worx (products, strategy, research, regulation, Belgian payroll vocabulary and idea directions) is in `docs/sd-worx-briefing.md`. Use its terminology and figures in copy and demos, and check a figure at its source before it goes on a slide.
+
 ## Repository layout
 
 | Path                     | What                                          | Stack                                                           |
@@ -46,6 +48,15 @@ Read `packages/design-system/DESIGN.md` before building any UI, slide or video s
 - In the web app, use the shadcn/ui components in `apps/web/src/components/ui` and add new ones with `pnpm dlx shadcn@latest add <name>` from `apps/web`. Do not hand write a component that shadcn already offers.
 - Logo components are in `apps/web/src/components/brand`. Logo files are in `packages/design-system/assets`.
 - If a token is missing, add it to `packages/design-system/src/tokens.css` (and `tokens.ts` when it is a raw palette colour) instead of using a one-off value.
+
+## Data
+
+The app uses a synthetic dataset for a fictional Belgian company, documented in `docs/sample-data.md`.
+
+- Read and write data only through `getRepository()` from `@/lib/data`. Do not import the seed files directly.
+- The store is in memory and resets on restart. Do not add a database unless `docs/context.md` records that decision.
+- Payroll figures are simplified. Label them as simulated in the UI and in slides.
+- Extend the dataset in `apps/web/src/lib/data` (types, seed, repository) instead of hard coding sample records in components.
 
 ## No AI slop
 

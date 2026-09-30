@@ -2,7 +2,8 @@
 
 ## What we know
 
-- Event: hackathon organised around SD Worx (HR and payroll services provider, headquartered in Belgium).
+- Event: hackathon organised around SD Worx (HR and payroll services provider, headquartered in Belgium). Probably the Tectonic Hackathon preselection round on 30 September 2026 (to be confirmed, see `sd-worx-briefing.md`).
+- Background reading: `sd-worx-briefing.md`. Sample data: `sample-data.md`.
 - Team: 4 people.
 - Deliverables we expect: a working demo or proof of concept, a pitch deck and possibly a promo video.
 
