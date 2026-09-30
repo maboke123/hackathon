@@ -2,7 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { getCurrentColleague, requireUser } from "@/lib/auth/session";
+import {
+  getCurrentColleague,
+  requireRole,
+  requireUser,
+} from "@/lib/auth/session";
 import { getRepository } from "@/lib/data";
 import type { FormState } from "@/lib/form-state";
 import { createRateLimit } from "@/lib/rate-limit";
@@ -45,17 +49,19 @@ export async function requestCheck(input: unknown): Promise<FormState> {
   };
 }
 
-const resetsPerUser = createRateLimit("demo-reset", 10, 10 * 60 * 1000);
+// One cooldown for the whole site: the demo accounts are public, so a per
+// user limit would not stop someone from wiping everyone's work in a loop.
+const resets = createRateLimit("demo-reset", 1, 5 * 60 * 1000);
 
 export async function resetDemoData(): Promise<FormState> {
-  const user = await requireUser();
-  if (resetsPerUser.isLimited(user.id)) {
+  await requireRole("knowledge_manager");
+  if (resets.isLimited("all")) {
     return {
       status: "error",
-      message: "Too many resets. Wait 10 minutes and try again.",
+      message: "The demo was reset less than 5 minutes ago. Try again later.",
     };
   }
-  resetsPerUser.hit(user.id);
+  resets.hit("all");
 
   await getRepository().reset();
   revalidatePath("/", "layout");

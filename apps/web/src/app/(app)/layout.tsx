@@ -57,6 +57,7 @@ export default async function AppLayout({
               name={user.name}
               email={user.email}
               roleLabel={roleLabels[user.role]}
+              canReset={user.role === "knowledge_manager"}
             />
           </div>
         </div>

@@ -4,7 +4,10 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { getCurrentColleague } from "@/lib/auth/session";
 import { type FormState, invalidForm } from "@/lib/form-state";
+import { createRateLimit } from "@/lib/rate-limit";
 import { createDraft, MAX_UPLOAD_CHARS, readUpload } from "@/lib/upload";
+
+const uploadsPerColleague = createRateLimit("upload", 20, 10 * 60 * 1000);
 
 const uploadSchema = z.object({
   title: z.string().trim().max(200, "Keep the title under 200 characters."),
@@ -41,6 +44,15 @@ export async function uploadDocument(
         "Your account is not linked to a colleague, so nobody would own this document.",
     };
   }
+
+  if (uploadsPerColleague.isLimited(colleague.id)) {
+    return {
+      status: "error",
+      message: "Too many uploads. Wait 10 minutes and try again.",
+      values,
+    };
+  }
+  uploadsPerColleague.hit(colleague.id);
 
   const upload = readUpload(parsed.data.text, parsed.data.fileName || null);
   const item = await createDraft({

@@ -49,6 +49,12 @@ Record important decisions here (scope, data sources, APIs, who owns what).
 - **Dependabot (`.github/dependabot.yml`)** opens pull requests for security fixes only, plus weekly updates for GitHub Actions and the Docker base image.
 - **Vulnerable transitive dependencies** are pinned to patched versions with `overrides` in `pnpm-workspace.yaml`. Remove an override once the parent package ships the fix.
 - **Not available:** CodeQL and GitHub secret scanning are paid features for private repositories.
+- **Aikido fixes:**
+  - Only the demo accounts are linked to a colleague. They are created server side in `ensureDemoUser`. Sign-up refuses corpus email addresses and always gives the `colleague` role.
+  - The public `/api/auth` routes that create or change accounts are closed (`disabledPaths`), because every auth call goes through a server action.
+  - The session re-reads the colleague on every request, so a leaver or a team change takes effect straight away.
+  - Only knowledge managers can reset the demo, and the reset has one 5 minute cooldown for the whole site.
+  - Failed logins lock out an email only from the address that failed. The client IP is the last `x-forwarded-for` entry, the one the proxy adds.
 
 ### 30 September 2026: pitch deck
 

@@ -8,22 +8,14 @@ import * as schema from "@/lib/db/schema";
 import { env } from "@/lib/env";
 import { type Role, roles } from "./roles";
 
+export const MAX_PASSWORD_LENGTH = 128;
+
 const KNOWLEDGE_TEAM_ID = "team-knowledge-and-content-operations";
 
 export function roleForColleague(colleague: Colleague): Role {
   return colleague.teamId === KNOWLEDGE_TEAM_ID
     ? "knowledge_manager"
     : "colleague";
-}
-
-async function linkColleague(
-  email: string,
-): Promise<{ colleagueId: string | null; role: Role }> {
-  const colleague = await getRepository().getColleagueByEmail(email);
-  if (!colleague || colleague.status !== "active") {
-    return { colleagueId: null, role: "colleague" };
-  }
-  return { colleagueId: colleague.id, role: roleForColleague(colleague) };
 }
 
 function createAuth() {
@@ -37,7 +29,23 @@ function createAuth() {
     }),
     emailAndPassword: {
       enabled: true,
+      maxPasswordLength: MAX_PASSWORD_LENGTH,
     },
+    // Every auth call goes through a server action with its own checks, so
+    // the public endpoints that create or change accounts stay closed.
+    disabledPaths: [
+      "/sign-up/email",
+      "/update-user",
+      "/change-password",
+      "/set-password",
+      "/change-email",
+      "/delete-user",
+      "/revoke-session",
+      "/revoke-sessions",
+      "/revoke-other-sessions",
+      "/request-password-reset",
+      "/reset-password",
+    ],
     user: {
       additionalFields: {
         role: {
@@ -56,9 +64,19 @@ function createAuth() {
     databaseHooks: {
       user: {
         create: {
-          before: async (user) => ({
-            data: { ...user, ...(await linkColleague(user.email)) },
-          }),
+          // Only ensureDemoUser links a colleague. Sign-up cannot set
+          // colleagueId (input: false), and cannot claim a corpus address.
+          before: async (user) => {
+            if (typeof user.colleagueId === "string") {
+              return { data: user };
+            }
+            if (await getRepository().getColleagueByEmail(user.email)) {
+              return false;
+            }
+            return {
+              data: { ...user, role: "colleague", colleagueId: null },
+            };
+          },
         },
       },
     },

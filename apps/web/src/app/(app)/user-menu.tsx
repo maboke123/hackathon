@@ -20,9 +20,10 @@ type UserMenuProps = {
   name: string;
   email: string;
   roleLabel: string;
+  canReset: boolean;
 };
 
-export function UserMenu({ name, email, roleLabel }: UserMenuProps) {
+export function UserMenu({ name, email, roleLabel, canReset }: UserMenuProps) {
   const [pending, startTransition] = useTransition();
   const [resetOpen, setResetOpen] = useState(false);
 
@@ -46,10 +47,12 @@ export function UserMenu({ name, email, roleLabel }: UserMenuProps) {
             <span className="text-muted-foreground">{roleLabel}</span>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onSelect={() => setResetOpen(true)}>
-            <RotateCcwIcon strokeWidth={1.5} />
-            Reset demo data
-          </DropdownMenuItem>
+          {canReset ? (
+            <DropdownMenuItem onSelect={() => setResetOpen(true)}>
+              <RotateCcwIcon strokeWidth={1.5} />
+              Reset demo data
+            </DropdownMenuItem>
+          ) : null}
           <DropdownMenuItem
             disabled={pending}
             onSelect={() => startTransition(() => signOut())}

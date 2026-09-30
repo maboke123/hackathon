@@ -4,7 +4,8 @@ import { isAPIError } from "better-auth/api";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { getAuth } from "@/lib/auth";
+import { getAuth, MAX_PASSWORD_LENGTH } from "@/lib/auth";
+import { getRepository } from "@/lib/data";
 import {
   DEMO_PASSWORD,
   ensureDemoUser,
@@ -17,19 +18,27 @@ const TEN_MINUTES = 10 * 60 * 1000;
 const TOO_MANY_ATTEMPTS = "Too many attempts. Wait 10 minutes and try again.";
 
 // Calls to Better Auth from server actions skip its built-in rate limiter.
-const failedSignInsPerEmail = createRateLimit("sign-in-email", 5, TEN_MINUTES);
+// Keyed on email and address together, so nobody can lock out someone else.
+const failedSignInsPerLogin = createRateLimit("sign-in-login", 5, TEN_MINUTES);
 const failedSignInsPerIp = createRateLimit("sign-in-ip", 20, TEN_MINUTES);
 const signUpsPerIp = createRateLimit("sign-up-ip", 10, TEN_MINUTES);
+const demoSignInsPerIp = createRateLimit("demo-sign-in-ip", 60, TEN_MINUTES);
 
 const signInSchema = z.object({
   email: z.email("Enter a valid email address."),
-  password: z.string().min(1, "Enter your password."),
+  password: z
+    .string()
+    .min(1, "Enter your password.")
+    .max(MAX_PASSWORD_LENGTH, "Email or password is incorrect."),
 });
 
 const signUpSchema = z.object({
   name: z.string().trim().min(2, "Enter your full name."),
   email: z.email("Enter a valid email address."),
-  password: z.string().min(8, "Use at least 8 characters."),
+  password: z
+    .string()
+    .min(8, "Use at least 8 characters.")
+    .max(MAX_PASSWORD_LENGTH, `Use at most ${MAX_PASSWORD_LENGTH} characters.`),
 });
 
 export async function signIn(
@@ -45,10 +54,10 @@ export async function signIn(
     return invalidForm(parsed.error, values);
   }
 
-  const { email } = parsed.data;
   const ip = await clientIp();
+  const login = `${parsed.data.email}|${ip}`;
   if (
-    failedSignInsPerEmail.isLimited(email) ||
+    failedSignInsPerLogin.isLimited(login) ||
     failedSignInsPerIp.isLimited(ip)
   ) {
     return { status: "error", message: TOO_MANY_ATTEMPTS, values };
@@ -61,7 +70,7 @@ export async function signIn(
     });
   } catch (error) {
     if (isAPIError(error)) {
-      failedSignInsPerEmail.hit(email);
+      failedSignInsPerLogin.hit(login);
       failedSignInsPerIp.hit(ip);
       return {
         status: "error",
@@ -72,7 +81,7 @@ export async function signIn(
     throw error;
   }
 
-  failedSignInsPerEmail.reset(email);
+  failedSignInsPerLogin.reset(login);
   redirect("/ask");
 }
 
@@ -98,6 +107,15 @@ export async function signUp(
   }
   signUpsPerIp.hit(ip);
 
+  if (await getRepository().getColleagueByEmail(parsed.data.email)) {
+    return {
+      status: "error",
+      message:
+        "This address belongs to a colleague in the demo. Use the demo buttons on the login page, or sign up with another email.",
+      values,
+    };
+  }
+
   try {
     await getAuth().api.signUpEmail({
       body: parsed.data,
@@ -121,7 +139,13 @@ export async function signUp(
 }
 
 export async function signInAsDemo(colleagueId: unknown): Promise<void> {
-  const id = z.string().parse(colleagueId);
+  const id = z.string().max(64).parse(colleagueId);
+  const ip = await clientIp();
+  if (demoSignInsPerIp.isLimited(ip)) {
+    throw new Error(TOO_MANY_ATTEMPTS);
+  }
+  demoSignInsPerIp.hit(ip);
+
   const account = (await getDemoAccounts()).find(
     (item) => item.colleague.id === id,
   );

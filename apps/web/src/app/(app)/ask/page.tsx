@@ -441,7 +441,8 @@ export default async function AskPage({
 }) {
   const user = await requireUser();
   const params = await searchParams;
-  const question = typeof params.q === "string" ? params.q.trim() : "";
+  const question =
+    typeof params.q === "string" ? params.q.trim().slice(0, 500) : "";
   const [customers, colleagues, colleague] = await Promise.all([
     getRepository().listCustomers(),
     getRepository().listColleagues(),

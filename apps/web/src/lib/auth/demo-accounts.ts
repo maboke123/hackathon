@@ -12,6 +12,10 @@ export const DEMO_PASSWORD = "havenkaai-demo";
 // Add a colleague id here to get another button on the login page.
 const DEMO_COLLEAGUE_IDS = ["p-lotte", "p-pieter", "p-elif", "p-ellen"];
 
+export function isDemoColleague(colleagueId: string): boolean {
+  return DEMO_COLLEAGUE_IDS.includes(colleagueId);
+}
+
 export type DemoAccount = {
   role: Role;
   colleague: Colleague;
@@ -37,11 +41,26 @@ export async function ensureDemoUser(colleague: Colleague): Promise<void> {
   if (existing) {
     return;
   }
-  await getAuth().api.signUpEmail({
-    body: {
+  // Created directly, because sign-up refuses corpus addresses and cannot
+  // set colleagueId.
+  const context = await getAuth().$context;
+  const user = await context.internalAdapter.createUser(
+    {
       name: colleague.name,
       email: colleague.email,
-      password: DEMO_PASSWORD,
+      emailVerified: true,
+      colleagueId: colleague.id,
+      role: roleForColleague(colleague),
     },
+    { method: "admin" },
+  );
+  if (!user) {
+    throw new Error(`Could not create the demo account for ${colleague.id}.`);
+  }
+  await context.internalAdapter.linkAccount({
+    userId: user.id,
+    providerId: "credential",
+    accountId: user.id,
+    password: await context.password.hash(DEMO_PASSWORD),
   });
 }

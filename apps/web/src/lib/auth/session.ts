@@ -3,13 +3,37 @@ import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
 import { getRepository } from "@/lib/data";
-import { getAuth } from ".";
+import { getAuth, roleForColleague } from ".";
+import { isDemoColleague } from "./demo-accounts";
 import type { Role } from "./roles";
 
+// Role and colleague link are checked against the corpus on every request, so
+// a leaver or a team change takes effect without waiting for a new session.
 export const getSession = cache(async () => {
   // headers() first, so `next build` stops prerendering before auth starts.
   const requestHeaders = await headers();
-  return getAuth().api.getSession({ headers: requestHeaders });
+  const session = await getAuth().api.getSession({ headers: requestHeaders });
+  if (!session) {
+    return null;
+  }
+  const { colleagueId, email } = session.user;
+  if (!colleagueId) {
+    return { ...session, user: { ...session.user, role: "colleague" as Role } };
+  }
+
+  const colleague = await getRepository().getColleague(colleagueId);
+  if (
+    !colleague ||
+    colleague.status !== "active" ||
+    !isDemoColleague(colleague.id) ||
+    colleague.email.toLowerCase() !== email.toLowerCase()
+  ) {
+    return null;
+  }
+  return {
+    ...session,
+    user: { ...session.user, role: roleForColleague(colleague) },
+  };
 });
 
 export type CurrentUser = NonNullable<
