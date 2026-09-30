@@ -2,6 +2,7 @@ import { CheckIcon, TriangleAlertIcon, XIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { EmptyState } from "@/components/empty-state";
+import { InfoButton, InfoSection } from "@/components/info-button";
 import { PageHeader, PageSection } from "@/components/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -63,23 +64,51 @@ type View = {
 };
 
 const toneIcons = {
-  good: <CheckIcon strokeWidth={1.5} className="text-success size-4" />,
+  good: <CheckIcon strokeWidth={1.5} className="text-success size-5" />,
   warning: (
     <TriangleAlertIcon
       strokeWidth={1.5}
-      className="text-warning-foreground size-4"
+      className="text-warning-foreground size-5"
     />
   ),
-  blocked: <XIcon strokeWidth={1.5} className="text-destructive size-4" />,
+  blocked: <XIcon strokeWidth={1.5} className="text-destructive size-5" />,
 };
 
 function Reasons({ reasons }: { reasons: Reason[] }) {
   return (
-    <ul className="flex flex-col gap-1.5 text-sm">
+    <ul className="flex flex-col gap-1.5">
       {reasons.map((reason) => (
         <li key={reason.text} className="flex gap-2">
-          <span className="mt-0.5 shrink-0">{toneIcons[reason.tone]}</span>
+          <span className="mt-0.5 shrink-0 [&_svg]:size-4">
+            {toneIcons[reason.tone]}
+          </span>
           <span>{reason.text}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function firstSentence(text: string): string {
+  return text.match(/^(.+?\.)(\s|$)/)?.[1] ?? text;
+}
+
+function TrustSummary({ reasons }: { reasons: Reason[] }) {
+  const concerns = reasons.filter((reason) => reason.tone !== "good");
+  if (concerns.length === 0) {
+    return (
+      <p className="flex items-center gap-2 font-medium">
+        {toneIcons.good}
+        Safe to share: owned, checked and confirmed.
+      </p>
+    );
+  }
+  return (
+    <ul className="flex flex-col gap-1.5">
+      {concerns.map((reason) => (
+        <li key={reason.text} className="flex items-start gap-2 font-medium">
+          <span className="mt-0.5 shrink-0">{toneIcons[reason.tone]}</span>
+          {reason.text}
         </li>
       ))}
     </ul>
@@ -144,75 +173,58 @@ function ContactLine({
       </span>
     );
   }
-  const { colleague, note } = contact;
+  const { colleague } = contact;
   return (
-    <span>
-      <PersonMenu
-        person={{
-          name: colleague.name,
-          detail: colleague.jobTitle,
-          email: colleague.email,
-        }}
-        itemId={item.id}
-        itemTitle={item.title}
-        question={view.question}
-      />
-      <span className="text-muted-foreground">
-        , {colleague.jobTitle}
-        {note ? ` (${note})` : ""}
-      </span>
-    </span>
+    <PersonMenu
+      person={{
+        name: colleague.name,
+        detail: colleague.jobTitle,
+        email: colleague.email,
+      }}
+      itemId={item.id}
+      itemTitle={item.title}
+      question={view.question}
+    />
   );
 }
 
-function Supports({ supports, view }: { supports: Support[]; view: View }) {
+function contactDetail(contact: Contact | null): string {
+  if (!contact) return "Knowledge and content operations.";
+  if (contact.kind === "team") {
+    return `${contact.team.name}. No owner, the team picks it up.`;
+  }
+  const { colleague, note } = contact;
+  return `${colleague.name}, ${colleague.jobTitle}${note ? ` (${note})` : ""}.`;
+}
+
+function Supports({ supports }: { supports: Support[] }) {
   if (supports.length === 0) return null;
   return (
-    <div className="flex flex-col gap-2">
-      <h3 className="text-sm font-medium">Confirmed in</h3>
-      <ul className="text-muted-foreground flex flex-col gap-1 text-sm">
+    <InfoSection title="Confirmed in">
+      <ul className="flex flex-col gap-1.5">
         {supports.map(({ record, reason }) => (
           <li key={record.id}>
-            <DocumentLink item={record} passage={null} view={view} />,{" "}
-            {formatDate(record.createdAt.slice(0, 10))}. {reason}
+            <span className="font-medium">{record.title}</span>
+            <span className="text-muted-foreground">
+              , {formatDate(record.createdAt.slice(0, 10))}. {reason}
+            </span>
           </li>
         ))}
       </ul>
-    </div>
+    </InfoSection>
   );
 }
 
-function SourceFacts({
+function SourceDetails({
   evaluation,
   view,
 }: {
   evaluation: Evaluation;
   view: View;
 }) {
-  const { item, owner, passage } = evaluation;
-  const rows: { label: string; value: React.ReactNode }[] = [
-    {
-      label: "Source",
-      value: <DocumentLink item={item} passage={passage} view={view} />,
-    },
-    {
-      label: "Owner",
-      value:
-        owner?.status === "active" ? (
-          <PersonMenu
-            person={{
-              name: owner.name,
-              detail: owner.jobTitle,
-              email: owner.email,
-            }}
-            itemId={item.id}
-            itemTitle={item.title}
-            question={view.question}
-          />
-        ) : (
-          ownerLabel(owner)
-        ),
-    },
+  const { item, owner } = evaluation;
+  const rows = [
+    { label: "Owner", value: ownerLabel(owner) },
     {
       label: "Last checked",
       value: item.lastCheckedAt ? formatDate(item.lastCheckedAt) : "Never",
@@ -224,14 +236,23 @@ function SourceFacts({
     },
   ];
   return (
-    <dl className="grid gap-x-6 gap-y-2 text-sm sm:grid-cols-[8rem_1fr]">
-      {rows.map((row) => (
-        <div key={row.label} className="contents">
-          <dt className="text-muted-foreground">{row.label}</dt>
-          <dd className="break-words">{row.value}</dd>
-        </div>
-      ))}
-    </dl>
+    <>
+      <InfoSection title="Why this source">
+        <Reasons reasons={evaluation.reasons} />
+      </InfoSection>
+      <dl className="grid grid-cols-[6.5rem_1fr] gap-x-3 gap-y-1.5">
+        {rows.map((row) => (
+          <div key={row.label} className="contents">
+            <dt className="text-muted-foreground">{row.label}</dt>
+            <dd className="break-words">{row.value}</dd>
+          </div>
+        ))}
+      </dl>
+      <Supports supports={evaluation.supports} />
+      <InfoSection title="Questions about it">
+        <p>{contactDetail(evaluation.contact)}</p>
+      </InfoSection>
+    </>
   );
 }
 
@@ -242,26 +263,34 @@ function AnswerCard({
   evaluation: Evaluation;
   view: View;
 }) {
+  const { item } = evaluation;
   return (
     <section className="flex flex-col rounded-lg border">
-      <div className="bg-accent flex flex-col gap-3 rounded-t-lg border-b p-6">
+      <div className="bg-accent flex flex-col gap-4 rounded-t-lg border-b p-6 sm:p-8">
         <p className="text-primary text-sm font-medium">Answer</p>
-        <p className="text-lg leading-relaxed">{evaluation.passage.text}</p>
+        <p className="text-xl leading-relaxed">{evaluation.passage.text}</p>
       </div>
-      <div className="grid gap-8 p-6 lg:grid-cols-2">
-        <SourceFacts evaluation={evaluation} view={view} />
-        <div className="flex flex-col gap-6">
-          <Reasons reasons={evaluation.reasons} />
-          <Supports supports={evaluation.supports} view={view} />
-          <p className="text-sm">
-            <span className="text-muted-foreground">Questions about it: </span>
-            <ContactLine
-              contact={evaluation.contact}
-              item={evaluation.item}
+      <div className="flex flex-col gap-5 p-6 sm:p-8">
+        <div className="flex items-start justify-between gap-4">
+          <TrustSummary reasons={evaluation.reasons} />
+          <InfoButton label="Why this source">
+            <SourceDetails evaluation={evaluation} view={view} />
+          </InfoButton>
+        </div>
+        <dl className="grid gap-x-6 gap-y-3 sm:grid-cols-[8rem_1fr]">
+          <dt className="text-muted-foreground">Source</dt>
+          <dd>
+            <DocumentLink
+              item={item}
+              passage={evaluation.passage}
               view={view}
             />
-          </p>
-        </div>
+          </dd>
+          <dt className="text-muted-foreground">Ask</dt>
+          <dd>
+            <ContactLine contact={evaluation.contact} item={item} view={view} />
+          </dd>
+        </dl>
       </div>
     </section>
   );
@@ -279,11 +308,11 @@ function BlockedCard({
   const reviewerName = contactName(conflict.reviewer);
   return (
     <section className="flex flex-col rounded-lg border">
-      <div className="flex flex-col gap-2 border-b p-6">
+      <div className="flex flex-col gap-3 border-b p-6 sm:p-8">
         <p className="text-destructive text-sm font-medium">
           No confident answer
         </p>
-        <p className="text-lg">
+        <p className="text-xl leading-relaxed">
           Two sources disagree and nobody has decided yet. Do not guess: ask{" "}
           {reviewerName}.
         </p>
@@ -292,42 +321,42 @@ function BlockedCard({
         {[
           {
             item: evaluation.item,
-            owner: evaluation.owner,
             detail: evaluation.item.lastCheckedAt
-              ? `Document, checked ${formatDate(evaluation.item.lastCheckedAt)}`
-              : "Document, never checked",
+              ? `Document, checked ${formatDate(evaluation.item.lastCheckedAt)}.`
+              : "Document, never checked.",
             passage: evaluation.passage,
             supports: evaluation.supports,
           },
           {
             item: conflict.other,
-            owner: null,
-            detail: `${sourceSystemLabels[conflict.other.sourceSystem]}, ${formatDate(conflict.other.createdAt.slice(0, 10))}`,
+            detail: `${sourceSystemLabels[conflict.other.sourceSystem]}, ${formatDate(conflict.other.createdAt.slice(0, 10))}.`,
             passage: conflict.otherPassage,
             supports: conflict.otherSupports,
           },
         ].map((side) => (
           <div
             key={side.item.id}
-            className="bg-background flex flex-col gap-3 p-6"
+            className="bg-background flex flex-col gap-4 p-6 sm:p-8"
           >
-            <div className="flex flex-col gap-0.5">
+            <div className="flex items-start justify-between gap-4">
               <DocumentLink
                 item={side.item}
                 passage={side.passage}
                 view={view}
               />
-              <p className="text-muted-foreground text-sm">{side.detail}</p>
+              <InfoButton label="About this source">
+                <p>{side.detail}</p>
+                <Supports supports={side.supports} />
+              </InfoButton>
             </div>
-            <blockquote className="border-l-2 pl-4">
+            <blockquote className="border-l-2 pl-4 text-lg leading-relaxed">
               {side.passage.text}
             </blockquote>
-            <Supports supports={side.supports} view={view} />
           </div>
         ))}
       </div>
-      <div className="flex flex-col gap-4 border-t p-6 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm">
+      <div className="flex flex-col gap-4 border-t p-6 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+        <p>
           <span className="text-muted-foreground">Ask: </span>
           <ContactLine
             contact={conflict.reviewer}
@@ -360,40 +389,38 @@ function EvaluationList({
 }) {
   return (
     <ul className="divide-y rounded-lg border">
-      {evaluations.map((evaluation) => (
-        <li
-          key={evaluation.item.id}
-          className="grid gap-3 p-4 sm:grid-cols-[16rem_1fr]"
-        >
-          <div className="flex flex-col items-start gap-1.5">
-            <DocumentLink
-              item={evaluation.item}
-              passage={evaluation.passage}
-              view={view}
-            />
-            {evaluation.exclusion ? (
-              <Badge variant="destructive">{evaluation.exclusion}</Badge>
-            ) : null}
-          </div>
-          <div className="flex flex-col gap-3">
-            <Reasons
-              reasons={evaluation.reasons.filter(
-                (reason) => reason.tone !== "good",
-              )}
-            />
-            {evaluation.contact ? (
-              <p className="text-sm">
-                <span className="text-muted-foreground">Contact: </span>
-                <ContactLine
-                  contact={evaluation.contact}
+      {evaluations.map((evaluation) => {
+        const concern = evaluation.reasons.find(
+          (reason) => reason.tone !== "good",
+        );
+        return (
+          <li
+            key={evaluation.item.id}
+            className="flex items-start justify-between gap-4 p-5"
+          >
+            <div className="flex min-w-0 flex-col gap-1.5">
+              <div className="flex flex-wrap items-center gap-2">
+                <DocumentLink
                   item={evaluation.item}
+                  passage={evaluation.passage}
                   view={view}
                 />
-              </p>
-            ) : null}
-          </div>
-        </li>
-      ))}
+                {evaluation.exclusion ? (
+                  <Badge variant="destructive">{evaluation.exclusion}</Badge>
+                ) : null}
+              </div>
+              {concern ? (
+                <p className="text-muted-foreground">
+                  {firstSentence(concern.text)}
+                </p>
+              ) : null}
+            </div>
+            <InfoButton label="Why it was set aside">
+              <SourceDetails evaluation={evaluation} view={view} />
+            </InfoButton>
+          </li>
+        );
+      })}
     </ul>
   );
 }
@@ -431,7 +458,7 @@ export default async function AskPage({
       <PageHeader
         eyebrow="Live call"
         title="Ask"
-        description="Pick the customer on the phone and type their question. Rules pick the source, and every source that is not used gets a reason."
+        description="Pick the customer on the phone and type their question."
       />
 
       <form
@@ -503,7 +530,7 @@ export default async function AskPage({
           {result.notUsed.length > 0 ? (
             <PageSection
               title="Found, but set aside"
-              description="On topic, but replaced, a copy, or for another country or customer. Shown so you know why not to use them."
+              description="On topic, but not safe to use for this customer."
             >
               <EvaluationList evaluations={result.notUsed} view={view} />
             </PageSection>
@@ -512,7 +539,7 @@ export default async function AskPage({
           {result.alsoFound.length > 0 ? (
             <PageSection
               title="Less related"
-              description="Could be used, but a weaker match or less trusted than the answer."
+              description="Usable, but a weaker match than the answer."
             >
               <EvaluationList evaluations={result.alsoFound} view={view} />
             </PageSection>
