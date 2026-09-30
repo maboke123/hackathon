@@ -4,13 +4,25 @@
 
 This repository belongs to a team of four taking part in a hackathon themed around SD Worx (HR and payroll). It contains the demo app, the slide decks and the promo videos. Speed matters, but everything we show must look consistent and professional.
 
+## Priorities: ship fast, polish the frontend
+
+The jury judges what they see in the demo, so that is where our time goes.
+
+- Ship fast. Pick the quickest approach that works and get each demo step working end to end before improving anything.
+- The frontend must look finished: real corpus data, clear layout, sensible empty and loading states, and the design system followed to the letter.
+- The backend only has to make the demo work. Simple queries, hand-seeded data, hard coded rules and stored AI output are fine. No caching layers, queues, background jobs, generic abstractions or premature optimisation.
+- Do not refactor working backend code unless it blocks a demo step.
+- The security basics below still apply (auth checks and zod validation in every Server Action), because security is 10% of the score.
+
 ## Docs
 
-The team shares context through `docs/`. Start with [docs/plan.md](docs/plan.md): it is the single game plan for what we build, the demo and which track each person owns. Read the relevant file before starting work.
+The team shares context through `docs/`. Read the relevant file before starting work.
+
+[docs/plan.md](docs/plan.md) is the one unified document where everything about our solution lives: the problem, how it works, the data model, the pages, the demo script, the team split and open decisions. It merges all earlier concepts (the trust graph, legal knowledge that maintains itself, the demo script). Read it before any feature, slide or video work and build what it describes. New decisions about the solution go into `plan.md`, not into a separate file. When the implementation has to deviate from it, update `plan.md` first.
 
 | File                         | What                                                                            |
 | ---------------------------- | ------------------------------------------------------------------------------- |
-| `docs/plan.md`               | Game plan: our solution, data model, demo script and who does what. Start here. |
+| `docs/plan.md`               | The unified game plan: solution, data model, demo and team split. Start here.   |
 | `docs/context.md`            | Challenge, our idea and decisions. Read before feature work.                    |
 | `docs/challenge-briefing.md` | The SD Worx challenge brief: summary and transcript. Read before feature work.  |
 | `docs/ideas.md`              | Idea backlog and scoring                                                        |
