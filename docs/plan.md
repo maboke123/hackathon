@@ -245,7 +245,7 @@ Also not built yet, for track A to add when B or C need them: the `knowledge_gap
 | `/documents/new`  | Upload a document: labels, conflicts, links to related documents, then who to tell (3.6, 3.7). Built.                                        | Yes     |
 | `/documents/[id]` | Trust panel (owner, scope, last check, next review, source, modified by), links grouped by type, downstream coverage.                        | Yes     |
 | `/documents`      | Trust summary per team: share with an active owner, share checked in 12 months, open conflicts. Recurring questions. Never per person.       | If time |
-| Graph view        | Small neighbourhood of one document or fact, with the versions each document states.                                                         | Stretch |
+| `/graph`          | Whole graph on a dark canvas: sources, owners, subjects, customers and typed links. Click a node for its links and their reasons.            | Built   |
 | Meeting prep      | Documents to check before a customer meeting (3.9).                                                                                          | Stretch |
 | My contributions  | Built as the karma panel and history tab on `/review` (3.11). Visible only to the colleague.                                                 | Yes     |
 
