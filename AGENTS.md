@@ -78,6 +78,12 @@ Visuals:
 - Keep it simple. This is a hackathon: no speculative abstractions, no unused configuration.
 - Never commit secrets. Environment variables go in `.env.local`, with names documented in `.env.example`.
 
+## Git
+
+- Commit messages are a single short conventional commit line, for example `feat: add payslip overview`.
+- No commit body, no bullet lists and no trailers.
+- No `Co-authored-by`, no session links and no other references to AI tools in commits or pull requests.
+
 ## Slides and videos
 
 - Slides: one Markdown file per deck in `slides/`, layouts `cover`, `default`, `section`, `statement`, `two-cols`. At most one idea per slide and at most five bullets.
