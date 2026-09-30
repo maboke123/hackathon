@@ -176,6 +176,7 @@ export const knowledgeItems = pgTable(
     status: text().$type<ItemStatus>().notNull(),
     usefulness: real(),
     usefulnessScoredAt: instant(),
+    embedding: real().array(),
     search: tsvector()
       .notNull()
       .generatedAlwaysAs(

@@ -12,9 +12,9 @@ import {
 } from "@/lib/data";
 import { searchTerms } from "@/lib/data/search-terms";
 import { formatDate } from "@/lib/format";
+import { searchDocuments } from "@/lib/search";
 
 const STALE_AFTER_MONTHS = 12;
-const MIN_RELATIVE_RANK = 0.3;
 const MAX_CANDIDATES = 8;
 const RELATED_LINK_TYPES = new Set([
   "supersedes",
@@ -409,22 +409,19 @@ export async function askQuestion(
   const terms = searchTerms(question).filter(
     (term) => !customerWords.has(term),
   );
-  const [results, colleagues, teams, openReviews] = await Promise.all([
-    repository.searchItems(terms.join(" "), { kind: "document" }),
+  const [hits, colleagues, teams, openReviews] = await Promise.all([
+    searchDocuments(question, terms),
     repository.listColleagues(),
     repository.listTeams(),
     repository.listReviewItems({ status: "open" }),
   ]);
-  const topRank = results[0]?.rank ?? 0;
-  const candidates = results
-    .filter((result) => result.rank >= topRank * MIN_RELATIVE_RANK)
-    .slice(0, MAX_CANDIDATES);
+  const candidates = hits.slice(0, MAX_CANDIDATES);
 
   // Older versions, copies and variants of a candidate are part of the answer
   // even when the search ranks them low.
   const related = await Promise.all(
-    candidates.map((result) =>
-      repository.listLinks({ itemId: result.item.id, status: "confirmed" }),
+    candidates.map((hit) =>
+      repository.listLinks({ itemId: hit.item.id, status: "confirmed" }),
     ),
   );
   const relatedIds = new Set(
@@ -433,15 +430,12 @@ export async function askQuestion(
       .filter((link) => RELATED_LINK_TYPES.has(link.type))
       .flatMap((link) => [link.fromId, link.toId]),
   );
-  for (const result of results) {
-    if (relatedIds.has(result.item.id) && !candidates.includes(result)) {
-      candidates.push(result);
-    }
-  }
   for (const id of relatedIds) {
-    if (!candidates.some((result) => result.item.id === id)) {
-      const item = await repository.getItem(id);
-      if (item?.kind === "document") candidates.push({ item, rank: 0 });
+    if (candidates.some((hit) => hit.item.id === id)) continue;
+    const hit = hits.find((entry) => entry.item.id === id);
+    const item = hit?.item ?? (await repository.getItem(id));
+    if (item?.kind === "document") {
+      candidates.push(hit ?? { item, relevance: 0, matchedBy: "keyword" });
     }
   }
 
@@ -452,14 +446,21 @@ export async function askQuestion(
       colleagues.map((colleague) => [colleague.id, colleague]),
     ),
     teams: new Map(teams.map((team) => [team.id, team])),
-    items: new Map(candidates.map((result) => [result.item.id, result.item])),
+    items: new Map(candidates.map((hit) => [hit.item.id, hit.item])),
     openReviews,
   };
 
   const evaluations = await Promise.all(
-    candidates.map((result) =>
-      evaluate(result.item, topRank > 0 ? result.rank / topRank : 0, context),
-    ),
+    candidates.map(async (hit) => {
+      const evaluation = await evaluate(hit.item, hit.relevance, context);
+      if (hit.matchedBy === "meaning") {
+        evaluation.reasons.push({
+          tone: "good",
+          text: "Found by meaning. The question uses other words than the document.",
+        });
+      }
+      return evaluation;
+    }),
   );
 
   const usable = evaluations

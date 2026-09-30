@@ -31,6 +31,11 @@ export type SearchResult = {
   rank: number;
 };
 
+export type ItemEmbedding = {
+  id: string;
+  embedding: number[];
+};
+
 export type LinkFilter = {
   itemId?: string;
   type?: LinkType;
@@ -57,6 +62,9 @@ export interface DataRepository {
   getItem(id: string): Promise<KnowledgeItem | null>;
   searchItems(query: string, filter?: ItemFilter): Promise<SearchResult[]>;
   updateItem(id: string, update: ItemUpdate): Promise<KnowledgeItem | null>;
+  listEmbeddings(): Promise<ItemEmbedding[]>;
+  listItemsWithoutEmbedding(): Promise<KnowledgeItem[]>;
+  setEmbedding(id: string, embedding: number[]): Promise<void>;
 
   /** Links where the item is on either side. */
   listLinks(filter?: LinkFilter): Promise<KnowledgeLink[]>;

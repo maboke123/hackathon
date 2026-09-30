@@ -22,6 +22,13 @@
       "when": 1790791569833,
       "tag": "0002_knowledge_graph",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1790793174594,
+      "tag": "0003_item_embeddings",
+      "breakpoints": true
     }
   ]
 }

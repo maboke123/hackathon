@@ -4,6 +4,7 @@ import { getAuth } from "@/lib/auth";
 import { ensureDemoUser, getDemoAccounts } from "@/lib/auth/demo-accounts";
 import { getRepository } from "@/lib/data";
 import { getDb, getDbDriver, migrateDb } from "@/lib/db";
+import { embedMissingDocuments } from "@/lib/embeddings";
 
 const CONNECT_ATTEMPTS = 15;
 const RETRY_DELAY_MS = 2000;
@@ -45,4 +46,7 @@ export async function setup(): Promise<void> {
   for (const { colleague } of await getDemoAccounts()) {
     await ensureDemoUser(colleague);
   }
+  embedMissingDocuments().catch((error: unknown) => {
+    console.warn("Could not embed documents at startup.", error);
+  });
 }

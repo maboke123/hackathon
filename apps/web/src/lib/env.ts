@@ -5,6 +5,7 @@ const envSchema = z.object({
   DATABASE_URL: z.url().optional(),
   BETTER_AUTH_SECRET: z.string().min(32).optional(),
   BETTER_AUTH_URL: z.url().optional(),
+  GEMINI_API_KEY: z.string().min(1).optional(),
 });
 
 // Hosting panels often save unset variables as empty strings.

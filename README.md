@@ -56,11 +56,12 @@ Signing up with the email of any other active colleague in the corpus links the 
 
 Set them in `apps/web/.env.local` locally, or in the hosting panel in production.
 
-| Name                 | Development                  | Production                                                                                   |
-| -------------------- | ---------------------------- | -------------------------------------------------------------------------------------------- |
-| `DATABASE_URL`       | Optional, in-memory if empty | Postgres connection string, for example `postgres://user:password@postgres:5432/app`         |
-| `BETTER_AUTH_SECRET` | Optional                     | Required. Generate with `openssl rand -base64 32`                                            |
-| `BETTER_AUTH_URL`    | Optional                     | Required. The exact URL people open, including `https://`. It decides if cookies are secure. |
+| Name                 | Development                  | Production                                                                                                                    |
+| -------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `DATABASE_URL`       | Optional, in-memory if empty | Postgres connection string, for example `postgres://user:password@postgres:5432/app`                                          |
+| `BETTER_AUTH_SECRET` | Optional                     | Required. Generate with `openssl rand -base64 32`                                                                             |
+| `BETTER_AUTH_URL`    | Optional                     | Required. The exact URL people open, including `https://`. It decides if cookies are secure.                                  |
+| `GEMINI_API_KEY`     | Optional                     | Optional. Google AI Studio key for search by meaning (`gemini-embedding-001`, free tier). Without it, search is keyword only. |
 
 To use a real Postgres locally, start one with Docker and point the app at it:
 

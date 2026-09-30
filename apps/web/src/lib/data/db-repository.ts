@@ -6,6 +6,8 @@ import {
   desc,
   eq,
   getTableColumns,
+  isNotNull,
+  isNull,
   or,
   type SQL,
   sql,
@@ -25,7 +27,11 @@ import { searchTerms } from "./search-terms";
 import { buildCorpusSeed } from "./seed/corpus";
 import { itemUpdateSchema, newLinkSchema, newReviewItemSchema } from "./types";
 
-const { search: _search, ...itemColumns } = getTableColumns(knowledgeItems);
+const {
+  search: _search,
+  embedding: _embedding,
+  ...itemColumns
+} = getTableColumns(knowledgeItems);
 
 function itemConditions(filter: ItemFilter): (SQL | undefined)[] {
   return [
@@ -124,11 +130,38 @@ export function createDbRepository(db: Database): DataRepository {
       return rows.map((row) => ({ item: row.item, rank: Number(row.rank) }));
     },
 
+    async listEmbeddings() {
+      const rows = await db
+        .select({ id: knowledgeItems.id, embedding: knowledgeItems.embedding })
+        .from(knowledgeItems)
+        .where(isNotNull(knowledgeItems.embedding));
+      return rows.flatMap((row) =>
+        row.embedding ? [{ id: row.id, embedding: row.embedding }] : [],
+      );
+    },
+
+    async listItemsWithoutEmbedding() {
+      return db
+        .select(itemColumns)
+        .from(knowledgeItems)
+        .where(isNull(knowledgeItems.embedding))
+        .orderBy(asc(knowledgeItems.id));
+    },
+
+    async setEmbedding(id, embedding) {
+      await db
+        .update(knowledgeItems)
+        .set({ embedding })
+        .where(eq(knowledgeItems.id, id));
+    },
+
     async updateItem(id, update) {
       const parsed = itemUpdateSchema.parse(update);
+      const textChanged =
+        parsed.title !== undefined || parsed.body !== undefined;
       const [item] = await db
         .update(knowledgeItems)
-        .set(parsed)
+        .set(textChanged ? { ...parsed, embedding: null } : parsed)
         .where(eq(knowledgeItems.id, id))
         .returning(itemColumns);
       return item ?? null;
