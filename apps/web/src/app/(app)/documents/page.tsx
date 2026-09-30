@@ -4,6 +4,7 @@ import { PageHeader, PageSection } from "@/components/page-header";
 import { TeamSummaryTable } from "@/components/team-summary-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -21,8 +22,20 @@ export const metadata: Metadata = {
   title: "Documents",
 };
 
-export default async function DocumentsPage() {
+const normalise = (value: string) =>
+  value
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase();
+
+export default async function DocumentsPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
   await requireUser();
+  const params = await searchParams;
+  const query = typeof params.q === "string" ? params.q.trim() : "";
   const repository = getRepository();
   const [documents, colleagues, teams, openReviews] = await Promise.all([
     repository.listItems({ kind: "document" }),
@@ -33,7 +46,12 @@ export default async function DocumentsPage() {
   const people = new Map(colleagues.map((person) => [person.id, person]));
   const teamNames = new Map(teams.map((team) => [team.id, team.name]));
   const summaries = summariseTeams(documents, colleagues, teams, openReviews);
-  const sorted = [...documents].sort(
+  const matches = query
+    ? documents.filter((item) =>
+        normalise(item.title).includes(normalise(query)),
+      )
+    : documents;
+  const sorted = [...matches].sort(
     (a, b) =>
       Number(a.status === "retired") - Number(b.status === "retired") ||
       a.title.localeCompare(b.title),
@@ -60,8 +78,27 @@ export default async function DocumentsPage() {
 
       <PageSection
         title="All documents"
-        description={`${documents.length} documents from SharePoint, OneDrive and the wiki.`}
+        description={
+          query
+            ? `${matches.length} of ${documents.length} documents match "${query}".`
+            : `${documents.length} documents from SharePoint, OneDrive and the wiki.`
+        }
       >
+        <form action="/documents" className="mb-4 flex max-w-md gap-2">
+          <Input
+            type="search"
+            name="q"
+            defaultValue={query}
+            placeholder="Search by document name"
+            aria-label="Search documents by name"
+          />
+          <Button type="submit">Search</Button>
+          {query ? (
+            <Button variant="outline" asChild>
+              <Link href="/documents">Clear</Link>
+            </Button>
+          ) : null}
+        </form>
         <Table>
           <TableHeader>
             <TableRow>
@@ -73,6 +110,13 @@ export default async function DocumentsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
+            {sorted.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={5} className="text-muted-foreground py-6">
+                  No document has a name matching &ldquo;{query}&rdquo;.
+                </TableCell>
+              </TableRow>
+            ) : null}
             {sorted.map((item) => {
               const owner = item.ownerId ? people.get(item.ownerId) : null;
               const reviews = openReviews.filter(
