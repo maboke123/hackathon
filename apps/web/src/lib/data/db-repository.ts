@@ -6,6 +6,7 @@ import {
   desc,
   eq,
   getTableColumns,
+  inArray,
   isNotNull,
   isNull,
   or,
@@ -28,13 +29,51 @@ import {
 import type { DataRepository, ItemFilter } from "./repository";
 import { searchTerms } from "./search-terms";
 import { buildCorpusSeed } from "./seed/corpus";
+import { ITEM_EDGE_TYPES, itemGraph, linkEdge } from "./seed/graph";
 import {
   itemUpdateSchema,
+  type KnowledgeItem,
+  type KnowledgeLink,
   newKarmaEventSchema,
   newLinkSchema,
   newReviewItemSchema,
   reviewItemUpdateSchema,
 } from "./types";
+
+async function syncItemGraph(db: Database, item: KnowledgeItem) {
+  const { nodes, edges } = itemGraph(item);
+  await db
+    .insert(graphNodes)
+    .values(nodes)
+    .onConflictDoUpdate({
+      target: graphNodes.id,
+      set: { label: sql`excluded.label`, props: sql`excluded.props` },
+    });
+  await db
+    .delete(graphEdges)
+    .where(
+      and(
+        eq(graphEdges.fromId, item.id),
+        inArray(graphEdges.type, [...ITEM_EDGE_TYPES]),
+      ),
+    );
+  await db.insert(graphEdges).values(edges).onConflictDoNothing();
+}
+
+async function syncLinkGraph(db: Database, link: KnowledgeLink) {
+  const edge = linkEdge(link);
+  if (link.status === "rejected") {
+    await db.delete(graphEdges).where(eq(graphEdges.id, edge.id));
+    return;
+  }
+  await db
+    .insert(graphEdges)
+    .values(edge)
+    .onConflictDoUpdate({
+      target: graphEdges.id,
+      set: { status: edge.status },
+    });
+}
 
 const {
   search: _search,
@@ -173,6 +212,7 @@ export function createDbRepository(db: Database): DataRepository {
         .set(textChanged ? { ...parsed, embedding: null } : parsed)
         .where(eq(knowledgeItems.id, id))
         .returning(itemColumns);
+      if (item) await syncItemGraph(db, item);
       return item ?? null;
     },
 
@@ -213,6 +253,7 @@ export function createDbRepository(db: Database): DataRepository {
       if (!link) {
         throw new Error("Could not create the link.");
       }
+      await syncLinkGraph(db, link);
       return link;
     },
 
@@ -222,6 +263,7 @@ export function createDbRepository(db: Database): DataRepository {
         .set({ status, resolvedBy, resolvedAt: now() })
         .where(eq(knowledgeLinks.id, id))
         .returning();
+      if (link) await syncLinkGraph(db, link);
       return link ?? null;
     },
 
