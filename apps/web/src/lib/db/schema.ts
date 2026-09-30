@@ -4,6 +4,7 @@ import {
   customType,
   date,
   index,
+  integer,
   jsonb,
   pgTable,
   real,
@@ -26,6 +27,7 @@ import type {
   LinkType,
   ReviewKind,
   ReviewPayload,
+  ReviewSource,
   ReviewStatus,
   SourceSystem,
 } from "../data/types";
@@ -234,6 +236,9 @@ export const reviewItems = pgTable(
     assigneeTeamId: text().references(() => teams.id),
     trigger: text().notNull(),
     payload: jsonb().$type<ReviewPayload>(),
+    source: text().$type<ReviewSource>().notNull(),
+    requestedById: text().references(() => colleagues.id),
+    dueAt: date().notNull(),
     status: text().$type<ReviewStatus>().notNull(),
     outcome: text(),
     createdAt: instant().notNull(),
@@ -244,6 +249,25 @@ export const reviewItems = pgTable(
     index("review_items_assignee_id_idx").on(table.assigneeId),
     index("review_items_status_idx").on(table.status),
   ],
+);
+
+export const karmaEvents = pgTable(
+  "karma_events",
+  {
+    id: text().primaryKey(),
+    colleagueId: text()
+      .notNull()
+      .references(() => colleagues.id),
+    // No foreign key: history outlives resolved review items.
+    reviewId: text(),
+    kind: text().$type<ReviewKind>().notNull(),
+    itemId: text().notNull(),
+    points: integer().notNull(),
+    onTime: boolean().notNull(),
+    reason: text().notNull(),
+    createdAt: instant().notNull(),
+  },
+  (table) => [index("karma_events_colleague_id_idx").on(table.colleagueId)],
 );
 
 export const agentQueries = pgTable("agent_queries", {

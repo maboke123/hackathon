@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
 import { type Role, roleLabels } from "@/lib/auth/roles";
-import { requireUser } from "@/lib/auth/session";
+import { getCurrentColleague, requireUser } from "@/lib/auth/session";
+import { getRepository } from "@/lib/data";
 import { MainNav, type NavItem } from "./main-nav";
 import { UserMenu } from "./user-menu";
 
 const navItems: (NavItem & { roles?: Role[] })[] = [
   { href: "/overview", label: "Overview" },
   { href: "/ask", label: "Ask" },
+  { href: "/review", label: "Review" },
 ];
 
 export default async function AppLayout({
@@ -16,9 +18,20 @@ export default async function AppLayout({
   children: React.ReactNode;
 }) {
   const user = await requireUser();
+  const colleague = await getCurrentColleague();
+  const openReviews = colleague
+    ? await getRepository().listReviewItems({
+        assigneeId: colleague.id,
+        status: "open",
+      })
+    : [];
   const items = navItems
     .filter((item) => !item.roles || item.roles.includes(user.role))
-    .map(({ href, label }) => ({ href, label }));
+    .map(({ href, label }) => ({
+      href,
+      label,
+      count: href === "/review" ? openReviews.length : undefined,
+    }));
 
   return (
     <div className="flex flex-1 flex-col">

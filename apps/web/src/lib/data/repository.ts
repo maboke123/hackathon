@@ -5,13 +5,16 @@ import type {
   ItemKind,
   ItemStatus,
   ItemUpdate,
+  KarmaEvent,
   KnowledgeItem,
   KnowledgeLink,
   LinkStatus,
   LinkType,
+  NewKarmaEvent,
   NewLink,
   NewReviewItem,
   ReviewItem,
+  ReviewItemUpdate,
   ReviewKind,
   ReviewStatus,
   Team,
@@ -78,11 +81,20 @@ export interface DataRepository {
   listReviewItems(filter?: ReviewFilter): Promise<ReviewItem[]>;
   getReviewItem(id: string): Promise<ReviewItem | null>;
   createReviewItem(input: NewReviewItem): Promise<ReviewItem>;
+  /** Only resolves open items, so a second click returns null. */
   resolveReviewItem(
     id: string,
     outcome: string,
     resolvedBy: string,
   ): Promise<ReviewItem | null>;
+  /** Only updates open items. */
+  updateReviewItem(
+    id: string,
+    update: ReviewItemUpdate,
+  ): Promise<ReviewItem | null>;
+
+  listKarmaEvents(colleagueId: string): Promise<KarmaEvent[]>;
+  createKarmaEvent(input: NewKarmaEvent): Promise<KarmaEvent>;
 
   listAgentQueries(): Promise<AgentQuery[]>;
 

@@ -2,9 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { requireUser } from "@/lib/auth/session";
+import { getCurrentColleague, requireUser } from "@/lib/auth/session";
 import { getRepository } from "@/lib/data";
 import type { FormState } from "@/lib/form-state";
+import { enqueueReview } from "@/lib/review";
 
 const inputSchema = z.object({
   linkId: z.string().min(1),
@@ -27,40 +28,26 @@ export async function sendConflictToOwner(input: unknown): Promise<FormState> {
     return { status: "error", message: "This conflict is already settled." };
   }
 
-  const open = await repository.listReviewItems({
+  const colleague = await getCurrentColleague();
+  const result = await enqueueReview({
+    kind: "conflict",
     itemId: link.toId,
-    status: "open",
+    relatedItemIds: [link.fromId],
+    linkId: link.id,
+    source: "request",
+    requestedById: colleague?.id ?? null,
+    trigger: `Asked during a call: "${question}"`,
   });
-  if (open.some((review) => review.linkId === link.id)) {
-    return { status: "success", message: "Already in the owner's queue." };
+  if (result.status === "rejected") {
+    return { status: "error", message: result.message };
   }
 
-  const document = await repository.getItem(link.toId);
-  const owner = document?.ownerId
-    ? await repository.getColleague(document.ownerId)
-    : null;
-  const successor = owner?.successorId
-    ? await repository.getColleague(owner.successorId)
-    : null;
-  const assignee =
-    owner?.status === "active"
-      ? owner
-      : successor?.status === "active"
-        ? successor
-        : null;
-
-  await repository.createReviewItem({
-    kind: "conflict",
-    itemIds: [link.toId, link.fromId],
-    linkId: link.id,
-    assigneeId: assignee?.id ?? null,
-    assigneeTeamId: assignee ? null : (document?.teamId ?? null),
-    trigger: `Asked during a call: "${question}"`,
-    payload: null,
-  });
-
-  revalidatePath("/ask");
-  revalidatePath("/review");
-  revalidatePath("/overview");
-  return { status: "success", message: "Sent to the owner's queue." };
+  revalidatePath("/", "layout");
+  return {
+    status: "success",
+    message:
+      result.status === "queued"
+        ? "Sent to the owner's queue."
+        : "Already in the owner's queue. Marked as urgent.",
+  };
 }

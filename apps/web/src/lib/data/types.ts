@@ -48,6 +48,13 @@ export const reviewKindSchema = z.enum([
   "suggested_label",
 ]);
 export const reviewStatusSchema = z.enum(["open", "done"]);
+export const reviewSourceSchema = z.enum([
+  "schedule",
+  "usage",
+  "request",
+  "conflict_check",
+  "parent_change",
+]);
 
 export const teamSchema = z.object({
   id: z.string(),
@@ -150,11 +157,26 @@ export const reviewItemSchema = z.object({
   assigneeTeamId: z.string().nullable(),
   trigger: z.string(),
   payload: reviewPayloadSchema.nullable(),
+  source: reviewSourceSchema,
+  requestedById: z.string().nullable(),
+  dueAt: isoDate,
   status: reviewStatusSchema,
   outcome: z.string().nullable(),
   createdAt: timestamp,
   resolvedBy: z.string().nullable(),
   resolvedAt: timestamp.nullable(),
+});
+
+export const karmaEventSchema = z.object({
+  id: z.string(),
+  colleagueId: z.string(),
+  reviewId: z.string().nullable(),
+  kind: reviewKindSchema,
+  itemId: z.string(),
+  points: z.number().int().min(0),
+  onTime: z.boolean(),
+  reason: z.string(),
+  createdAt: timestamp,
 });
 
 export const agentResultSchema = z.object({
@@ -198,6 +220,25 @@ export const newReviewItemSchema = reviewItemSchema.pick({
   assigneeTeamId: true,
   trigger: true,
   payload: true,
+  source: true,
+  requestedById: true,
+  dueAt: true,
+});
+
+export const reviewItemUpdateSchema = reviewItemSchema
+  .pick({
+    assigneeId: true,
+    assigneeTeamId: true,
+    trigger: true,
+    source: true,
+    requestedById: true,
+    dueAt: true,
+  })
+  .partial();
+
+export const newKarmaEventSchema = karmaEventSchema.omit({
+  id: true,
+  createdAt: true,
 });
 
 export const itemUpdateSchema = knowledgeItemSchema
@@ -229,6 +270,7 @@ export type LinkStatus = z.infer<typeof linkStatusSchema>;
 export type LinkOrigin = z.infer<typeof linkOriginSchema>;
 export type ReviewKind = z.infer<typeof reviewKindSchema>;
 export type ReviewStatus = z.infer<typeof reviewStatusSchema>;
+export type ReviewSource = z.infer<typeof reviewSourceSchema>;
 export type Team = z.infer<typeof teamSchema>;
 export type Colleague = z.infer<typeof colleagueSchema>;
 export type CustomerContact = z.infer<typeof customerContactSchema>;
@@ -238,6 +280,9 @@ export type KnowledgeItem = z.infer<typeof knowledgeItemSchema>;
 export type KnowledgeLink = z.infer<typeof knowledgeLinkSchema>;
 export type ReviewPayload = z.infer<typeof reviewPayloadSchema>;
 export type ReviewItem = z.infer<typeof reviewItemSchema>;
+export type ReviewItemUpdate = z.infer<typeof reviewItemUpdateSchema>;
+export type KarmaEvent = z.infer<typeof karmaEventSchema>;
+export type NewKarmaEvent = z.infer<typeof newKarmaEventSchema>;
 export type AgentResult = z.infer<typeof agentResultSchema>;
 export type AgentQuery = z.infer<typeof agentQuerySchema>;
 export type NewLink = z.infer<typeof newLinkSchema>;

@@ -6,6 +6,7 @@ import type {
   LinkStatus,
   LinkType,
   ReviewKind,
+  ReviewSource,
   SourceSystem,
 } from "./types";
 
@@ -66,6 +67,14 @@ export const reviewKindLabels: Record<ReviewKind, string> = {
   no_owner: "No owner",
   suggested_link: "Suggested link",
   suggested_label: "Suggested label",
+};
+
+export const reviewSourceLabels: Record<ReviewSource, string> = {
+  schedule: "Periodic check",
+  usage: "Used in an answer",
+  request: "Requested",
+  conflict_check: "Found by the graph",
+  parent_change: "Source changed",
 };
 
 export const colleagueStatusLabels: Record<ColleagueStatus, string> = {

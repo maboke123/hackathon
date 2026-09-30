@@ -1,9 +1,11 @@
 import { z } from "zod";
+import { addDays, dueDays, rewardFor } from "../../karma";
 import {
   agentQuerySchema,
   type Colleague,
   colleagueSchema,
   customerSchema,
+  type KarmaEvent,
   type KnowledgeItem,
   knowledgeItemSchema,
   type KnowledgeLink,
@@ -91,6 +93,11 @@ function buildReviewItems(
     resolvedBy: null,
     resolvedAt: null,
     payload: null,
+    requestedById: null,
+  };
+  const periodic = {
+    source: "schedule" as const,
+    dueAt: addDays(REFERENCE_DATE, dueDays.schedule),
   };
 
   for (const link of links.filter((item) => item.status === "suggested")) {
@@ -99,6 +106,8 @@ function buildReviewItems(
     reviews.push({
       ...open,
       kind: link.type === "contradicts" ? "conflict" : "suggested_link",
+      source: "conflict_check",
+      dueAt: addDays(REFERENCE_DATE, dueDays.conflict_check),
       itemIds: [link.toId, link.fromId],
       linkId: link.id,
       trigger: link.reason,
@@ -115,6 +124,7 @@ function buildReviewItems(
     if (!owner) {
       reviews.push({
         ...open,
+        ...periodic,
         kind: "no_owner",
         itemIds: [item.id],
         linkId: null,
@@ -124,6 +134,7 @@ function buildReviewItems(
     } else if (owner.status !== "active") {
       reviews.push({
         ...open,
+        ...periodic,
         kind: "no_owner",
         itemIds: [item.id],
         linkId: null,
@@ -133,6 +144,7 @@ function buildReviewItems(
     } else if (!item.lastCheckedAt || item.lastCheckedAt < staleBefore) {
       reviews.push({
         ...open,
+        ...periodic,
         kind: "stale",
         itemIds: [item.id],
         linkId: null,
@@ -150,6 +162,44 @@ function buildReviewItems(
   }));
 }
 
+// Karma history: every check date in the corpus counts as an on-time check by the active owner.
+function buildKarmaEvents(
+  items: KnowledgeItem[],
+  colleagues: Colleague[],
+): KarmaEvent[] {
+  const active = new Set(
+    colleagues
+      .filter((person) => person.status === "active")
+      .map((person) => person.id),
+  );
+  return items
+    .filter(
+      (item) =>
+        item.kind === "document" &&
+        item.lastCheckedAt &&
+        item.ownerId &&
+        active.has(item.ownerId),
+    )
+    .map((item, index) => {
+      const checkedOn = item.lastCheckedAt ?? REFERENCE_DATE;
+      const reward = rewardFor(
+        { kind: "stale", source: "schedule", dueAt: checkedOn },
+        checkedOn,
+      );
+      return {
+        id: `karma-${pad(index + 1)}`,
+        colleagueId: item.ownerId ?? "",
+        reviewId: null,
+        kind: "stale" as const,
+        itemId: item.id,
+        points: reward.points,
+        onTime: reward.onTime,
+        reason: `Checked ${item.title}`,
+        createdAt: `${checkedOn}T09:00:00.000Z`,
+      };
+    });
+}
+
 export function buildCorpusSeed() {
   const corpus = corpusSchema.parse(raw);
   const links = buildLinks(corpus.links);
@@ -157,5 +207,6 @@ export function buildCorpusSeed() {
     ...corpus,
     links,
     reviewItems: buildReviewItems(corpus.items, corpus.colleagues, links),
+    karmaEvents: buildKarmaEvents(corpus.items, corpus.colleagues),
   };
 }

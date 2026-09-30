@@ -17,6 +17,7 @@ import {
   agentQueries,
   colleagues,
   customers,
+  karmaEvents,
   knowledgeItems,
   knowledgeLinks,
   reviewItems,
@@ -25,7 +26,13 @@ import {
 import type { DataRepository, ItemFilter } from "./repository";
 import { searchTerms } from "./search-terms";
 import { buildCorpusSeed } from "./seed/corpus";
-import { itemUpdateSchema, newLinkSchema, newReviewItemSchema } from "./types";
+import {
+  itemUpdateSchema,
+  newKarmaEventSchema,
+  newLinkSchema,
+  newReviewItemSchema,
+  reviewItemUpdateSchema,
+} from "./types";
 
 const {
   search: _search,
@@ -273,6 +280,36 @@ export function createDbRepository(db: Database): DataRepository {
       return review ?? null;
     },
 
+    async updateReviewItem(id, update) {
+      const parsed = reviewItemUpdateSchema.parse(update);
+      const [review] = await db
+        .update(reviewItems)
+        .set(parsed)
+        .where(and(eq(reviewItems.id, id), eq(reviewItems.status, "open")))
+        .returning();
+      return review ?? null;
+    },
+
+    async listKarmaEvents(colleagueId) {
+      return db
+        .select()
+        .from(karmaEvents)
+        .where(eq(karmaEvents.colleagueId, colleagueId))
+        .orderBy(desc(karmaEvents.createdAt), desc(karmaEvents.id));
+    },
+
+    async createKarmaEvent(input) {
+      const parsed = newKarmaEventSchema.parse(input);
+      const [event] = await db
+        .insert(karmaEvents)
+        .values({ ...parsed, id: newId("karma"), createdAt: now() })
+        .returning();
+      if (!event) {
+        throw new Error("Could not record the karma.");
+      }
+      return event;
+    },
+
     async listAgentQueries() {
       return db.select().from(agentQueries).orderBy(asc(agentQueries.askedAt));
     },
@@ -289,6 +326,7 @@ export function createDbRepository(db: Database): DataRepository {
       const seed = buildCorpusSeed();
 
       await db.transaction(async (tx) => {
+        await tx.delete(karmaEvents);
         await tx.delete(reviewItems);
         await tx.delete(knowledgeLinks);
         await tx.delete(knowledgeItems);
@@ -303,6 +341,7 @@ export function createDbRepository(db: Database): DataRepository {
         await tx.insert(knowledgeItems).values(seed.items);
         await tx.insert(knowledgeLinks).values(seed.links);
         await tx.insert(reviewItems).values(seed.reviewItems);
+        await tx.insert(karmaEvents).values(seed.karmaEvents);
         await tx.insert(agentQueries).values(seed.agentQueries);
       });
     },

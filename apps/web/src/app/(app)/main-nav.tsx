@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 export type NavItem = {
   href: Route;
   label: string;
+  count?: number;
 };
 
 export function MainNav({ items }: { items: NavItem[] }) {
@@ -24,13 +25,18 @@ export function MainNav({ items }: { items: NavItem[] }) {
             href={item.href}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "flex items-center whitespace-nowrap border-b-2 border-transparent text-sm font-medium transition-colors duration-150",
+              "flex items-center gap-2 whitespace-nowrap border-b-2 border-transparent text-sm font-medium transition-colors duration-150",
               active
                 ? "border-primary text-foreground"
                 : "text-muted-foreground hover:border-border",
             )}
           >
             {item.label}
+            {item.count ? (
+              <span className="bg-primary text-primary-foreground rounded px-1.5 text-xs tabular-nums leading-5">
+                {item.count}
+              </span>
+            ) : null}
           </Link>
         );
       })}
