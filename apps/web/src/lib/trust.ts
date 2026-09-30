@@ -14,12 +14,8 @@ import { countryLabels } from "@/lib/data/labels";
 import { searchTerms } from "@/lib/data/search-terms";
 import { formatDate } from "@/lib/format";
 import { bestPassage, locatePassage, type Passage } from "@/lib/passages";
-<<<<<<< Updated upstream
 import { type SearchHit, searchDocuments } from "@/lib/search";
-=======
-import { searchDocuments } from "@/lib/search";
 import { type TrustScore, trustScore } from "@/lib/trust-score";
->>>>>>> Stashed changes
 
 const STALE_AFTER_MONTHS = 12;
 const MAX_CANDIDATES = 8;
