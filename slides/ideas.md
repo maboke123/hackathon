@@ -628,6 +628,118 @@ The Spott line is a possibility, not something Spott has asked for.
 -->
 
 ---
+layout: section
+---
+
+### Feature
+
+# Living answers
+
+<!--
+Answers are the unit, not documents. A consultant links the answer they sent to the document it came from. When a newer document supersedes that one, its author can notify every customer who got an answer from the old one.
+-->
+
+---
+layout: statement
+---
+
+# An answer can go out of date *after* it is sent.
+
+<!--
+Today a document gets fixed, but the answers already sent from it never do.
+Corpus: in September 2026 Stijn still told a Veldra employee the meal voucher maximum is EUR 8 (call-02, ticket SR-2026-047102), nine months after it went to EUR 10.
+-->
+
+---
+
+### Step 1, the consultant answers
+
+# Every answer records the document it came from
+
+<div class="mock">
+<div class="mock-row tint"><span class="grow"><strong>Re: Maximale waarde maaltijdcheques</strong><br><span class="muted">To Mark Janssen, Veldra Belgium NV, 12 March 2025</span></span><span class="label info">Sent</span></div>
+<div class="mock-row"><span class="muted" style="width:9rem">Answered with</span><span class="grow">Maaltijdcheques: bedragen en voorwaarden<br><span class="muted">Customer service Belgium, maximum EUR 8</span></span><span class="label">Suggested</span><span class="btn primary">Confirm source</span></div>
+<div class="mock-row"><span class="muted" style="width:9rem">Or</span><span class="grow muted">Pick another document, or mark as answered without a document</span></div>
+<div class="mock-row"><span class="grow muted">Saved: customer, question, date, consultant and source. One click.</span></div>
+</div>
+
+<!--
+The source is suggested from the documents the consultant opened or the graph ranked first. The consultant only confirms.
+The answer becomes a record in the graph with a link to its source document.
+Mark Janssen is Veldra's payroll manager Benelux in tickets.json. The date is illustrative. EUR 8 was correct in March 2025.
+-->
+
+---
+
+### Step 2, a newer document replaces it
+
+# The author decides who hears about it
+
+<div class="mock">
+<div class="mock-row tint"><span class="grow"><strong>Maaltijdcheques vanaf 1 januari 2026</strong> supersedes <strong>Maaltijdcheques: bedragen en voorwaarden</strong><br><span class="muted">Published by Pieter De Smedt, 18 December 2025</span></span></div>
+<div class="mock-row"><span class="grow"><strong>11 answers</strong> to 9 customers in the last 12 months used the old document</span><span class="label warn">Out of date from 1 January</span></div>
+<div class="mock-row"><span class="grow">Veldra Belgium NV<br><span class="muted">Mark Janssen, answered by Stijn Mertens, 12 March 2025</span></span><span class="label info">BE</span></div>
+<div class="mock-row"><span class="grow">Havenkaai Logistics NV<br><span class="muted">Inge Claes, answered by Lotte Verhaegen, 4 June 2025</span></span><span class="label info">BE</span></div>
+<div class="mock-row"><span class="grow muted">7 more customers</span></div>
+<div class="mock-row"><span class="btn primary">Notify all 9 customers</span><span class="btn">Choose customers</span><span class="btn">Do not notify, wording change only</span></div>
+</div>
+
+<!--
+Corpus: doc-06 (old, EUR 8) and doc-07 (new, EUR 10, version 1.0 on 18 December 2025 by Pieter De Smedt).
+Counts, the second customer and the dates of the answers are illustrative. Seed them before the demo.
+Only answers linked to the old document are listed, so scope comes for free: a Dutch update never reaches a Belgian customer.
+-->
+
+---
+
+### Step 3, the customer hears it first
+
+# The correction arrives before the customer finds out
+
+<div class="mock">
+<div class="mock-row tint"><span class="grow"><strong>Update to our answer of 12 March 2025</strong><br><span class="muted">To Mark Janssen, Veldra Belgium NV</span></span><span class="label warn">Changes on 1 January 2026</span></div>
+<div class="mock-row"><span class="grow">We told you the maximum value of a meal voucher is EUR 8. From 1 January 2026 it is <strong>EUR 10</strong>: employer share at most EUR 8.91, employee share at least EUR 1.09.</span></div>
+<div class="mock-row"><span class="muted" style="width:9rem">Source</span><span class="grow">Maaltijdcheques vanaf 1 januari 2026, legal knowledge centre Belgium</span></div>
+<div class="mock-row"><span class="muted" style="width:9rem">Questions</span><span class="grow">Stijn Mertens, who answered you in March</span><span class="btn">Reply</span></div>
+</div>
+
+<!--
+Figures: sd-worx-briefing.md section 6 and doc-07 (EUR 10, 8.91, 1.09 since 1 January 2026).
+The text is drafted from the new document. Pieter can edit it before sending. It goes out in the name of the consultant who gave the original answer.
+Later the same update can appear as a card in My SD Worx.
+-->
+
+---
+
+### Who does what
+
+# Two clicks, two people, no surprises
+
+| Step                            | Who                         | Effort                               |
+| ------------------------------- | --------------------------- | ------------------------------------ |
+| Link the answer to its source   | Consultant who answered     | One click, source is suggested       |
+| Mark the new document as a replacement | Author of the new document | One click when publishing        |
+| Choose who is notified          | Same author                 | All, a selection or nobody           |
+| Check the message               | Same author                 | Drafted from the new document        |
+
+<p class="muted small">Nothing is sent without a person choosing to. Customers only hear about answers they actually received.</p>
+
+<!--
+Human in the loop: the system finds the affected answers, a person decides to notify.
+Links with the supersedes link type in the trust graph: the same link that changes the ranking triggers the notification.
+-->
+
+---
+layout: statement
+---
+
+# Documents get corrected. Now the answers *already sent* do too.
+
+<!--
+Closing line for this feature. Could replace closing line A or B if living answers becomes the main idea.
+-->
+
+---
 
 ### Customers see it too
 

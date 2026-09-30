@@ -198,3 +198,11 @@ Working name. Build plan: [plan.md](plan.md). Rough notes that led to it: `idea.
   - Links maintained by hand go stale. Answer: the system proposes links, owners confirm them, and conflicts come out of normal use.
   - The trust summary must be per topic or team, not a ranking of individual owners (red flag: monitoring individuals).
   - The existing app is a Havenkaai HR app. This idea is an internal SD Worx tool. See the open decisions in [plan.md](plan.md#open-decisions).
+
+### Living answers
+
+- Proposed by: team, 30 September 2026 (not scored yet). Slides: "Living answers" in `slides/ideas.md`.
+- Problem: a fixed document does not fix the answers already sent from it. In September 2026 a Veldra employee was still told the meal voucher maximum is EUR 8 (call-02, ticket SR-2026-047102), nine months after it went to EUR 10.
+- Solution: when a consultant answers a customer, they confirm which document the answer came from (suggested, one click). When someone later publishes a document that supersedes that one, the tool lists every customer who got an answer from the old document. The author chooses to notify all, a selection or nobody, and checks a message drafted from the new document. It goes out in the name of the consultant who answered.
+- Fit: uses the `supersedes` link of the trust graph as the trigger. Covers "share" and could land in My SD Worx as an answer card that updates.
+- Human review: nothing is sent unless the author chooses to. Only customers who actually received an answer from the old document are listed.
