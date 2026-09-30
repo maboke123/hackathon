@@ -10,6 +10,7 @@ const navItems: (NavItem & { roles?: Role[] })[] = [
   { href: "/overview", label: "Overview" },
   { href: "/ask", label: "Ask" },
   { href: "/review", label: "Review" },
+  { href: "/documents", label: "Documents" },
 ];
 
 export default async function AppLayout({

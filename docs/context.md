@@ -62,3 +62,10 @@ Record important decisions here (scope, data sources, APIs, who owns what).
 - **The corpus is converted, not read at runtime.** `pnpm --filter web knowledge:build` writes `corpus.generated.json`, which the seed loads. Labels are parsed from the files only. The answer key is never loaded.
 - **Accounts are SD Worx colleagues.** Roles `colleague` and `knowledge_manager`. Resolving a review item requires being its assignee.
 - **People who left have a successor** in `people.json` (Annick to Claire, Hilde to Jonas, Olivier to Julie). Their documents go to the successor's queue, documents without an owner go to the team.
+
+### 30 September 2026: document pages and trust overview
+
+- **`/documents`** lists every document with its owner and last check, under a trust summary per team (share with an active owner, share checked in 12 months, open conflicts). Never per person.
+- **`/documents/[id]`** shows the trust panel, links grouped by type, what depends on the document (with "2 of 3 checked since this document last changed"), the customers who got an answer from it (living answers) and the rendered text.
+- **Record a change** (owner or knowledge manager) marks the document checked today and puts every document `based_on` it, all levels down within its country, in its owner's queue as `parent_changed` through `enqueueReview`. The old value is in `payload.field`, the new one in `payload.value`. Documents without an owner are reported back, because the queue never guesses an owner. Logic in `src/lib/changes.ts`.
+- **`/overview`** shows the stats, the colleague's queue, trust per team and the last decisions from the audit trail.
