@@ -256,3 +256,54 @@
 .graph-slide {
   position: relative;
 }
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin-top: 2.5rem;
+}
+
+.steps > div {
+  border-top: 2px solid var(--primary);
+  padding-top: 1rem;
+}
+
+.steps h2 {
+  font-size: 1.35rem;
+  margin: 0.5rem 0 0.5rem;
+}
+
+.steps p {
+  font-size: 1rem;
+  color: var(--muted-foreground);
+  margin: 0;
+}
+
+.step-number {
+  font-family: var(--ds-font-mono);
+  font-size: 0.875rem;
+  color: var(--primary);
+}
+
+.mock-row .reason {
+  width: 22rem;
+}
+
+.mock-row.child {
+  padding-left: 2.5rem;
+  border-left: 3px solid var(--ds-yellow-400);
+}
+
+.two-cols h2 {
+  font-size: 1.25rem;
+  margin-top: 0;
+}
+
+.two-cols li {
+  font-size: 1.1rem;
+}
+
+.slidev-layout .caption {
+  margin-top: 1.25rem;
+}
