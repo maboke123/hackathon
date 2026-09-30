@@ -317,6 +317,13 @@ const retire: Outcome = {
   hint: "The document is no longer used in answers.",
 };
 
+/** Yes and no outcomes for the tasks simple enough for quick review. */
+export const quickChoices: Partial<Record<ReviewKind, [string, string]>> = {
+  suggested_label: ["confirm", "reject"],
+  suggested_link: ["confirm", "reject"],
+  stale: ["still_correct", "retire"],
+};
+
 export function outcomesFor(
   review: ReviewItem,
   link: KnowledgeLink | null,

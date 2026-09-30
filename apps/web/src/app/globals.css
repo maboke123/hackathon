@@ -9,3 +9,25 @@
     cursor: pointer;
   }
 }
+
+@theme {
+  --animate-karma-rise: karma-rise 900ms cubic-bezier(0.2, 0, 0, 1) forwards;
+
+  @keyframes karma-rise {
+    0% {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    20% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    70% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-48px);
+    }
+  }
+}

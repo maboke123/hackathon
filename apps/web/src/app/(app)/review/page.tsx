@@ -1,5 +1,6 @@
-import { FileTextIcon } from "lucide-react";
+import { FileTextIcon, LayersIcon } from "lucide-react";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { EmptyState } from "@/components/empty-state";
 import { PageHeader, PageSection } from "@/components/page-header";
 import { Stat, Stats } from "@/components/stats";
@@ -40,7 +41,7 @@ import {
 } from "@/lib/karma";
 import { personTarget, toSheetDocument } from "@/lib/document-view";
 import { cleanInline, locatePassage } from "@/lib/passages";
-import { documentUpdate, outcomesFor } from "@/lib/review";
+import { documentUpdate, outcomesFor, quickChoices } from "@/lib/review";
 import { isReadableDiff, wordDiff } from "@/lib/word-diff";
 import { cn } from "@/lib/utils";
 import {
@@ -437,6 +438,7 @@ export default async function ReviewPage() {
   };
   const summary = summarizeKarma(events, mine, on);
   const queue = sortByDue(mine);
+  const quickCount = queue.filter((review) => quickChoices[review.kind]).length;
   const inbox = sortByDue(teamInbox.filter((review) => !review.assigneeId));
   const team = await repository.listTeams();
   const teamName =
@@ -460,7 +462,20 @@ export default async function ReviewPage() {
         title="Review"
         description="Documents you own that need a decision. Every decision takes one click and earns karma, with a bonus for deciding before the deadline."
       >
-        <RequestReviewDialog documents={documentOptions} />
+        <div className="flex flex-wrap gap-2">
+          {quickCount > 0 ? (
+            <Button asChild variant="outline">
+              <Link href="/review/quick">
+                <LayersIcon strokeWidth={1.5} data-icon="inline-start" />
+                Quick review
+                <span className="text-muted-foreground tabular-nums">
+                  {quickCount}
+                </span>
+              </Link>
+            </Button>
+          ) : null}
+          <RequestReviewDialog documents={documentOptions} />
+        </div>
       </PageHeader>
 
       <KarmaPanel summary={summary} />

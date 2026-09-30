@@ -56,4 +56,31 @@ export const seedReviews: SeedReview[] = [
     payload: { field: "ownerId", value: "p-pieter", confidence: 0.58 },
     assigneeId: "p-pieter",
   },
+  {
+    kind: "suggested_label",
+    source: "conflict_check",
+    itemId: "doc-17",
+    trigger:
+      "Jonas Peeters wrote the Veldra contact list and hands the account to Elif Aydin. Nobody is named as owner.",
+    payload: { field: "ownerId", value: "p-elif", confidence: 0.84 },
+    assigneeId: "p-elif",
+  },
+  {
+    kind: "suggested_label",
+    source: "conflict_check",
+    itemId: "doc-14",
+    trigger:
+      "Elif Aydin opened this checklist four times this week. Reading a document is not owning it, so a person decides.",
+    payload: { field: "ownerId", value: "p-elif", confidence: 0.41 },
+    assigneeId: "p-elif",
+  },
+  {
+    kind: "suggested_label",
+    source: "conflict_check",
+    itemId: "doc-19",
+    trigger:
+      "The title names Veldra Deutschland but the document has no customer, so it is missing from Veldra searches.",
+    payload: { field: "customerId", value: "cus-veldra", confidence: 0.93 },
+    assigneeId: "p-elif",
+  },
 ];
