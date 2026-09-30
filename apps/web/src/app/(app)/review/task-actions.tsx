@@ -34,15 +34,25 @@ export type TaskOutcome = { id: string; label: string; hint: string };
 
 export type ColleagueOption = { id: string; name: string; jobTitle: string };
 
+export type ScopeValue = {
+  itemId: string;
+  country: string | null;
+  customerId: string | null;
+};
+
 /** Runs a decision and shows the karma it earned. */
 export function useDecide(reviewId: string, onDone?: () => void) {
   const [pending, startTransition] = useTransition();
   const [chosen, setChosen] = useState<string | null>(null);
 
-  function decide(outcomeId: string) {
+  function decide(outcomeId: string, scopes?: ScopeValue[]) {
     setChosen(outcomeId);
     startTransition(async () => {
-      const result = await decideReview({ reviewId, outcome: outcomeId });
+      const result = await decideReview({
+        reviewId,
+        outcome: outcomeId,
+        scopes,
+      });
       if (result.status === "success") {
         toast.success(`+${result.points ?? 0} karma`, {
           description: result.bonus

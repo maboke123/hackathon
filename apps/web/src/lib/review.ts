@@ -10,10 +10,18 @@ import {
   type ReviewPayload,
   type ReviewSource,
 } from "@/lib/data";
+import { countryLabels } from "@/lib/data/labels";
 import { formatDate } from "@/lib/format";
 import { addDays, dueDays, type Reward, rewardFor, today } from "@/lib/karma";
 
 const REVIEW_EVERY_MONTHS = 12;
+
+/** Which country and customer one side of a conflict applies to. Null means all. */
+export type ScopeChoice = {
+  itemId: string;
+  country: string | null;
+  customerId: string | null;
+};
 const DUE_SOON_DAYS = 14;
 /** A document used in an answer should have been checked in the last three months. */
 const USED_CHECK_WITHIN_DAYS = 90;
@@ -336,7 +344,7 @@ export function outcomesFor(
         {
           id: "different_scope",
           label: "Both are right, for different cases",
-          hint: "They apply to different countries, customers or groups of employees. Nothing changes.",
+          hint: "You say which country or customer each one is for. Both get that label and are linked as variants, so every caller gets the one that fits.",
         },
         {
           ...retire,
@@ -417,6 +425,7 @@ async function applyOutcome(
   link: KnowledgeLink | null,
   actor: Colleague,
   on: string,
+  scopes: ScopeChoice[] | null,
 ): Promise<string> {
   const repository = getRepository();
   const markChecked = () =>
@@ -436,10 +445,37 @@ async function applyOutcome(
       }
       return `Retired ${item.title}`;
     case "document_right":
-    case "different_scope":
       if (link) await repository.resolveLink(link.id, "rejected", actor.id);
       await markChecked();
       return `Settled a conflict on ${item.title}`;
+    case "different_scope": {
+      if (!link || !scopes) throw new Error("Say what each source applies to.");
+      const titles: string[] = [];
+      for (const scope of scopes) {
+        const entry = await repository.updateItem(scope.itemId, {
+          country: scope.country,
+          customerId: scope.customerId,
+        });
+        titles.push(
+          `${entry?.title ?? scope.itemId} applies to ${await describeScope(scope)}.`,
+        );
+      }
+      await repository.resolveLink(link.id, "rejected", actor.id);
+      await repository.createLink({
+        fromId: link.fromId,
+        toId: link.toId,
+        type: "variant_of",
+        reason: titles.join(" "),
+        evidence: link.evidence,
+        toEvidence: link.toEvidence,
+        status: "confirmed",
+        origin: "person",
+        confidence: null,
+        createdBy: actor.id,
+      });
+      await markChecked();
+      return `Split ${item.title} into variants by scope`;
+    }
     case "add_to_document": {
       const other = link
         ? await repository.getItem(
@@ -496,10 +532,51 @@ export type ResolveResult =
   | { ok: true; reward: Reward; message: string }
   | { ok: false; message: string };
 
+async function describeScope(scope: ScopeChoice): Promise<string> {
+  const customer = scope.customerId
+    ? await getRepository().getCustomer(scope.customerId)
+    : null;
+  const country = scope.country
+    ? (countryLabels[scope.country] ?? scope.country)
+    : "all countries";
+  return customer ? `${customer.name} in ${country}` : country;
+}
+
+async function checkScopes(
+  scopes: ScopeChoice[] | null,
+  link: KnowledgeLink,
+): Promise<string | null> {
+  const sides = [link.fromId, link.toId];
+  if (
+    !scopes ||
+    scopes.length !== 2 ||
+    !sides.every((id) => scopes.some((scope) => scope.itemId === id))
+  ) {
+    return "Say what each source applies to.";
+  }
+  for (const scope of scopes) {
+    if (scope.country && !(scope.country in countryLabels)) {
+      return "Pick a country from the list.";
+    }
+    if (
+      scope.customerId &&
+      !(await getRepository().getCustomer(scope.customerId))
+    ) {
+      return "Pick a customer from the list.";
+    }
+  }
+  const [a, b] = scopes;
+  if (a && b && a.country === b.country && a.customerId === b.customerId) {
+    return "Both sources have the same scope. Pick what makes them different.";
+  }
+  return null;
+}
+
 export async function resolveReview(
   reviewId: string,
   outcome: string,
   actor: Colleague,
+  scopes: ScopeChoice[] | null = null,
 ): Promise<ResolveResult> {
   const repository = getRepository();
   const review = await repository.getReviewItem(reviewId);
@@ -522,6 +599,12 @@ export async function resolveReview(
   if (!outcomesFor(review, link).some((option) => option.id === outcome)) {
     return { ok: false, message: "That is not an option for this task." };
   }
+  if (outcome === "different_scope") {
+    const problem = link
+      ? await checkScopes(scopes, link)
+      : "There is no conflict to split.";
+    if (problem) return { ok: false, message: problem };
+  }
 
   const resolved = await repository.resolveReviewItem(
     review.id,
@@ -533,7 +616,15 @@ export async function resolveReview(
   }
 
   const on = today();
-  const reason = await applyOutcome(outcome, review, item, link, actor, on);
+  const reason = await applyOutcome(
+    outcome,
+    review,
+    item,
+    link,
+    actor,
+    on,
+    scopes,
+  );
   const reward = rewardFor(review, on);
   await repository.createKarmaEvent({
     colleagueId: actor.id,

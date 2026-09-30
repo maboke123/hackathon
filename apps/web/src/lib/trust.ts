@@ -10,6 +10,7 @@ import {
   type ReviewItem,
   type Team,
 } from "@/lib/data";
+import { countryLabels } from "@/lib/data/labels";
 import { searchTerms } from "@/lib/data/search-terms";
 import { formatDate } from "@/lib/format";
 import { bestPassage, locatePassage, type Passage } from "@/lib/passages";
@@ -23,14 +24,7 @@ const RELATED_LINK_TYPES = new Set([
   "variant_of",
 ]);
 
-const countryNames: Record<string, string> = {
-  BE: "Belgium",
-  NL: "the Netherlands",
-  FR: "France",
-  DE: "Germany",
-  ES: "Spain",
-  PL: "Poland",
-};
+const countryNames = countryLabels;
 
 export type Tone = "good" | "warning" | "blocked";
 

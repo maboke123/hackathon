@@ -148,6 +148,13 @@ function comparisonFor(
       : null,
     outcomes: outcomesFor(review, link),
     points: rewardFor(review, context.on).points,
+    scopes: [item, other].map((entry) => ({
+      itemId: entry.id,
+      title: entry.title,
+      country: entry.country,
+      customerId: entry.customerId,
+    })),
+    customers: context.customers.map(({ id, name }) => ({ id, name })),
   };
 }
 

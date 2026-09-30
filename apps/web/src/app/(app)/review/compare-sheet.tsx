@@ -3,6 +3,10 @@
 import { ArrowRightIcon, GitCompareArrowsIcon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import {
+  NativeSelect,
+  NativeSelectOption,
+} from "@/components/ui/native-select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Sheet,
@@ -12,11 +16,19 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { countryLabels } from "@/lib/data/labels";
 import type { SheetDocument } from "@/lib/document-view";
 import { cn } from "@/lib/utils";
 import type { DiffPart } from "@/lib/word-diff";
 import { DocumentPanel } from "../document-sheet";
-import { PickUpButton, type TaskOutcome, useDecide } from "./task-actions";
+import {
+  PickUpButton,
+  type ScopeValue,
+  type TaskOutcome,
+  useDecide,
+} from "./task-actions";
+
+type ScopeSide = ScopeValue & { title: string };
 
 export type Comparison = {
   reviewId: string;
@@ -36,7 +48,71 @@ export type Comparison = {
   } | null;
   outcomes: TaskOutcome[];
   points: number;
+  /** Current country and customer of both sides, for "both are right". */
+  scopes: ScopeSide[];
+  customers: { id: string; name: string }[];
 };
+
+function ScopeFields({
+  scopes,
+  customers,
+  onChange,
+}: {
+  scopes: ScopeSide[];
+  customers: { id: string; name: string }[];
+  onChange: (scopes: ScopeSide[]) => void;
+}) {
+  const update = (index: number, change: Partial<ScopeValue>) =>
+    onChange(
+      scopes.map((scope, position) =>
+        position === index ? { ...scope, ...change } : scope,
+      ),
+    );
+
+  return (
+    <div className="flex flex-col gap-3 rounded-lg border p-4">
+      <p className="text-sm font-medium">What does each source apply to?</p>
+      {scopes.map((scope, index) => (
+        <div
+          key={scope.itemId}
+          className="grid items-center gap-2 sm:grid-cols-[1fr_12rem_12rem]"
+        >
+          <span className="truncate text-sm">{scope.title}</span>
+          <NativeSelect
+            aria-label={`Country for ${scope.title}`}
+            value={scope.country ?? ""}
+            onChange={(event) =>
+              update(index, { country: event.target.value || null })
+            }
+            className="w-full"
+          >
+            <NativeSelectOption value="">All countries</NativeSelectOption>
+            {Object.entries(countryLabels).map(([code, name]) => (
+              <NativeSelectOption key={code} value={code}>
+                {name}
+              </NativeSelectOption>
+            ))}
+          </NativeSelect>
+          <NativeSelect
+            aria-label={`Customer for ${scope.title}`}
+            value={scope.customerId ?? ""}
+            onChange={(event) =>
+              update(index, { customerId: event.target.value || null })
+            }
+            className="w-full"
+          >
+            <NativeSelectOption value="">All customers</NativeSelectOption>
+            {customers.map((customer) => (
+              <NativeSelectOption key={customer.id} value={customer.id}>
+                {customer.name}
+              </NativeSelectOption>
+            ))}
+          </NativeSelect>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 function Sentence({
   parts,
@@ -157,7 +233,15 @@ export function CompareSheet({
   const { decide, pending } = useDecide(comparison.reviewId, () =>
     setOpen(false),
   );
+  const [scopes, setScopes] = useState(comparison.scopes);
   const selected = comparison.outcomes.find((outcome) => outcome.id === choice);
+  const splitting = choice === "different_scope";
+  const [first, second] = scopes;
+  const sameScope =
+    !!first &&
+    !!second &&
+    first.country === second.country &&
+    first.customerId === second.customerId;
   const { mine, other } = comparison;
 
   return (
@@ -251,14 +335,32 @@ export function CompareSheet({
                     </label>
                   ))}
                 </RadioGroup>
+                {splitting ? (
+                  <ScopeFields
+                    scopes={scopes}
+                    customers={comparison.customers}
+                    onChange={setScopes}
+                  />
+                ) : null}
                 {choice === "add_to_document" && comparison.update ? (
                   <UpdatePreview update={comparison.update} />
                 ) : null}
                 <div className="flex flex-wrap items-center gap-4">
                   <Button
                     size="lg"
-                    disabled={pending || !selected}
-                    onClick={() => decide(choice)}
+                    disabled={pending || !selected || (splitting && sameScope)}
+                    onClick={() =>
+                      decide(
+                        choice,
+                        splitting
+                          ? scopes.map(({ itemId, country, customerId }) => ({
+                              itemId,
+                              country,
+                              customerId,
+                            }))
+                          : undefined,
+                      )
+                    }
                   >
                     {pending ? "Saving" : (selected?.label ?? "Pick an option")}
                   </Button>

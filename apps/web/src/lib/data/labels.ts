@@ -100,3 +100,12 @@ export const accessLevelLabels: Record<AccessLevel, string> = {
   restricted: "Named people only",
   private: "Author only",
 };
+
+export const countryLabels: Record<string, string> = {
+  BE: "Belgium",
+  NL: "the Netherlands",
+  FR: "France",
+  DE: "Germany",
+  ES: "Spain",
+  PL: "Poland",
+};

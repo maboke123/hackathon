@@ -19,6 +19,16 @@ const notLinked: FormState = {
 const resolveSchema = z.object({
   reviewId: z.string().min(1),
   outcome: z.string().min(1).max(40),
+  scopes: z
+    .array(
+      z.object({
+        itemId: z.string().min(1),
+        country: z.string().max(2).nullable(),
+        customerId: z.string().max(40).nullable(),
+      }),
+    )
+    .max(2)
+    .optional(),
 });
 
 export async function decideReview(
@@ -36,6 +46,7 @@ export async function decideReview(
     parsed.data.reviewId,
     parsed.data.outcome,
     colleague,
+    parsed.data.scopes ?? null,
   );
   if (!result.ok) {
     return { status: "error", message: result.message };
