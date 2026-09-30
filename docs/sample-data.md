@@ -13,7 +13,8 @@ Havenkaai Logistics NV, the fictional Belgian company of the first version of th
 | `customers`       | `customers.json`                     | Havenkaai, Veldra and two small customers from the tickets. Contacts and entities per country as JSON.                                                                                                            |
 | `knowledge_items` | All corpus files                     | One row per document, email, call, meeting, chat thread or ticket. File path in the corpus, source system and location, scope (country, customer, team, product, PC), owner, author, dates, status.               |
 | `knowledge_links` | Parsed from tickets, `seed/links.ts` | Typed links between items: `supersedes`, `contradicts`, `variant_of`, `duplicate_of`, `supports`, `cites`, `based_on`. Status `suggested`, `confirmed` or `rejected`, origin `parsed`, `seed`, `jev` or `person`. |
-| `review_items`    | Computed in `seed/corpus.ts`         | The review queue and its audit trail: conflicts and suggested links, documents without an active owner, documents not checked in 12 months.                                                                       |
+| `review_items`    | Computed in `seed/corpus.ts`         | The review queue and its audit trail: conflicts and suggested links, documents without an active owner, documents not checked in 12 months. Each task has a `source` (`schedule`, `usage`, `request`, `conflict_check`, `parent_change`), a `dueAt` date and an optional `requestedById`. |
+| `karma_events`    | Check dates in the corpus            | One row per decision in the review queue: colleague, task kind, document, points, on time or not. Seeded with one on-time check per `lastCheckedAt` of a document with an active owner. |
 | `agent_queries`   | `agent-log.json`                     | What the existing internal assistant returned, for the "before" part of the demo.                                                                                                                                 |
 
 `knowledge_items.search` is a generated full text column (`simple` configuration, title weighted above body). `repository.searchItems(query)` uses it.
@@ -41,6 +42,8 @@ const queue = await repository.listReviewItems({
   status: "open",
 });
 ```
+
+To put a task in someone's queue, do not call `createReviewItem` directly. Use `enqueueReview` from `@/lib/review` (see `plan.md` 3.5): it checks the document has an owner, routes it and avoids duplicates.
 
 Use the repository in Server Components and Server Actions. `@/lib/data` is server only. Client components import labels from `@/lib/data/labels` and types from `@/lib/data/types`. Every entity has a zod schema in `types.ts`.
 

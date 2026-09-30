@@ -136,6 +136,17 @@ Routing, in this order: the owner, their successor if they left (from `successor
 
 Always available: "Assign to someone else". Every action is a Server Action that checks the user is the assignee, validates with zod, writes `resolvedBy` and `resolvedAt` (the audit trail) and revalidates the ask, review and document pages.
 
+**Built (30 September).** `/review` shows the user's queue sorted by deadline, their team inbox (tasks for a document whose owner left without a successor, "Pick up" moves one to your queue) and their karma history. Every task shows why it is there, who asked, the deadline, the karma on offer, one button per outcome and a side panel with the document (both sources for a conflict, the disagreeing passage marked). "Request a review" sends any owned document to its owner with a two-day deadline.
+
+**Queue API for other modules** (`src/lib/review.ts`, server only):
+
+- `enqueueReview({ kind, itemId, relatedItemIds, linkId, source, trigger, requestedById, dueAt })` puts a task in the owner's queue. **Precondition: the document is fully known.** It exists, is a document, is not retired and has an owner (`ownerId`). Finding the owner is the labelling module's job (track A, the `no_owner` kind): the queue never guesses one and returns `{ status: "rejected", reason: "no_owner" }`. An owner who left is replaced by their successor, without a successor the task goes to the team inbox. One open task per document and kind: a second request returns `already_queued` and pulls the deadline forward.
+- `reportDocumentUsed(itemId, { description, usedById })` for the ask page and the after-call panel: a document used in an answer and not checked in 90 days gets a `stale` task with source `usage` and a 7-day deadline.
+- `runPeriodicCheck()` is the nightly check (a button for knowledge managers on `/review`, no background job): review date within two weeks (next review date, or 12 months after the last check), used in a customer answer since the last check, and suggested conflicts nobody has picked up.
+- `resolveReview(reviewId, outcome, colleague)` applies the outcome (for example "Still correct" sets the last check to today and the next review a year out, "Newer source is right, add it" appends the passage and adds a `supports` link) and records karma.
+
+Deadlines by source: request 2 days, conflict check 5, parent change 7, usage 7, schedule 14 (or the review date itself).
+
 ### 3.6 Conflict check on new documents
 
 When a document is added or edited, rule based checks compare it with items on the same topic and scope: same fact, different value (15 versus 20 days, EUR 8 versus EUR 10). A hit creates a `contradicts` link as `suggested` and a `conflict` item in the owner's queue. Semantic matching is a stretch.
@@ -180,11 +191,13 @@ AI only does steps 2 and 6. Everything else is plain logic on the graph. Tonight
 - **Trust summary per team:** share of documents with an active owner, share checked in 12 months, open conflicts. Never per person.
 - **Recurring questions:** topics that are asked often, from `agent-log.json` and `tickets.json`, next to how many of their documents have an active owner ("birth leave Belgium: 9 questions, 1 of 4 documents owned"). Framed as "where to write the next document", not as a performance metric. Stretch.
 
-### 3.11 Recognition for owners (stretch, Roan)
+### 3.11 Recognition for owners: karma (built)
 
 Owning knowledge is invisible work: nobody thanks you for checking a rule that was already right. Owners get recognition for work that keeps knowledge trustworthy: closing a knowledge gap, verifying on time, updating after a law change, claiming an orphaned document or retiring an outdated one.
 
 Guardrails, because scoring individuals is a red flag in [ideas.md](ideas.md): only actions a person confirmed in the queue count, only contributions and never penalties, reward quality over volume, no ranking of people and no link to performance reviews. Teams are compared on coverage, and a colleague sees their own contributions only on their own page.
+
+**Built as karma (30 September)** in `src/lib/karma.ts`, shown on `/review`. Every decision in the queue earns points by task kind (conflict 25, parent changed 20, no owner 15, not checked 10, suggestions 5), plus 50% for deciding before the deadline and 5 extra for a colleague's request decided on time. Late still counts, it just earns no bonus. Levels: New owner, Contributor (50), Reliable owner (150), Trusted owner (300), Knowledge steward (600). The panel shows karma, the level and progress, the on-time rate over 12 months, the on-time streak and open or overdue tasks. It follows the guardrails above: only the colleague sees their own karma, it never goes down and there is no leaderboard. `summarizeKarma(...).onTimeRate` is meant as an input for owner trust in 3.3 later ("owner decides on time"), which needs a team decision first because it puts a person's behaviour into a document's score.
 
 ## 4. Data model
 
@@ -199,7 +212,8 @@ Built on 30 September. Details and usage in [sample-data.md](sample-data.md#data
 | `customers`       | From `customers.json`: id (`cus-havenkaai`, `cus-veldra`), name, segment, countries, contacts, entities.                                                                                                                                                                                                                                                                                                                              |
 | `knowledge_items` | id (`doc-05`, `mail-05`, `SR-2026-048213`), kind (`document`, `email`, `call`, `meeting`, `chat`, `ticket`, `answer`), title, body, filePath, pdfPath, sourceSystem, location, language, country, customerId, teamId, product, jointCommittee, keywords, ownerId, authorId, createdAt, modifiedAt, modifiedById, lastCheckedAt, nextReviewAt, status (`active`, `draft`, `retired`), usefulness. Generated full text column `search`. |
 | `knowledge_links` | id, fromId, toId, type, reason, evidence, status (`suggested`, `confirmed`, `rejected`), origin (`parsed`, `seed`, `jev`, `person`), confidence, createdBy (colleague id or `system`), createdAt, resolvedBy, resolvedAt.                                                                                                                                                                                                             |
-| `review_items`    | id, kind (`conflict`, `parent_changed`, `stale`, `no_owner`, `suggested_link`, `suggested_label`), itemIds, linkId, assigneeId or assigneeTeamId, trigger (why it is in the queue), payload (suggested label and confidence), status (`open`, `done`), outcome, createdAt, resolvedBy, resolvedAt.                                                                                                                                    |
+| `review_items`    | id, kind (`conflict`, `parent_changed`, `stale`, `no_owner`, `suggested_link`, `suggested_label`), itemIds, linkId, assigneeId or assigneeTeamId, trigger (why it is in the queue), payload (suggested label and confidence), source (`schedule`, `usage`, `request`, `conflict_check`, `parent_change`), requestedById, dueAt, status (`open`, `done`), outcome, createdAt, resolvedBy, resolvedAt.                                                                                                                                    |
+| `karma_events`    | id, colleagueId, reviewId, kind, itemId, points, onTime, reason, createdAt. One row per decision in the queue (3.11).                                                                                                                                                                                                                                                                                                                  |
 | `agent_queries`   | From `agent-log.json`: what the existing assistant returned, for demo step 1.                                                                                                                                                                                                                                                                                                                                                         |
 
 Not built yet: the `answers` table (recipient, answered by, sent at, notified at) for living answers. Resolved tickets already get `answered_with` links from `linkedDocuments` in `tickets.json`. Tickets use their service desk number as id: the answer key's "ticket-02" is `SR-2026-048213`.
@@ -212,12 +226,12 @@ Also not built yet, for track A to add when B or C need them: the `knowledge_gap
 | ----------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------- |
 | `/ask`            | Customer picker, question, answer card with trust label, supporting records, "not used" list, who knows this, "ask this person" on conflict. | Yes     |
 | After-call panel  | On `/ask` when the call ends: the steps of 3.8 lighting up one by one, the flagged sources, earlier answers to correct, the knowledge gap.   | Yes     |
-| `/review`         | The current user's queue.                                                                                                                    | Yes     |
+| `/review`         | The current user's queue, team inbox and karma (3.5, 3.11). Built.                                                                           | Yes     |
 | `/documents/[id]` | Trust panel (owner, scope, last check, next review, source, modified by), links grouped by type, downstream coverage.                       | Yes     |
 | `/documents`      | Trust summary per team: share with an active owner, share checked in 12 months, open conflicts. Recurring questions. Never per person.      | If time |
 | Graph view        | Small neighbourhood of one document or fact, with the versions each document states.                                                        | Stretch |
 | Meeting prep      | Documents to check before a customer meeting (3.9).                                                                                          | Stretch |
-| My contributions  | A colleague's own confirmed contributions (3.11). Visible only to them.                                                                      | Stretch |
+| My contributions  | Built as the karma panel and history tab on `/review` (3.11). Visible only to the colleague.                                                 | Yes     |
 
 ## 6. Demo script
 
@@ -244,7 +258,7 @@ Four tracks with separate files, so we do not block or overwrite each other. Put
 | ------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
 |         | A. Data and labelling  | Types, schema, migration, repository. Corpus import and label parser. Hand-seeded links and facts. Stored AI output for call-01 and call-03. AI labeller that writes `suggested` labels and links. Answer key test and its score. | `src/lib/data/**`, `src/lib/db/**`, `apps/web/drizzle`, `apps/web/scripts`   |
 | Yendric | B. Ask and trust score | Search, the rules in 3.3 with reasons, answer card, "not used" list, who knows this, after-call panel (3.8), demo accounts for Lotte and Pieter.                                 | `src/app/(app)/ask/**`, `src/lib/trust.ts`                                   |
-|         | C. Review and changes  | Review queue and its Server Actions (including `knowledge_gap`), routing to owner, successor or team, conflict check on new documents (3.6), downstream flow and living answers (3.7), document page. | `src/app/(app)/review/**`, `src/app/(app)/documents/**`, `src/lib/review.ts` |
+| Yarne   | C. Review and changes  | Review queue and its Server Actions (including `knowledge_gap`), routing to owner, successor or team, conflict check on new documents (3.6), downstream flow and living answers (3.7), document page. | `src/app/(app)/review/**`, `src/app/(app)/documents/**`, `src/lib/review.ts` |
 |         | D. Pitch               | Slides, demo script, figure checks at the source, promo video if time, rehearsals. Keeps this plan up to date.                                                                | `slides/**`, `videos/**`, `docs/**`                                          |
 
 How we work together:
