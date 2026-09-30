@@ -49,3 +49,8 @@ Record important decisions here (scope, data sources, APIs, who owns what).
 - **Dependabot (`.github/dependabot.yml`)** opens pull requests for security fixes only, plus weekly updates for GitHub Actions and the Docker base image.
 - **Vulnerable transitive dependencies** are pinned to patched versions with `overrides` in `pnpm-workspace.yaml`. Remove an override once the parent package ships the fix.
 - **Not available:** CodeQL and GitHub secret scanning are paid features for private repositories.
+
+### 30 September 2026: pitch deck
+
+- **Opening:** `slides/pitch.md` is now the real deck. It opens with the framing "not another agent, the layer it stands on": sources, then the trust graph, then the existing agent, then the service colleague.
+- **Graph slide:** an animated graph of the synthetic corpus (`slides/components/TrustGraph.vue`, data in `trust-graph-data.ts`) in three clicks: all items look alike, typed links and statuses appear, then the birth leave cluster with doc-05 as the answer. Layout uses d3-force, with the birth leave nodes pinned so the labels never overlap.

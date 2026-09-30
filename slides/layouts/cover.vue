@@ -32,5 +32,6 @@
 .cover :deep(p) {
   font-size: 1.375rem;
   color: var(--ds-blue-300);
+  text-wrap: balance;
 }
 </style>

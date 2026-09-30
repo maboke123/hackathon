@@ -11,9 +11,11 @@
   "dependencies": {
     "@repo/design-system": "workspace:*",
     "@slidev/cli": "^53.0.0",
+    "d3-force": "^3.0.0",
     "vue": "^3"
   },
   "devDependencies": {
+    "@types/d3-force": "3.0.10",
     "playwright-chromium": "^1.63.0"
   }
 }
